@@ -5,6 +5,7 @@
  *      Author: eneko
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include "usuario.h"
 int opcionesNormales(){
 	printf("Selecciona una de las siguientes opciones:\n");
@@ -27,7 +28,7 @@ void autentificarse(){
 	printf("Introduce tu nombre de usuario:\n");
 	char * nombre = malloc(sizeof(char)*20);
 	scanf("%s",nombre);
-	printf("Introduce tu contraseña: ");
+	printf("Introduce tu contraseï¿½a: ");
 	char* contrasena = malloc(sizeof(char)*20);
 	scanf("%s",contrasena);
 	int existe=0; //llamar a la funcion de inicio.
@@ -48,10 +49,10 @@ void registrarse(){
 		printf("Toca registrarse; introduce tu nombre de usuario: ");
 		char * nombre = malloc(sizeof(char)*20);
 		scanf("%s",nombre);
-		printf("Introduce tu contraseña: ");
+		printf("Introduce tu contraseï¿½a: ");
 		char* contrasena = malloc(sizeof(char)*20);
 		scanf("%s",contrasena);
-		printf("Confirma tu contraseña: ");
+		printf("Confirma tu contraseï¿½a: ");
 		char* contrasena2 = malloc(sizeof(char)*20);
 		scanf("%s",contrasena2);
 		if(contrasena==contrasena2){

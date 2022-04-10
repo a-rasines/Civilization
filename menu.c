@@ -6,8 +6,11 @@
  */
 #include <stdio.h>
 #include "usuario.h"
-
+#include "database.h"
 int main(void){
+	setup();
+	printf("%i", regenerarBaseDatos());
+	end();
 	int terminarAutent = 1;
 	Usuario user;
 	while(!terminarAutent){
