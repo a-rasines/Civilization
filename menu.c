@@ -10,6 +10,7 @@
 int main(void){
 	setup();
 	printf("%i", regenerarBaseDatos());
+	addUsuario("Test", "esto ");
 	end();
 	int terminarAutent = 1;
 	Usuario user;
@@ -17,9 +18,9 @@ int main(void){
 		printf("Tienes un usuario registrado? (s/n)\n");
 		char answ = getchar();
 		if(answ == 's'){
-			/*user=*/ autentificarse();
+			user = autentificarse();
 		}else{
-			/*user=*/ registrarse();
+			user = registrarse();
 		}
 		terminarAutent = 0;
 	}

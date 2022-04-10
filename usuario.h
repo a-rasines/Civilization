@@ -17,7 +17,7 @@ typedef struct
 
 int opcionesNormales();
 int opcionesAdmin();
-void autentificarse();
-void registrarse();
+Usuario autentificarse();
+Usuario registrarse();
 int seleccion(char a, char b);
 #endif /* USUARIO_H_ */

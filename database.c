@@ -4,12 +4,13 @@
  *  Created on: 10 abr 2022
  *      Author: algtc
  */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
 #include "usuario.h"
 #include "sqlite3.h"
-#include <unistd.h> // crypt()
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include "md5.h"
 sqlite3 *db;
 void setup(){
 	sqlite3_open("database.db", &db);
@@ -29,11 +30,11 @@ int regenerarBaseDatos(){
 			update(
 				"CREATE TABLE IF NOT EXISTS UsuarioRaw( \
 				Nombre TEXT NOT NULL,\
-				ID INT AUTO_INCREMENT,\
+				ID INT,\
 				Contrasena TEXT NOT NULL,\
 				Admin BIT DEFAULT 0, \
 				Ban BIT DEFAULT 0, \
-				PRIMARY KEY(Nombre, Contrasena))", stmt
+				PRIMARY KEY(Nombre, Contrasena, ID))", stmt
 	    ) != SQLITE_OK) {
 	        printf("Error al crear la tabla UsuarioRaw\n");
 	        return 0;
@@ -98,24 +99,43 @@ int regenerarBaseDatos(){
 Usuario getUsuario(char* nombre, char* contrasena){
     sqlite3_stmt *stmt;
     Usuario end;
-	char seq[] = "SELECT * FROM Usuario WHERE Nombre = '";
+	char seq[100] = "SELECT * FROM Usuario WHERE Nombre = '";
 	strcat(seq, nombre);
-	strcat(seq, "', Contrasena = '");
-	strcat(seq, crypt(contrasena, "pass"));
+	strcat(seq, "' AND Contrasena = '");
+	strcat(seq, contrasena);
 	strcat(seq, "'");
 
 	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
 		printf("Error al cargar el usuario\n");
 		printf("%s\n", sqlite3_errmsg(db));
-		return end;
+		return (Usuario){'\0', 0, 0};
 	}
-	sqlite3_step(stmt);
+	int i =sqlite3_step(stmt);
+	if(i != SQLITE_ROW){
+		return (Usuario){'\0', 0, 0};
+	}
 	strcpy(end.nombre, (char *) sqlite3_column_text(stmt, 0));
 	char* temp;
 	strcpy(temp, (char *) sqlite3_column_text(stmt, 1));
-	sscanf(temp, "%i", end.id);
+	sscanf(temp, "%i", &end.id);
 	strcpy(temp, (char *) sqlite3_column_text(stmt, 3));
-	sscanf(temp, "%i", end.admin);
+	sscanf(temp, "%i", &end.admin);
+}
+Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
+	sqlite3_stmt *stmt;
+	char seq[200] = "INSERT INTO UsuarioRaw(Nombre, Contrasena, Admin) VALUES ('";
+	strcat(seq, nombre);
+	strcat(seq, "','");
+	char cont_crypt[20];
+	strcpy(cont_crypt, contrasena);
+	strcat(seq, encrypt(cont_crypt));
+	strcat(seq, "', ");
+	char temp[1];
+	sprintf(temp, "%d", admin);
+	strcat(seq, temp);
+	strcat(seq, ")");
+	update(seq, stmt);
+	return getUsuario(nombre, contrasena);
 }
 Usuario addUsuario(char* nombre, char* contrasena){
 	return addUsuarioRaw(nombre, contrasena, 0);
@@ -123,15 +143,4 @@ Usuario addUsuario(char* nombre, char* contrasena){
 Usuario addAdmin(char* nombre, char* contrasena){
 	return addUsuarioRaw(nombre, contrasena, 1);
 }
-Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
-	sqlite3_stmt *stmt;
-		char seq[] = "INSERT INTO UsuarioRaw(Nombre, Contrasena, Admin) VALUES ('";
-		strcat(seq, nombre);
-		strcat(seq, "','");
-		strcat(seq, crypt(contrasena, "pass"));
-		strcat(seq, "', ");
-		strcat(seq, admin);
-		strcat(seq, ")");
-		update(seq, stmt);
-		return getUsuario(nombre, contrasena);
-}
+
