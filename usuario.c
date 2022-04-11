@@ -49,21 +49,19 @@ Usuario autentificarse(){
 }
 
 Usuario registrarse(){
-	//int registroHecho=0;
 	Usuario nuevo;
-	while(1){//!registroHecho){
+	while(1){
 		printf("Toca registrarse; introduce tu nombre de usuario: ");
 		char * nombre = malloc(sizeof(char)*20);
 		scanf("%s",nombre);
-		printf("Introduce tu contraseña: ");
+		printf("Introduce tu contrasena: ");
 		char* contrasena = malloc(sizeof(char)*20);
 		scanf("%s",contrasena);
-		printf("Confirma tu contraseña: ");
+		printf("Confirma tu contrasena: ");
 		char* contrasena2 = malloc(sizeof(char)*20);
 		scanf("%s",contrasena2);
 		if(strcmp(contrasena,contrasena2)==0){
 			return addUsuario(nombre, contrasena);
-			//registroHecho = 1;
 		}else printf("Las contrasenas no son las mismas vuelve a registrarte");
 	}
 }
