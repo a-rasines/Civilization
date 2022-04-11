@@ -14,6 +14,11 @@ void end();
 int regenerarBaseDatos();
 Usuario getUsuario(char* nombre, char* contrasena);
 Usuario addUsuario(char* nombre, char* contrasena);
+int banUsuario(int id);
+int unbanUsuario(int id);
+int modificarUsuario(Usuario prev, Usuario post);
+int limpiarServidor(int id);
+int borrarUsuario(int id);
 Usuario addAdmin(char* nombre, char* contrasena);
 
 
