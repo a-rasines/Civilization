@@ -97,13 +97,10 @@ int regenerarBaseDatos(){
     return 1;
 }
 Usuario getUsuario(char* nombre, char* contrasena){
-    sqlite3_stmt *stmt;
+	sqlite3_stmt *stmt;
     Usuario end;
-	char seq[100] = "SELECT * FROM Usuario WHERE Nombre = '";
-	strcat(seq, nombre);
-	strcat(seq, "' AND Contrasena = '");
-	strcat(seq, encrypt(contrasena));
-	strcat(seq, "'");
+	char seq[100];
+	sprintf(seq, "SELECT * FROM Usuario WHERE Nombre = '%s' AND Contrasena = '%s'", nombre, encrypt(contrasena));
 
 	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
 		printf("Error al cargar el usuario\n");
@@ -122,17 +119,8 @@ Usuario getUsuario(char* nombre, char* contrasena){
 }
 Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
 	sqlite3_stmt *stmt;
-	char seq[200] = "INSERT INTO UsuarioRaw(Nombre, Contrasena, Admin) VALUES ('";
-	strcat(seq, nombre);
-	strcat(seq, "','");
-	char cont_crypt[20];
-	strcpy(cont_crypt, contrasena);
-	strcat(seq, encrypt(cont_crypt));
-	strcat(seq, "', ");
-	char temp[1];
-	sprintf(temp, "%d", admin);
-	strcat(seq, temp);
-	strcat(seq, ")");
+	char seq[200];
+	sprintf(seq, "INSERT INTO UsuarioRaw(Nombre, Contrasena, Admin) VALUES ('%s', '%s', %d)",nombre, encrypt(contrasena), admin);
 	update(seq, stmt);
 	return getUsuario(nombre, contrasena);
 }
@@ -142,4 +130,31 @@ Usuario addUsuario(char* nombre, char* contrasena){
 Usuario addAdmin(char* nombre, char* contrasena){
 	return addUsuarioRaw(nombre, contrasena, 1);
 }
+int existsNombre(char* nombre){
+	sqlite3_stmt *stmt;
+    Usuario end;
+	char seq[100];
+	sprintf(seq, "SELECT Count(Nombre) FROM Usuario WHERE Nombre = '%s'", nombre);
+
+	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
+		printf("Error al buscar el nombre\n");
+		printf("%s\n", sqlite3_errmsg(db));
+		return 0;
+	}
+	int i =sqlite3_step(stmt);
+	if(i != SQLITE_ROW){
+		return 0;
+	}
+	int end = sqlite3_column_int(stmt, 0);
+	sqlite3_finalize(stmt);
+	return end;
+}
+int banUsuario(int id){
+	sqlite3_stmt *stmt;
+	char seq[200] = "UPDATE UsuarioRaw SET Ban = 1 WHERE ID = ";
+}
+int unbanUsuario(int id);
+int modificarUsuario(Usuario prev, Usuario post);
+int limpiarServidor(int id);
+int borrarUsuario(int id);
 
