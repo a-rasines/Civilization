@@ -135,10 +135,8 @@ Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
 	sprintf(temp, "%d", admin);
 	strcat(seq, temp);
 	strcat(seq, ")");
-	printf("%s", seq);
 	update(seq, stmt);
-	//return getUsuario(nombre, contrasena);
-	return (Usuario){"\0", 0, 0};
+	return getUsuario(nombre, contrasena);
 }
 Usuario addUsuario(char* nombre, char* contrasena){
 	return addUsuarioRaw(nombre, contrasena, 0);
