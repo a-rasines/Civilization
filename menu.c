@@ -20,10 +20,12 @@ int main(void){
 		answ = getchar();
 		if(answ == 's'){
 			user = autentificarse();
+			terminarAutent = 1;
 		}else if(answ == 'n'){
 			user = registrarse();
+			terminarAutent = 1;
 		}
-		terminarAutent = 1;
+
 	}
 	printf("close");
 	end();
