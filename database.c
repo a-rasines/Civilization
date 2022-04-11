@@ -102,7 +102,7 @@ Usuario getUsuario(char* nombre, char* contrasena){
 	char seq[100] = "SELECT * FROM Usuario WHERE Nombre = '";
 	strcat(seq, nombre);
 	strcat(seq, "' AND Contrasena = '");
-	strcat(seq, contrasena);
+	strcat(seq, encrypt(contrasena));
 	strcat(seq, "'");
 
 	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
@@ -114,12 +114,10 @@ Usuario getUsuario(char* nombre, char* contrasena){
 	if(i != SQLITE_ROW){
 		return (Usuario){'\0', 0, 0};
 	}
+	end.nombre = malloc(sizeof(char)*20);
 	strcpy(end.nombre, (char *) sqlite3_column_text(stmt, 0));
-	char* temp;
-	strcpy(temp, (char *) sqlite3_column_text(stmt, 1));
-	sscanf(temp, "%i", &end.id);
-	strcpy(temp, (char *) sqlite3_column_text(stmt, 3));
-	sscanf(temp, "%i", &end.admin);
+	end.id = sqlite3_column_int(stmt, 1);
+	end.admin = sqlite3_column_int(stmt, 3);
 	return end;
 }
 Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
