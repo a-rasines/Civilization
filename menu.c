@@ -10,6 +10,7 @@
 int main(void){
 	setup();
 	printf("%i", regenerarBaseDatos());
+	printf("%i", existsNombre("a"));
 	int terminarAutent = 0;
 	Usuario user;
 	char answ;

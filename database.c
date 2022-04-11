@@ -132,7 +132,6 @@ Usuario addAdmin(char* nombre, char* contrasena){
 }
 int existsNombre(char* nombre){
 	sqlite3_stmt *stmt;
-    Usuario end;
 	char seq[100];
 	sprintf(seq, "SELECT Count(Nombre) FROM Usuario WHERE Nombre = '%s'", nombre);
 
