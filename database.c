@@ -120,6 +120,7 @@ Usuario getUsuario(char* nombre, char* contrasena){
 	sscanf(temp, "%i", &end.id);
 	strcpy(temp, (char *) sqlite3_column_text(stmt, 3));
 	sscanf(temp, "%i", &end.admin);
+	return end;
 }
 Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
 	sqlite3_stmt *stmt;
@@ -134,8 +135,10 @@ Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
 	sprintf(temp, "%d", admin);
 	strcat(seq, temp);
 	strcat(seq, ")");
+	printf("%s", seq);
 	update(seq, stmt);
-	return getUsuario(nombre, contrasena);
+	//return getUsuario(nombre, contrasena);
+	return (Usuario){"\0", 0, 0};
 }
 Usuario addUsuario(char* nombre, char* contrasena){
 	return addUsuarioRaw(nombre, contrasena, 0);

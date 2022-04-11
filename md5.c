@@ -141,19 +141,19 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
 }
 
 char* encrypt(char *argv0) {
-	char* argv;
+	char* argv = malloc(sizeof(char)*strlen(argv0));
 	strcpy(argv, argv0);
     size_t len = strlen(argv);
 
     // benchmark
     int i;
-    for (i = 0; i < 1000000; i++) {
+    for (i = 0; i < 10000; i++) {
         md5((uint8_t*)argv, len);
     }
 
     //var char digest[16] := h0 append h1 append h2 append h3 //(Output is in little-endian)
     uint8_t *p;
-    char* end = malloc(sizeof(char)*33);
+    char* end = malloc(sizeof(char)*33);//32 caracteres + \0
     *(end) = '\0'; //Empezar el string vacio
     char* msg = malloc(sizeof(char)*9); //8 caracteres + \0
     p=(uint8_t *)&h0;
