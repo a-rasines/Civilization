@@ -56,7 +56,7 @@ int regenerarBaseDatos(){
 				Contrasena TEXT NOT NULL,\
 				Admin BIT DEFAULT 0, \
 				Ban BIT DEFAULT 0, \
-				FOREING KEY Servidor REFERENCES Servidor(ID), \
+				FOREING KEY Servidor REFERENCES Servidor(ID) ON DELETE CASCADE, \
 				PRIMARY KEY(Jugador, Servidor))", stmt
 	    ) != SQLITE_OK){
 	    	printf("Error al crear la tabla Partida\n");
@@ -71,7 +71,7 @@ int regenerarBaseDatos(){
 				Mejorada BIT DEFAULT 0, \
 				PosicionX INT DEFAULT 0, \
 				PosicionY INT DEFAULT 0, \
-				FOREING KEY ID REFERENCES Servidor(ID), Jugador REFERENCES UsuarioRaw(ID), \
+				FOREING KEY ID REFERENCES Servidor(ID) ON DELETE CASCADE, Jugador REFERENCES UsuarioRaw(ID) ON DELETE CASCADE, \
 				PRIMARY KEY(ID))", stmt
 	    ) != SQLITE_OK){
 	    	printf("Error al crear la tabla Tropa\n");
@@ -88,7 +88,7 @@ int regenerarBaseDatos(){
 				Produccion INT DEFAULT 0, \
 				PosicionX INT DEFAULT 0, \
 				PosicionY INT DEFAULT 0, \
-				FOREING KEY Servidor REFERENCES Servidor(ID), Jugador REFERENCES UsuarioRaw(ID), \
+				FOREING KEY Servidor REFERENCES Servidor(ID) ON DELETE CASCADE, Jugador REFERENCES UsuarioRaw(ID) ON DELETE CASCADE, \
 				PRIMARY KEY(ID))", stmt
 	    ) != SQLITE_OK){
 	    	printf("Error al crear la tabla Ciudad\n");

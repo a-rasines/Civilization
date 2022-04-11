@@ -10,20 +10,22 @@
 int main(void){
 	setup();
 	printf("%i", regenerarBaseDatos());
-	addUsuario("Test", "son 20 caracter");
-	end();
 	int terminarAutent = 0;
 	Usuario user;
-//	while(!terminarAutent){
-//		printf("Tienes un usuario registrado? (s/n)\n");
-//		char answ = getchar();
-//		if(answ == 's'){
-//			user = autentificarse();
-//		}else{
-//			user = registrarse();
-//		}
-//		terminarAutent = 1;
-//	}
+	char answ;
+	while(!terminarAutent){
+		if(answ != '\n')
+			printf("Tienes un usuario registrado? (s/n)\n");
+		answ = getchar();
+		if(answ == 's'){
+			user = autentificarse();
+		}else if(answ == 'n'){
+			user = registrarse();
+		}
+		terminarAutent = 1;
+	}
+	printf("close");
+	end();
 	int hacerCosas=1;
 	int opcion;
 	while(!hacerCosas){

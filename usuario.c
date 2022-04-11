@@ -6,8 +6,10 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "usuario.h"
 #include "database.h"
+
 int opcionesNormales(){
 	printf("Selecciona una de las siguientes opciones:\n");
 	printf("1)Exportar partida.\n2)Importar partida.\n3)Modificar Usuarios.\n0)Para salir.\n");
@@ -53,13 +55,13 @@ Usuario registrarse(){
 		printf("Toca registrarse; introduce tu nombre de usuario: ");
 		char * nombre = malloc(sizeof(char)*20);
 		scanf("%s",nombre);
-		printf("Introduce tu contrase�a: ");
+		printf("Introduce tu contraseña: ");
 		char* contrasena = malloc(sizeof(char)*20);
 		scanf("%s",contrasena);
-		printf("Confirma tu contrase�a: ");
+		printf("Confirma tu contraseña: ");
 		char* contrasena2 = malloc(sizeof(char)*20);
 		scanf("%s",contrasena2);
-		if(contrasena==contrasena2){
+		if(strcmp(contrasena,contrasena2)==0){
 			return addUsuario(nombre, contrasena);
 			//registroHecho = 1;
 		}else printf("Las contrasenas no son las mismas vuelve a registrarte");
