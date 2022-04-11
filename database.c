@@ -148,11 +148,18 @@ int existsNombre(char* nombre){
 	sqlite3_finalize(stmt);
 	return end;
 }
-int banUsuario(int id){
+int banAction(int id, int status){
 	sqlite3_stmt *stmt;
-	char seq[200] = "UPDATE UsuarioRaw SET Ban = 1 WHERE ID = ";
+	char seq[200];
+	sprintf(seq,"UPDATE UsuarioRaw SET Ban = %d WHERE ID = %d",status, id);
+	return update(seq, stmt);
 }
-int unbanUsuario(int id);
+int banUsuario(int id){
+	return banAction(1, id);
+}
+int unbanUsuario(int id){
+	return banAction(0, id);
+}
 int modificarUsuario(Usuario prev, Usuario post);
 int limpiarServidor(int id);
 int borrarUsuario(int id);
