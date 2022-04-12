@@ -17,7 +17,7 @@ int main(void){
 	while(!terminarAutent){
 		if(answ != '\n')
 			printf("Tienes un usuario registrado? (s/n)\n");
-		answ = getchar();
+		scanf("%c", &answ);
 		if(answ == 's'){
 			user = autentificarse();
 			terminarAutent = 1;
@@ -32,6 +32,7 @@ int main(void){
 	while(!hacerCosas){
 		if(user.admin) opcion = opcionesAdmin();
 		else opcion=opcionesNormales();
+		printf("opcion=%d", opcion);
 		switch (opcion) {
 			case 0:
 				end();

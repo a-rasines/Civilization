@@ -22,24 +22,26 @@ char* opcionesGenericas = "0)Salir.\n";
 void imprimirUsuario(Usuario user){
 	printf("Usuario: Id->%i, Nombre->'%s', Admin->%i", user.id,user.nombre, user.admin);
 }
+int seleccion(char a, char b){
+	char* c = malloc(sizeof(char)*10);
+	scanf("%s", c);
+	while((int)c[0]<(int)a || (int)c[0]>(int)b){
+		scanf("%s", c);
+	}
+	return (int)(c[0]-'0');
+}
 int opciones(char*title, char first, char end){
 	printf(title);
 	return seleccion(first, end);
 }
 int opcionesNormales(){
-	char* send = malloc(sizeof(char) *(strlen(stringOpcionesNormales) + strlen(opcionesGenericas)));
+	char* send = malloc(sizeof(char) *(strlen(stringOpcionesNormales) + strlen(opcionesGenericas)+1));
 	sprintf(send, "%s%s", stringOpcionesNormales, opcionesGenericas);
 	return opciones(send, '0', endNormales);
 }
-int seleccion(char a, char b){
-	char c = getchar();
-	while(c<=a || c>=b){
-		c=getchar();
-	}
-	return c-'0';
-}
+
 int opcionesAdmin(){
-	char* send = malloc(sizeof(char) *(strlen(stringOpcionesNormales) + strlen(stringOpcionesNormales) + strlen(opcionesGenericas)));
+	char* send = malloc(sizeof(char) *(strlen(stringOpcionesNormales) + strlen(stringOpcionesNormales) + strlen(opcionesGenericas)+1));
 	sprintf(send, "%s%s%s", stringOpcionesNormales, stringOpcionesAdmin, opcionesGenericas);
 	return opciones(send, '0', endAdmin);
 }
