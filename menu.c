@@ -27,8 +27,6 @@ int main(void){
 		}
 
 	}
-	printf("close");
-	end();
 	int hacerCosas=1;
 	int opcion;
 	while(!hacerCosas){
@@ -48,5 +46,8 @@ int main(void){
 				break;
 		}
 	}
+	printf("close");
+	end();
+
 	return 0;
 }

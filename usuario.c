@@ -52,7 +52,7 @@ Usuario autentificarse(){
 	char* contrasena = malloc(sizeof(char)*20);
 	scanf("%s",contrasena);
 	Usuario us = getUsuario(nombre, contrasena);
-	if(nombre == '\0'){
+	if(us.nombre == '\0'){
 		printf("toca registrarse \n");
 		return registrarse();
 	}else if(us.admin){

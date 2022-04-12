@@ -162,20 +162,21 @@ int unbanUsuario(int id){
 }
 int modificarUsuarioAdm(){
 	sqlite3_stmt *stmt;
+	Usuario ini;
 	Usuario end;
 	char seq[100];
 	printf("Primero busquemos al usuario que se quiere modificar\n");
 	printf("Introduce su nombre: ");
 	char * nombre = malloc(sizeof(char)*20);
 	scanf("%s",nombre);
-	end.nombre = malloc(sizeof(char)*20);
+	ini.nombre = malloc(sizeof(char)*20);
 	strcpy(end.nombre, (char *) sqlite3_column_text(stmt, 0));
-	end.id = sqlite3_column_int(stmt, 1);
-	end.admin = sqlite3_column_int(stmt, 3);
-	//impirmirUsuario(end);
-	printf("")
+	ini.id = sqlite3_column_int(stmt, 1);
+	ini.admin = sqlite3_column_int(stmt, 3);
+	imprimirUsuario(ini);
+	printf("");
 	free(seq);
-	sprintf(seq, "UPDATE UsuarioRaw SET Nombre='%s', ID=%i, Admin=%i WHERE Nombre = '%s' AND ID = '%s' ",post.nombre,post.id, post.admin, prev.nombre, prev.id);
+	sprintf(seq, "UPDATE UsuarioRaw SET Nombre='%s', ID=%i, Admin=%i WHERE Nombre = '%s' AND ID = '%s' ",end.nombre,end.id, end.admin, ini.nombre, ini.id);
 
 	return update(seq,stmt);
 }
