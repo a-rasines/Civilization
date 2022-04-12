@@ -9,11 +9,24 @@
 #include <string.h>
 #include "usuario.h"
 #include "database.h"
-
+char* stringOpcionesNormales =
+		"Selecciona una de las siguientes opciones: \
+		\t1)Exportar partida. \
+		\t2)Importar partida. \
+		\t3)Modificar Usuarios. \n";
+char endNormales = '3';
+char endAdmin = '4';
+char* stringOpcionesAdmin =
+		"4)Banear usuarios\n";
+char* opcionesGenericas = "\t0)Salir.\n";
+int opciones(char*title, char first, char end){
+	printf(title);
+	return seleccion(first, end);
+}
 int opcionesNormales(){
-	printf("Selecciona una de las siguientes opciones:\n");
-	printf("1)Exportar partida.\n2)Importar partida.\n3)Modificar Usuarios.\n0)Para salir.\n");
-	return seleccion('0','3');
+	char* send = malloc(sizeof(char) *(strlen(stringOpcionesNormales) + strlen(opcionesGenericas)));
+	sprintf(send, "%s%s", stringOpcionesNormales, opcionesGenericas);
+	return opciones(send, '0', endNormales);
 }
 int seleccion(char a, char b){
 	char c = getchar();
@@ -23,9 +36,9 @@ int seleccion(char a, char b){
 	return c-'0';
 }
 int opcionesAdmin(){
-	printf("Selecciona una de las siguientes opciones:\n");
-	printf("1)Exportar partida.\n2)Importar partida.\n3)Modificar Usuarios.\n4)Banear usuarios\n0)Para salir.\n");
-	return seleccion('0','4');
+	char* send = malloc(sizeof(char) *(strlen(stringOpcionesNormales) + strlen(stringOpcionesNormales) + strlen(opcionesGenericas)));
+	sprintf(send, "%s%s%s", stringOpcionesNormales, stringOpcionesAdmin, opcionesGenericas);
+	return opciones(send, '0', endAdmin);
 }
 
 Usuario autentificarse(){
