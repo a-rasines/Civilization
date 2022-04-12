@@ -34,7 +34,8 @@ int regenerarBaseDatos(){
 				Contrasena TEXT NOT NULL,\
 				Admin BIT DEFAULT 0, \
 				Ban BIT DEFAULT 0, \
-				PRIMARY KEY(Nombre, ID))", stmt
+				UNIQUE(Nombre), \
+				PRIMARY KEY(ID))", stmt
 	    ) != SQLITE_OK) {
 	        printf("Error al crear la tabla UsuarioRaw\n");
 	        return 0;

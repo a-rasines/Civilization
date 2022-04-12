@@ -65,7 +65,6 @@ Usuario autentificarse(){
 }
 
 Usuario registrarse(){
-	Usuario nuevo;
 	while(1){
 		printf("introduce tu nombre de usuario: ");
 		char * nombre = malloc(sizeof(char)*20);
