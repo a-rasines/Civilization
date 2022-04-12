@@ -9,8 +9,8 @@
 #include "database.h"
 int main(void){
 	setup();
-	printf("%i", regenerarBaseDatos());
-	printf("%i", existsNombre("a"));
+	printf("%i\n", regenerarBaseDatos());
+	printf("%i\n", existsNombre("a"));
 	int terminarAutent = 0;
 	Usuario user;
 	char answ;

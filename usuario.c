@@ -32,7 +32,7 @@ Usuario autentificarse(){
 	printf("Introduce tu nombre de usuario:\n");
 	char * nombre = malloc(sizeof(char)*20);
 	scanf("%s",nombre);
-	printf("Introduce tu contrase�a: ");
+	printf("Introduce tu contrasena: ");
 	char* contrasena = malloc(sizeof(char)*20);
 	scanf("%s",contrasena);
 	Usuario us = getUsuario(nombre, contrasena);
@@ -51,7 +51,7 @@ Usuario autentificarse(){
 Usuario registrarse(){
 	Usuario nuevo;
 	while(1){
-		printf("Toca registrarse; introduce tu nombre de usuario: ");
+		printf("introduce tu nombre de usuario: ");
 		char * nombre = malloc(sizeof(char)*20);
 		scanf("%s",nombre);
 		printf("Introduce tu contrasena: ");
