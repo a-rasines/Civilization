@@ -27,6 +27,7 @@ int main(void){
 		}
 
 	}
+	imprimirUsuario(user);
 	int hacerCosas=0;
 	int opcion;
 	while(!hacerCosas){
@@ -43,6 +44,10 @@ int main(void){
 				break;
 			case 3:
 				if(user.admin) modificarUsuarioAdm();
+				break;
+			case 4:
+				banUsuario();
+				break;
 			default:
 				break;
 		}

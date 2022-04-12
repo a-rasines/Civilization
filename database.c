@@ -36,7 +36,7 @@ int borrar(char* tabla, int id){
 	sqlite3_stmt *stmt;
 	char* seq[100];
 	sprintf(seq, "DELETE FROM %s WHERE ID = %i", tabla, id);
-	update(seq, stmt);
+	update(seq);
 	free(seq);
 }
 
@@ -55,7 +55,7 @@ int regenerarBaseDatos(){
 	    ) != SQLITE_OK) {
 	        printf("Error al crear la tabla UsuarioRaw\n");
 	        return 0;
-	    }else if (update("CREATE VIEW IF NOT EXISTS Usuario AS SELECT Nombre, ID, Contrasena, Admin FROM UsuarioRaw WHERE Ban = 0", stmt) != SQLITE_OK) {
+	    }else if (update("CREATE VIEW IF NOT EXISTS Usuario AS SELECT Nombre, ID, Contrasena, Admin FROM UsuarioRaw WHERE Ban = 0") != SQLITE_OK) {
 			printf("Error al crear la vista Usuario\n");
 			sqlite3_finalize(stmt);
 			return 0;
@@ -138,7 +138,7 @@ Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
 	sqlite3_stmt *stmt;
 	char seq[200];
 	sprintf(seq, "INSERT INTO UsuarioRaw(Nombre, Contrasena, Admin) VALUES ('%s', '%s', %d)",nombre, encrypt(contrasena), admin);
-	update(seq, stmt);
+	update(seq);
 	return getUsuario(nombre, contrasena);
 }
 Usuario addUsuario(char* nombre, char* contrasena){
@@ -169,10 +169,14 @@ int banAction(int id, int status){
 	sqlite3_stmt *stmt;
 	char seq[200];
 	sprintf(seq,"UPDATE UsuarioRaw SET Ban = %d WHERE ID = %d",status, id);
-	return update(seq, stmt);
+	return update(seq);
 }
-int banUsuario(int id){
-	return banAction(1, id);
+int banUsuario(){
+	Usuario ban;
+	printf("Primero busquemos al usuario que se quiere modificar\n");
+	printf("Introduce su nombre: \n");
+	//Buscar Usuario;
+	return banAction(1, ban.id);
 }
 int unbanUsuario(int id){
 	return banAction(0, id);
@@ -186,18 +190,30 @@ int modificarUsuarioAdm(){
 	printf("Introduce su nombre: ");
 	char * nombre = malloc(sizeof(char)*20);
 	scanf("%s",nombre);
-	//FIXME Hacer busqueda
+	//REVISAR;
+	sprintf(seq, "SELECT * FROM Usuario WHERE Nombre = '%s'", nombre);
+	ini.nombre = malloc(sizeof(char)*20);
+	strcpy(end.nombre, (char *) sqlite3_column_text(stmt, 0));
+	ini.id = sqlite3_column_int(stmt, 1);
+	ini.admin = sqlite3_column_int(stmt, 3);
+	imprimirUsuario(ini);
+	printf("introduce el nuevo nombre para el usuario: ");
+	char * newNombre = malloc(sizeof(char)*20);
+	scanf("%s",newNombre);
+	end.nombre=newNombre;
+	end.id=10;
+	end.admin=1;
+	printf("llego");
+	free(seq);
+	sprintf(seq, "UPDATE UsuarioRaw SET Nombre='%s', ID=%i, Admin=%i WHERE Nombre = '%s' AND ID = '%s' ",end.nombre,end.id, end.admin, ini.nombre, ini.id);
+	printf("llego2");
+	sprintf(seq, "SELECT * FROM Usuario WHERE Nombre = '%s'", end.nombre);
 	ini.nombre = malloc(sizeof(char)*20);
 	strcpy(ini.nombre, (char *) sqlite3_column_text(stmt, 0));
 	ini.id = sqlite3_column_int(stmt, 1);
 	ini.admin = sqlite3_column_int(stmt, 3);
 	imprimirUsuario(ini);
-	printf("");
-	free(seq);
-	//FIXME FUNCION SI TERMINAR
-	sprintf(seq, "UPDATE UsuarioRaw SET Nombre='%s', ID=%i, Admin=%i WHERE Nombre = '%s' AND ID = '%s' ",end.nombre,end.id, end.admin, ini.nombre, ini.id);
-
-	return update(seq,stmt);
+	return update(seq);
 }
 int limpiarServidor(int id){
 	sqlite3_stmt *stmt;
@@ -208,7 +224,7 @@ int limpiarServidor(int id){
 	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
 		printf("Error al cargar el usuario\n");
 		printf("%s\n", sqlite3_errmsg(db));
-		return (Usuario){'\0', 0, 0};
+		return 0;
 	}
 	int i =sqlite3_step(stmt);
 	if(i != SQLITE_ROW){
@@ -218,12 +234,12 @@ int limpiarServidor(int id){
 	free(seq);
 
 	//Eliminamos el servidor para eliminar todas las entradas dependientes
-	borrar(id);
+	borrar("Server",id);
 
 	//Volvemos a crear el servidor
 	seq[100];
 	sprintf(seq, "INSERT INTO Servidor(ID) VALUES %i", id);
-	update(seq, stmt);
+	update(seq);
 	free(seq);
 }
 int borrarUsuario(int id){

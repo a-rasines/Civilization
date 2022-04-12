@@ -20,7 +20,7 @@ char* stringOpcionesAdmin =
 		"4)Banear usuarios\n";
 char* opcionesGenericas = "0)Salir.\n";
 void imprimirUsuario(Usuario user){
-	printf("Usuario: Id->%i, Nombre->'%s', Admin->%i", user.id,user.nombre, user.admin);
+	printf("Usuario: Id->%i, Nombre->'%s', Admin->%i\n", user.id,user.nombre, user.admin);
 }
 int seleccion(char a, char b){
 	char* c = malloc(sizeof(char)*10);
