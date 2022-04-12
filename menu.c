@@ -34,7 +34,7 @@ int main(void){
 		else opcion=opcionesNormales();
 		switch (opcion) {
 			case 0:
-				hacerCosas=0;
+					hacerCosas=0;
 				break;
 			case 1:
 				break;
