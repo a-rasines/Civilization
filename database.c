@@ -12,18 +12,34 @@
 #include "sqlite3.h"
 #include "md5.h"
 sqlite3 *db;
+
+/*
+ * FUNCIONES DE CONFIGURACION
+ */
 void setup(){
 	sqlite3_open("database.db", &db);
 }
 void end(){
 	sqlite3_close(db);
 }
-int update(char* query, sqlite3_stmt *stmt){
+/*
+ * FUNCIONES GENERICAS
+ */
+int update(char* query){
+	sqlite3_stmt *stmt;
 	int i = sqlite3_prepare_v2(db, query, strlen(query), &stmt, NULL) ;
 	sqlite3_step(stmt);
 	sqlite3_finalize(stmt);
 	return i;
 }
+int borrar(char* tabla, int id){
+	sqlite3_stmt *stmt;
+	char* seq[100];
+	sprintf(seq, "DELETE FROM %s WHERE ID = %i", tabla, id);
+	update(seq, stmt);
+	free(seq);
+}
+
 int regenerarBaseDatos(){
 	sqlite3_stmt *stmt;
 	    if (
@@ -35,7 +51,7 @@ int regenerarBaseDatos(){
 				Admin BIT DEFAULT 0, \
 				Ban BIT DEFAULT 0, \
 				UNIQUE(Nombre), \
-				PRIMARY KEY(ID))", stmt
+				PRIMARY KEY(ID))"
 	    ) != SQLITE_OK) {
 	        printf("Error al crear la tabla UsuarioRaw\n");
 	        return 0;
@@ -46,19 +62,19 @@ int regenerarBaseDatos(){
 	    }else if(update(
 				"CREATE TABLE IF NOT EXISTS Servidor( \
 				ID SMALLINT NOT NULL, \
-				PRIMARY KEY (ID))", stmt
+				UltimoConectado TEXT NOT NULL, \
+				CantidadConectados SMALLINT NOT NULL, \
+				PRIMARY KEY (ID))"
 		) != SQLITE_OK){
 			printf("Error al crear la tabla Servidor\n");
 			return 0;
 	    }else if(update(
 				"CREATE TABLE IF NOT EXISTS Partida( \
-				Jugador TEXT NOT NULL,\
-				Servidor SMALLINT, \
-				Contrasena TEXT NOT NULL,\
-				Admin BIT DEFAULT 0, \
-				Ban BIT DEFAULT 0, \
+				Jugador INT NOT NULL,\
+				Servidor SMALLINT NOT NULL, \
+				ID SMALLINT, \
 				FOREING KEY Servidor REFERENCES Servidor(ID) ON DELETE CASCADE, \
-				PRIMARY KEY(Jugador, Servidor))", stmt
+				PRIMARY KEY(ID))"
 	    ) != SQLITE_OK){
 	    	printf("Error al crear la tabla Partida\n");
 	    	return 0;
@@ -73,14 +89,14 @@ int regenerarBaseDatos(){
 				PosicionX INT DEFAULT 0, \
 				PosicionY INT DEFAULT 0, \
 				FOREING KEY ID REFERENCES Servidor(ID) ON DELETE CASCADE, Jugador REFERENCES UsuarioRaw(ID) ON DELETE CASCADE, \
-				PRIMARY KEY(ID))", stmt
+				PRIMARY KEY(ID))"
 	    ) != SQLITE_OK){
 	    	printf("Error al crear la tabla Tropa\n");
 	    	return 0;
 	   }else if(update(
 				"CREATE TABLE IF NOT EXISTS Ciudad( \
 				Servidor SMALLINT NOT NULL,\
-				Usuario TEXT NOT NULL, \
+				Usuario INT NOT NULL, \
 				ID SMALLINT AUTO_INCREMENT,\
 				Nombre TEXT, \
 				Edificios TEXT, \
@@ -89,8 +105,8 @@ int regenerarBaseDatos(){
 				Produccion INT DEFAULT 0, \
 				PosicionX INT DEFAULT 0, \
 				PosicionY INT DEFAULT 0, \
-				FOREING KEY Servidor REFERENCES Servidor(ID) ON DELETE CASCADE, Jugador REFERENCES UsuarioRaw(ID) ON DELETE CASCADE, \
-				PRIMARY KEY(ID))", stmt
+				FOREING KEY Servidor REFERENCES Servidor(ID) ON DELETE CASCADE, Jugador REFERENCES UsuarioRaw(ID) ON DELETE CASCADE ON UPDATE CASCADE, \
+				PRIMARY KEY(ID))"
 	    ) != SQLITE_OK){
 	    	printf("Error al crear la tabla Ciudad\n");
 	    	return 0;
@@ -170,17 +186,117 @@ int modificarUsuarioAdm(){
 	printf("Introduce su nombre: ");
 	char * nombre = malloc(sizeof(char)*20);
 	scanf("%s",nombre);
+	//FIXME Hacer busqueda
 	ini.nombre = malloc(sizeof(char)*20);
-	strcpy(end.nombre, (char *) sqlite3_column_text(stmt, 0));
+	strcpy(ini.nombre, (char *) sqlite3_column_text(stmt, 0));
 	ini.id = sqlite3_column_int(stmt, 1);
 	ini.admin = sqlite3_column_int(stmt, 3);
 	imprimirUsuario(ini);
 	printf("");
 	free(seq);
+	//FIXME FUNCION SI TERMINAR
 	sprintf(seq, "UPDATE UsuarioRaw SET Nombre='%s', ID=%i, Admin=%i WHERE Nombre = '%s' AND ID = '%s' ",end.nombre,end.id, end.admin, ini.nombre, ini.id);
 
 	return update(seq,stmt);
 }
-int limpiarServidor(int id);
-int borrarUsuario(int id);
+int limpiarServidor(int id){
+	sqlite3_stmt *stmt;
+
+	//Comprobamos que existe
+	char seq[100];
+	sprintf(seq, "SELECT ID FROM Servidor WHERE ID = %d", id);
+	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
+		printf("Error al cargar el usuario\n");
+		printf("%s\n", sqlite3_errmsg(db));
+		return (Usuario){'\0', 0, 0};
+	}
+	int i =sqlite3_step(stmt);
+	if(i != SQLITE_ROW){
+		return 0;
+	}
+	sqlite3_finalize(stmt);
+	free(seq);
+
+	//Eliminamos el servidor para eliminar todas las entradas dependientes
+	borrar(id);
+
+	//Volvemos a crear el servidor
+	seq[100];
+	sprintf(seq, "INSERT INTO Servidor(ID) VALUES %i", id);
+	update(seq, stmt);
+	free(seq);
+}
+int borrarUsuario(int id){
+	return borrar("UsuarioRaw", id);
+}
+int borrarCiudad(int id){
+	return borrar("Ciudad", id);
+}
+int borrarTropa(int id){
+	return borrar("Tropa", id);
+}
+int reiniciarUsuario(int id){
+	sqlite3_stmt *stmt;
+		char seq[100];
+		sprintf(seq, "SELECT ID FROM Tropa WHERE Usuario = %i", id);
+		if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
+			printf("Error al buscar ciudades\n");
+			printf("%s\n", sqlite3_errmsg(db));
+			return 0;
+		}
+		int i =sqlite3_step(stmt);
+		while(i == SQLITE_ROW){
+			borrarTropa(sqlite3_column_int(stmt,0));
+			i = sqlite3_step(stmt);
+		}
+		sqlite3_finalize(stmt);
+		free(seq);
+		seq[100];
+		sprintf(seq, "SELECT ID FROM Ciudad WHERE Usuario = %i", id);
+		if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
+			printf("Error al buscar tropas\n");
+			printf("%s\n", sqlite3_errmsg(db));
+			return 0;
+		}
+		i =sqlite3_step(stmt);
+		while(i == SQLITE_ROW){
+			borrarCiudad(sqlite3_column_int(stmt,0));
+			i = sqlite3_step(stmt);
+		}
+		sqlite3_finalize(stmt);
+		free(seq);
+		return 1;
+}
+int eliminarUsuarioDeServidor(int idUsuario, int idServidor){
+	sqlite3_stmt *stmt;
+	char seq[100];
+	sprintf(seq, "SELECT ID FROM Tropa WHERE Usuario = %i AND Servidor = %i", idUsuario, idServidor);
+	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
+		printf("Error al buscar ciudades\n");
+		printf("%s\n", sqlite3_errmsg(db));
+		return 0;
+	}
+	int i =sqlite3_step(stmt);
+	while(i == SQLITE_ROW){
+		borrarTropa(sqlite3_column_int(stmt,0));
+		i = sqlite3_step(stmt);
+	}
+	sqlite3_finalize(stmt);
+	free(seq);
+	seq[100];
+	sprintf(seq, "SELECT ID FROM Ciudad WHERE Usuario = %i AND Servidor = %i", idUsuario, idServidor);
+	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
+		printf("Error al buscar tropas\n");
+		printf("%s\n", sqlite3_errmsg(db));
+		return 0;
+	}
+	i =sqlite3_step(stmt);
+	while(i == SQLITE_ROW){
+		borrarCiudad(sqlite3_column_int(stmt,0));
+		i = sqlite3_step(stmt);
+	}
+	sqlite3_finalize(stmt);
+	free(seq);
+	return 1;
+}
 

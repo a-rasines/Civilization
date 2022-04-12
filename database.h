@@ -17,10 +17,14 @@ Usuario addUsuario(char* nombre, char* contrasena);
 int existsNombre(char* nombre);
 int banUsuario(int id);
 int unbanUsuario(int id);
-int modificarUsuario(Usuario prev, Usuario post);
+int modificarUsuario();
 int limpiarServidor(int id);
 int borrarUsuario(int id);
 Usuario addAdmin(char* nombre, char* contrasena);
+int borrarCiudad(int id);
+int borrarTropa(int id);
+int reiniciarUsuario(int id);
+int eliminarUsuarioDeServidor(int idUsuario, int idServidor);
 
 
 #endif /* DATABASE_H_ */
