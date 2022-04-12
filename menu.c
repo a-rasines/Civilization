@@ -27,14 +27,14 @@ int main(void){
 		}
 
 	}
-	int hacerCosas=1;
+	int hacerCosas=0;
 	int opcion;
 	while(!hacerCosas){
-			if(user.admin) opcion = opcionesAdmin();
+		if(user.admin) opcion = opcionesAdmin();
 		else opcion=opcionesNormales();
 		switch (opcion) {
 			case 0:
-					hacerCosas=0;
+	  			hacerCosas=0;
 				break;
 			case 1:
 				break;
