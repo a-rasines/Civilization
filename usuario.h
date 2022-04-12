@@ -20,4 +20,5 @@ int opcionesAdmin();
 Usuario autentificarse();
 Usuario registrarse();
 int seleccion(char a, char b);
+void imprimirUsuario(Usuario user);
 #endif /* USUARIO_H_ */

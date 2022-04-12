@@ -19,6 +19,9 @@ char endAdmin = '4';
 char* stringOpcionesAdmin =
 		"4)Banear usuarios\n";
 char* opcionesGenericas = "\t0)Salir.\n";
+void imprimirUsuario(Usuario user){
+	printf("Usuario: Id->%i, Nombre->'%s', Admin->%i", user.id,user.nombre, user.admin);
+}
 int opciones(char*title, char first, char end){
 	printf(title);
 	return seleccion(first, end);

@@ -34,7 +34,7 @@ int regenerarBaseDatos(){
 				Contrasena TEXT NOT NULL,\
 				Admin BIT DEFAULT 0, \
 				Ban BIT DEFAULT 0, \
-				PRIMARY KEY(Nombre, Contrasena, ID))", stmt
+				PRIMARY KEY(Nombre, ID))", stmt
 	    ) != SQLITE_OK) {
 	        printf("Error al crear la tabla UsuarioRaw\n");
 	        return 0;
@@ -160,7 +160,25 @@ int banUsuario(int id){
 int unbanUsuario(int id){
 	return banAction(0, id);
 }
-int modificarUsuario(Usuario prev, Usuario post);
+int modificarUsuarioAdm(){
+	sqlite3_stmt *stmt;
+	Usuario end;
+	char seq[100];
+	printf("Primero busquemos al usuario que se quiere modificar\n");
+	printf("Introduce su nombre: ");
+	char * nombre = malloc(sizeof(char)*20);
+	scanf("%s",nombre);
+	end.nombre = malloc(sizeof(char)*20);
+	strcpy(end.nombre, (char *) sqlite3_column_text(stmt, 0));
+	end.id = sqlite3_column_int(stmt, 1);
+	end.admin = sqlite3_column_int(stmt, 3);
+	//impirmirUsuario(end);
+	printf("")
+	free(seq);
+	sprintf(seq, "UPDATE UsuarioRaw SET Nombre='%s', ID=%i, Admin=%i WHERE Nombre = '%s' AND ID = '%s' ",post.nombre,post.id, post.admin, prev.nombre, prev.id);
+
+	return update(seq,stmt);
+}
 int limpiarServidor(int id);
 int borrarUsuario(int id);
 

@@ -42,6 +42,8 @@ int main(void){
 				break;
 			case 2:
 				break;
+			case 3:
+				if(user.admin) modificarUsuarioAdm();
 			default:
 				break;
 		}
