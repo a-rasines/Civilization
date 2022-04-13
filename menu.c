@@ -7,7 +7,9 @@
 #include <stdio.h>
 #include "usuario.h"
 #include "database.h"
+#include "xml.h"
 int main(void){
+
 	setup();
 	printf("%i\n", regenerarBaseDatos());
 	printf("%i\n", existsNombre("a"));

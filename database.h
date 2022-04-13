@@ -15,7 +15,7 @@ int regenerarBaseDatos();
 Usuario getUsuario(char* nombre, char* contrasena);
 Usuario addUsuario(char* nombre, char* contrasena);
 int existsNombre(char* nombre);
-int banUsuario(int id);
+int banUsuario();
 int unbanUsuario(int id);
 int modificarUsuario();
 int limpiarServidor(int id);
