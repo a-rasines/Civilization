@@ -11,8 +11,10 @@
 
 void setup();
 void end();
+sqlite3* getDB();
 int regenerarBaseDatos();
 Usuario getUsuario(char* nombre, char* contrasena);
+Usuario getUsuarioAdm(char* nombre);
 Usuario addUsuario(char* nombre, char* contrasena);
 int existsNombre(char* nombre);
 int banUsuario();

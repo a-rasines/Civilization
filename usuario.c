@@ -11,13 +11,16 @@
 #include "database.h"
 char* stringOpcionesNormales =
 		"Selecciona una de las siguientes opciones: \
-		\n1)Exportar partida. \
-		\n2)Importar partida. \
-		\n3)Modificar Usuarios. \n";
+		1)Acceso a estadisticas. \
+		2)Modificar Usuario. \n";
 char endNormales = '3';
-char endAdmin = '4';
+char endAdmin = '7';
 char* stringOpcionesAdmin =
-		"4)Banear usuarios\n";
+		"3)Banear usuarios\
+		 4)Importar servidor.\
+		 5)Generar backup de servidor. \
+		 6)Exportar jugadores.\
+		 7)Restablecer jugadores.\n";
 char* opcionesGenericas = "0)Salir.\n";
 void imprimirUsuario(Usuario user){
 	printf("Usuario: Id->%i, Nombre->'%s', Admin->%i\n", user.id,user.nombre, user.admin);

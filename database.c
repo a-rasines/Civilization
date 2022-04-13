@@ -1,9 +1,3 @@
-/*
- * database.c
- *
- *  Created on: 10 abr 2022
- *      Author: algtc
- */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,6 +15,10 @@ void setup(){
 }
 void end(){
 	sqlite3_close(db);
+}
+
+sqlite3* getDB(){
+	return db;
 }
 /*
  * FUNCIONES GENERICAS
@@ -62,8 +60,8 @@ int regenerarBaseDatos(){
 	    }else if(update(
 				"CREATE TABLE IF NOT EXISTS Servidor( \
 				ID SMALLINT NOT NULL, \
-				UltimoConectado TEXT NOT NULL, \
-				CantidadConectados SMALLINT NOT NULL, \
+				UltimoConectado TEXT, \
+				CantidadConectados SMALLINT DEFAULT 0, \
 				PRIMARY KEY (ID))"
 		) != SQLITE_OK){
 			printf("Error al crear la tabla Servidor\n");
@@ -73,6 +71,9 @@ int regenerarBaseDatos(){
 				Jugador INT NOT NULL,\
 				Servidor SMALLINT NOT NULL, \
 				ID SMALLINT, \
+				Politica INT, \
+				Investigaciones TEXT, \
+				Alianzas TEXT, \
 				FOREING KEY Servidor REFERENCES Servidor(ID) ON DELETE CASCADE, \
 				PRIMARY KEY(ID))"
 	    ) != SQLITE_OK){
@@ -81,14 +82,14 @@ int regenerarBaseDatos(){
 	   }else if(update(
 				"CREATE TABLE IF NOT EXISTS Tropa( \
 				Servidor SMALLINT NOT NULL, \
-				Usuario TEXT NOT NULL, \
+				Usuario SMALLID NOT NULL, \
 				ID SMALLINT AUTO_INCREMENT, \
 				Tipo TEXT NOT NULL, \
 				Vida BIT DEFAULT 0, \
 				Mejorada BIT DEFAULT 0, \
 				PosicionX INT DEFAULT 0, \
 				PosicionY INT DEFAULT 0, \
-				FOREING KEY ID REFERENCES Servidor(ID) ON DELETE CASCADE, Jugador REFERENCES UsuarioRaw(ID) ON DELETE CASCADE, \
+				FOREING KEY Servidor REFERENCES Servidor(ID) ON DELETE CASCADE, Jugador REFERENCES UsuarioRaw(ID) ON DELETE CASCADE, \
 				PRIMARY KEY(ID))"
 	    ) != SQLITE_OK){
 	    	printf("Error al crear la tabla Tropa\n");
@@ -117,7 +118,7 @@ Usuario getUsuario(char* nombre, char* contrasena){
 	sqlite3_stmt *stmt;
     Usuario end;
 	char seq[100];
-	sprintf(seq, "SELECT * FROM Usuario WHERE Nombre = '%s' AND Contrasena = '%s'", nombre, encrypt(contrasena));
+		sprintf(seq, "SELECT * FROM Usuario WHERE Nombre = '%s' AND Contrasena = '%s'", nombre, encrypt(contrasena));
 
 	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
 		printf("Error al cargar el usuario\n");
@@ -133,6 +134,27 @@ Usuario getUsuario(char* nombre, char* contrasena){
 	end.id = sqlite3_column_int(stmt, 1);
 	end.admin = sqlite3_column_int(stmt, 3);
 	return end;
+}
+Usuario getUsuarioAdm(char* nombre){
+	sqlite3_stmt *stmt;
+	    Usuario end;
+		char seq[100];
+			sprintf(seq, "SELECT * FROM Usuario WHERE Nombre = '%s'", nombre);
+
+		if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
+			printf("Error al cargar el usuario\n");
+			printf("%s\n", sqlite3_errmsg(db));
+			return (Usuario){'\0', 0, 0};
+		}
+		int i =sqlite3_step(stmt);
+		if(i != SQLITE_ROW){
+			return (Usuario){'\0', 0, 0};
+		}
+		end.nombre = malloc(sizeof(char)*20);
+		strcpy(end.nombre, (char *) sqlite3_column_text(stmt, 0));
+		end.id = sqlite3_column_int(stmt, 1);
+		end.admin = sqlite3_column_int(stmt, 3);
+		return end;
 }
 Usuario addUsuarioRaw(char* nombre, char* contrasena, int admin){
 	sqlite3_stmt *stmt;
@@ -172,11 +194,10 @@ int banAction(int id, int status){
 	return update(seq);
 }
 int banUsuario(){
-	Usuario ban;
-	printf("Primero busquemos al usuario que se quiere modificar\n");
 	printf("Introduce su nombre: \n");
-	//Buscar Usuario;
-	return banAction(1, ban.id);
+	char* name = malloc(sizeof(char)*20);
+	scanf("%s", name);
+	return banAction(1, getUsuario(name));
 }
 int unbanUsuario(int id){
 	return banAction(0, id);
@@ -186,7 +207,6 @@ int modificarUsuarioAdm(){
 	Usuario ini;
 	Usuario end;
 	char seq[100];
-	printf("Primero busquemos al usuario que se quiere modificar\n");
 	printf("Introduce su nombre: ");
 	char * nombre = malloc(sizeof(char)*20);
 	scanf("%s",nombre);

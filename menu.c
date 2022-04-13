@@ -1,9 +1,3 @@
-/*
- * menu.c
- *
- *  Created on: 10 abr. 2022
- *      Author: eneko
- */
 #include <stdio.h>
 #include "usuario.h"
 #include "database.h"
