@@ -11,6 +11,9 @@ struct XMLObject{
 	int childrenCount;
 	char* value;
 };
+XMLObject emptyXML(){
+	return (XMLObject){'\0', malloc(sizeof(XMLObject)), malloc(sizeof(XMLObject)), 0, '\0'};
+}
 int indexOf(char* string, char c, int pos){
 	int p = 0;
 	while(pos > 0){
@@ -30,6 +33,7 @@ char* getLabelName(char* line){
 		}
 		label[i-first] = line[i];
 	}
+	return '\0';
 }
 char* getValue(char* line){
 	int first = indexOf(line, '>', 1);
@@ -42,6 +46,7 @@ char* getValue(char* line){
 		}
 		label[i-first] = line[i];
 	}
+	return '\0';
 
 }
 char* nextLine(char* string, int line){
@@ -76,24 +81,26 @@ XMLObject getAttributeByLabel(XMLObject parent, char* label){
 	for(int i = 0; i < parent.childrenCount; i++){
 		if(strcmp(parent.children[i].label, label) == 0)return parent.children[i];
 	}
+	return emptyXML();
 }
 XMLObject* loadXML(char* plainText){
-	XMLObject root;
+	XMLObject* root = malloc(sizeof(XMLObject));
 	int lineCount = countLines(plainText);
-	root.label = getLabelName(nextLine(plainText, 1));
-	XMLObject *childList = malloc(sizeof(XMLObject) * lineCount-3);
-	XMLObject *actual = &root;
+	root->label = getLabelName(nextLine(plainText, 1));
+	root->children =  malloc(sizeof(XMLObject) * lineCount-3);
+	XMLObject *actual = root;
 	for (int i = 2; i < lineCount; i++){
 		char* line = nextLine(plainText, i);
 		if(getLabelName(line)[0] != '/'){//Si no es una linea de fin de atributo padre es una linea de atributo
-			actual->childrenCount++;
+
 			XMLObject atribute;
 			atribute.parent = actual;
+			*(actual + actual->childrenCount) = atribute;
+			actual->childrenCount++;
 			actual = &atribute;
 			actual->label = getLabelName(line);
 			actual->value = getValue(line);
 			actual->childrenCount=0;
-			//TODO Asignar valores al nuevo atributo
 		}
 		if(isLabelEnd(line)){//Si se acaba la lista de atributos, se vuelve al padre
 			actual = actual->parent;
@@ -101,6 +108,7 @@ XMLObject* loadXML(char* plainText){
 			actual->children = malloc(sizeof(XMLObject)*(lineCount - 1/*<-Cierre de root*/)-i);
 		}
 	}
+	return root;
 }
 void writeXMLrec(XMLObject obj, FILE *out){
 	fprintf(out, "\n<%s>", obj.label);
@@ -178,71 +186,68 @@ int cargarServidorEnBD(char* archivo){
 	XMLObject *obj = loadXML(readFile(archivo, 1000));
 	int id;
 	sprintf("%i", obj->children[0].label);
-	sqlite3_stmt *stmt;
 	char seq[200];
+	seq[0] = '\0';
 	sprintf(seq, "INSERT INTO Servidor(ID) VALUES (%i)",id);
-	update(seq);
-	free(seq);
+	int ret = update(seq);
+	seq[0] = '\0';
 	//Tropas
 	XMLObject tropas = obj->children[1];
 	for(int i = 0; i < tropas.childrenCount;i++){
-		seq[200];
-		sprintf(seq, "INSERT INTO Tropa(Usuario, Servidor, ID, Tipo, Vida, Mejorada, PosicionX, PosicionY) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-			getAttributeByLabel(tropas.children[i], "Usuario"),
+		sprintf(seq, "INSERT INTO Tropa(Usuario, Servidor, ID, Tipo, Vida, Mejorada, PosicionX, PosicionY) VALUES (%s, %i, %s, %s, %s, %s, %s, %s)",
+			getAttributeByLabel(tropas.children[i], "Usuario").value,
 			id,
-			getAttributeByLabel(tropas.children[i], "ID"),
-			getAttributeByLabel(tropas.children[i], "Tipo"),
-			getAttributeByLabel(tropas.children[i], "Vida"),
-			getAttributeByLabel(tropas.children[i], "Mejorada"),
-			getAttributeByLabel(tropas.children[i], "PosicionX"),
-			getAttributeByLabel(tropas.children[i], "PosicionY")
+			getAttributeByLabel(tropas.children[i], "ID").value,
+			getAttributeByLabel(tropas.children[i], "Tipo").value,
+			getAttributeByLabel(tropas.children[i], "Vida").value,
+			getAttributeByLabel(tropas.children[i], "Mejorada").value,
+			getAttributeByLabel(tropas.children[i], "PosicionX").value,
+			getAttributeByLabel(tropas.children[i], "PosicionY").value
 		);
-		update(seq);
-		free(seq);
+		ret = ret && update(seq);
 	}
+	seq[0] = '\0';
 	//Ciudades
 	XMLObject ciudades = obj->children[2];
 	for(int i = 0; i < ciudades.childrenCount;i++){
-		seq[200];
-		sprintf(seq, "INSERT INTO Ciudad(Usuario, Servidor, ID, Nombre, Edificios, Comida, Dinero, Produccion, PosicionX, PosicionY) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-			getAttributeByLabel(ciudades.children[i], "Usuario"),
+		sprintf(seq, "INSERT INTO Ciudad(Usuario, Servidor, ID, Nombre, Edificios, Comida, Dinero, Produccion, PosicionX, PosicionY) VALUES (%s, %i, %s, %s, %s, %s, %s, %s, %s, %s)",
+			getAttributeByLabel(ciudades.children[i], "Usuario").value,
 			id,
-			getAttributeByLabel(ciudades.children[i], "ID"),
-			getAttributeByLabel(ciudades.children[i], "Nombre"),
-			getAttributeByLabel(ciudades.children[i], "Edificios"),
-			getAttributeByLabel(ciudades.children[i], "Comida"),
-			getAttributeByLabel(ciudades.children[i], "Dinero"),
-			getAttributeByLabel(ciudades.children[i], "Produccion"),
-			getAttributeByLabel(ciudades.children[i], "PosicionX"),
-			getAttributeByLabel(ciudades.children[i], "PosicionY")
+			getAttributeByLabel(ciudades.children[i], "ID").value,
+			getAttributeByLabel(ciudades.children[i], "Nombre").value,
+			getAttributeByLabel(ciudades.children[i], "Edificios").value,
+			getAttributeByLabel(ciudades.children[i], "Comida").value,
+			getAttributeByLabel(ciudades.children[i], "Dinero").value,
+			getAttributeByLabel(ciudades.children[i], "Produccion").value,
+			getAttributeByLabel(ciudades.children[i], "PosicionX").value,
+			getAttributeByLabel(ciudades.children[i], "PosicionY").value
 		);
-		update(seq);
-		free(seq);
+		ret = ret && update(seq);
 	}
+	seq[0] = '\0';
 	//Partidas
 	XMLObject partidas = obj->children[3];
 	for(int i = 0; i < ciudades.childrenCount;i++){
-		seq[200];
-		sprintf(seq, "INSERT INTO Ciudad(Jugador, Servidor, ID, Politica, Investigaciones, Alianzas) VALUES (%s, %s, %s, %s, '%s', '%s')",
-			getAttributeByLabel(partidas.children[i], "Jugador"),
+		sprintf(seq, "INSERT INTO Ciudad(Jugador, Servidor, ID, Politica, Investigaciones, Alianzas) VALUES (%s, %i, %s, %s, %s, %s)",
+			getAttributeByLabel(partidas.children[i], "Jugador").value,
 			id,
-			getAttributeByLabel(partidas.children[i], "ID"),
-			getAttributeByLabel(partidas.children[i], "Politica"),
-			getAttributeByLabel(partidas.children[i], "Investigaciones"),
-			getAttributeByLabel(partidas.children[i], "Alianzas")
+			getAttributeByLabel(partidas.children[i], "ID").value,
+			getAttributeByLabel(partidas.children[i], "Politica").value,
+			getAttributeByLabel(partidas.children[i], "Investigaciones").value,
+			getAttributeByLabel(partidas.children[i], "Alianzas").value
 		);
-		update(seq);
-		free(seq);
+		ret = ret && update(seq);
 	}
+	seq[0] = '\0';
+	return ret;
 }
-void guardarServidorEnXML_obtenerDatos(int id, char* datos, char* tabla, sqlite3_stmt stmt){
+void guardarServidorEnXML_obtenerDatos(int id, char* datos, char* tabla, sqlite3_stmt* stmt){
 	char seq[100];
 	sprintf(seq, "SELECT %s FROM %s WHERE Servidor = %i", datos, tabla, id);
 	if (sqlite3_prepare_v2(getDB(), seq, -1, &stmt, NULL) != SQLITE_OK) {
 		printf("Error al encontrar las tropas\n");
 		printf("%s\n", sqlite3_errmsg(getDB()));
 	}
-	free(seq);
 }
 int guardarServidorEnXML(int id){
 	XMLObject servidor;
@@ -377,48 +382,53 @@ int guardarServidorEnXML(int id){
 	sqlite3_finalize(stmt);
 
 	servidor.children[2].parent = &servidor;
-		servidor.children[2].label = "Ciudades";
-		guardarServidorEnXML_obtenerDatos(id, "Count(*)", "Ciudad", stmt);
-		i =sqlite3_step(stmt);
-		q = sqlite3_column_int(stmt, 0);
-		sqlite3_finalize(stmt);
+	servidor.children[2].label = "Ciudades";
+	guardarServidorEnXML_obtenerDatos(id, "Count(*)", "Ciudad", stmt);
+	i =sqlite3_step(stmt);
+	q = sqlite3_column_int(stmt, 0);
+	sqlite3_finalize(stmt);
 
-		servidor.children[1].children = malloc(sizeof(XMLObject)*q);
-		servidor.children[1].childrenCount = q;
-		guardarServidorEnXML_obtenerDatos(id, "*", "Partidas", stmt);
-		c = 0;
-		i =sqlite3_step(stmt);
-		while(i == SQLITE_ROW){
-			XMLObject *actual = &servidor.children[1].children[c];
-			actual->label = "Partida";
-			actual->parent = &servidor.children[1];
-			actual->children = malloc(sizeof(XMLObject)*5);
-			actual->childrenCount = 5;
+	servidor.children[1].children = malloc(sizeof(XMLObject)*q);
+	servidor.children[1].childrenCount = q;
+	guardarServidorEnXML_obtenerDatos(id, "*", "Partidas", stmt);
+	c = 0;
+	i =sqlite3_step(stmt);
+	while(i == SQLITE_ROW){
+		XMLObject *actual = &servidor.children[1].children[c];
+		actual->label = "Partida";
+		actual->parent = &servidor.children[1];
+		actual->children = malloc(sizeof(XMLObject)*5);
+		actual->childrenCount = 5;
 
-			actual->children[0].label = "Jugador";
-			actual->children[0].parent = actual;
-			actual->children[0].childrenCount = 0;
-			sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 0));
+		actual->children[0].label = "Jugador";
+		actual->children[0].parent = actual;
+		actual->children[0].childrenCount = 0;
+		sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 0));
 
-			actual->children[1].label = "ID";
-			actual->children[1].parent = actual;
-			actual->children[1].childrenCount = 0;
-			sprintf(actual->children[1].value, "%i", sqlite3_column_int(stmt, 2));
+		actual->children[1].label = "ID";
+		actual->children[1].parent = actual;
+		actual->children[1].childrenCount = 0;
+		sprintf(actual->children[1].value, "%i", sqlite3_column_int(stmt, 2));
 
-			actual->children[2].label = "Politica";
-			actual->children[2].parent = actual;
-			actual->children[2].childrenCount = 0;
-			sprintf(actual->children[2].value, "%i", sqlite3_column_int(stmt, 3));
+		actual->children[2].label = "Politica";
+		actual->children[2].parent = actual;
+		actual->children[2].childrenCount = 0;
+		sprintf(actual->children[2].value, "%i", sqlite3_column_int(stmt, 3));
 
-			actual->children[3].label = "Investigaciones";
-			actual->children[3].parent = actual;
-			actual->children[3].childrenCount = 0;
-			sprintf(actual->children[3].value, "'%s'", sqlite3_column_text(stmt, 4));
+		actual->children[3].label = "Investigaciones";
+		actual->children[3].parent = actual;
+		actual->children[3].childrenCount = 0;
+		sprintf(actual->children[3].value, "'%s'", sqlite3_column_text(stmt, 4));
 
-			actual->children[4].label = "Alianzas";
-			actual->children[4].parent = actual;
-			actual->children[4].childrenCount = 0;
-			sprintf(actual->children[4].value, "%i", sqlite3_column_int(stmt, 5));
-		}
-		sqlite3_finalize(stmt);
+		actual->children[4].label = "Alianzas";
+		actual->children[4].parent = actual;
+		actual->children[4].childrenCount = 0;
+		sprintf(actual->children[4].value, "%i", sqlite3_column_int(stmt, 5));
+	}
+	sqlite3_finalize(stmt);
+	char* nombre = malloc(sizeof(char)*20);
+	sprintf(nombre, "Servidor_%i_BK.xml", id);
+	writeXML(servidor, nombre);
+	return 1;
+
 }

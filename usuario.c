@@ -2,7 +2,6 @@
  * usuario.c
  *
  *  Created on: 10 abr. 2022
- *      Author: eneko
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,14 +10,15 @@
 #include "database.h"
 char* stringOpcionesNormales =
 		"Selecciona una de las siguientes opciones: \
-		1)Acceso a estadisticas. \
-		2)Modificar Usuario. \n";
+		\n1)Acceso a estadisticas. \
+		\n2)Modificar Usuario. \n";
 char endNormales = '3';
-char endAdmin = '5';
+char endAdmin = '6';
 char* stringOpcionesAdmin =
 		"3)Banear usuarios\
-		 4)Importar servidor.\
-		 5)Generar backup de servidor.\n";
+		 \n4)Importar servidor.\
+		 \n5)Generar backup de servidor\
+		 \n6)Reparar base de datos.\n";
 char* opcionesGenericas = "0)Salir.\n";
 void imprimirUsuario(Usuario user){
 	printf("Usuario: Id->%i, Nombre->'%s', Admin->%i\n", user.id,user.nombre, user.admin);
@@ -70,7 +70,7 @@ Usuario autentificarse(){
 Usuario registrarse(){
 	while(1){
 		printf("introduce tu nombre de usuario: ");
-		char * nombre = malloc(sizeof(char)*20);
+		char* nombre = malloc(sizeof(char)*20);
 		scanf("%s",nombre);
 		printf("Introduce tu contrasena: ");
 		char* contrasena = malloc(sizeof(char)*20);
