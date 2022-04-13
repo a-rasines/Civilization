@@ -187,7 +187,7 @@ int cargarServidorEnBD(char* archivo){
 	XMLObject tropas = obj->children[1];
 	for(int i = 0; i < tropas.childrenCount;i++){
 		seq[200];
-		sprintf(seq, "INSERT INTO Tropa(Usuario, Servidor, ID, Tipo, Vida, Mejorada, PosicionX, PosicionY) VALUES (%s, %s, '%s', %s, %s, %s, %s)",
+		sprintf(seq, "INSERT INTO Tropa(Usuario, Servidor, ID, Tipo, Vida, Mejorada, PosicionX, PosicionY) VALUES (%s, %s, %s, %s, %s, %s, %s)",
 			getAttributeByLabel(tropas.children[i], "Usuario"),
 			id,
 			getAttributeByLabel(tropas.children[i], "ID"),
@@ -204,7 +204,7 @@ int cargarServidorEnBD(char* archivo){
 	XMLObject ciudades = obj->children[2];
 	for(int i = 0; i < ciudades.childrenCount;i++){
 		seq[200];
-		sprintf(seq, "INSERT INTO Ciudad(Usuario, Servidor, ID, Nombre, Edificios, Comida, Dinero, Produccion, PosicionX, PosicionY) VALUES (%s, %s, '%s', '%s', %s, %s, %s, %s, %s, %s)",
+		sprintf(seq, "INSERT INTO Ciudad(Usuario, Servidor, ID, Nombre, Edificios, Comida, Dinero, Produccion, PosicionX, PosicionY) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
 			getAttributeByLabel(ciudades.children[i], "Usuario"),
 			id,
 			getAttributeByLabel(ciudades.children[i], "ID"),
@@ -272,61 +272,153 @@ int guardarServidorEnXML(int id){
 		actual->parent = &servidor.children[1];
 		actual->children = malloc(sizeof(XMLObject)*7);
 		actual->childrenCount = 7;
+
 		actual->children[0].label = "Usuario";
 		actual->children[0].parent = actual;
-		actual ->children[0].childrenCount = 0;
+		actual->children[0].childrenCount = 0;
 		sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 1));
 
-		actual->children[0].label = "ID";
-		actual->children[0].parent = actual;
-		actual ->children[0].childrenCount = 0;
-		sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 2));
+		actual->children[1].label = "ID";
+		actual->children[1].parent = actual;
+		actual->children[1].childrenCount = 0;
+		sprintf(actual->children[1].value, "%i", sqlite3_column_int(stmt, 2));
 
-		actual->children[0].label = "Tipo";
-		actual->children[0].parent = actual;
-		actual ->children[0].childrenCount = 0;
-		sprintf(actual->children[0].value, "%s", sqlite3_column_text(stmt, 3));
+		actual->children[2].label = "Tipo";
+		actual->children[2].parent = actual;
+		actual->children[2].childrenCount = 0;
+		sprintf(actual->children[2].value, "'%s'", sqlite3_column_text(stmt, 3));
 
-		actual->children[0].label = "Vida";
-		actual->children[0].parent = actual;
-		actual ->children[0].childrenCount = 0;
-		sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 4));
+		actual->children[3].label = "Vida";
+		actual->children[3].parent = actual;
+		actual->children[3].childrenCount = 0;
+		sprintf(actual->children[3].value, "%i", sqlite3_column_int(stmt, 4));
 
-		actual->children[0].label = "Mejorada";
-		actual->children[0].parent = actual;
-		actual ->children[0].childrenCount = 0;
-		sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 5));
+		actual->children[4].label = "Mejorada";
+		actual->children[4].parent = actual;
+		actual->children[4].childrenCount = 0;
+		sprintf(actual->children[4].value, "%i", sqlite3_column_int(stmt, 5));
 
-		actual->children[0].label = "PosicionX";
-		actual->children[0].parent = actual;
-		actual ->children[0].childrenCount = 0;
-		sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 6));
+		actual->children[5].label = "PosicionX";
+		actual->children[5].parent = actual;
+		actual->children[5].childrenCount = 0;
+		sprintf(actual->children[5].value, "%i", sqlite3_column_int(stmt, 6));
 
-		actual->children[0].label = "PosicionY";
-		actual->children[0].parent = actual;
-		actual ->children[0].childrenCount = 0;
-		sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 7));
-		/*
-		 * getAttributeByLabel(tropas[i], "Usuario"),
-			id,
-			getAttributeByLabel(tropas[i], "ID"),
-			getAttributeByLabel(tropas[i], "Tipo"),
-			getAttributeByLabel(tropas[i], "Vida"),
-			getAttributeByLabel(tropas[i], "Mejorada"),
-			getAttributeByLabel(tropas[i], "PosicionX"),
-			getAttributeByLabel(tropas[i], "PosicionY")
-
-			Servidor SMALLINT NOT NULL, \
-				Usuario TEXT NOT NULL, \
-				ID SMALLINT AUTO_INCREMENT, \
-				Tipo TEXT NOT NULL, \
-				Vida BIT DEFAULT 0, \
-				Mejorada BIT DEFAULT 0, \
-				PosicionX INT DEFAULT 0, \
-				PosicionY INT DEFAULT 0, \
-		 */
+		actual->children[6].label = "PosicionY";
+		actual->children[6].parent = actual;
+		actual->children[6].childrenCount = 0;
+		sprintf(actual->children [6].value, "%i", sqlite3_column_int(stmt, 7));
 	}
 	sqlite3_finalize(stmt);
+
+	servidor.children[2].parent = &servidor;
+	servidor.children[2].label = "Ciudades";
+	guardarServidorEnXML_obtenerDatos(id, "Count(*)", "Ciudad", stmt);
+	i =sqlite3_step(stmt);
+	q = sqlite3_column_int(stmt, 0);
+	sqlite3_finalize(stmt);
+	servidor.children[2].children = malloc(sizeof(XMLObject)*q);
+	servidor.children[2].childrenCount = q;
+
+	guardarServidorEnXML_obtenerDatos(id, "*", "Ciudad", stmt);
+	c = 0;
+	i =sqlite3_step(stmt);
+	while(i == SQLITE_ROW){
+		XMLObject *actual = &servidor.children[1].children[c];
+		actual->label = "Ciudad";
+		actual->parent = &servidor.children[1];
+		actual->children = malloc(sizeof(XMLObject)*9);
+		actual->childrenCount = 9;
+
+		actual->children[0].label = "Usuario";
+		actual->children[0].parent = actual;
+		actual->children[0].childrenCount = 0;
+		sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 1));
+
+		actual->children[1].label = "ID";
+		actual->children[1].parent = actual;
+		actual->children[1].childrenCount = 0;
+		sprintf(actual->children[1].value, "%i", sqlite3_column_int(stmt, 2));
+
+		actual->children[2].label = "Nombre";
+		actual->children[2].parent = actual;
+		actual->children[2].childrenCount = 0;
+		sprintf(actual->children[2].value, "'%s'", sqlite3_column_text(stmt, 3));
+
+		actual->children[3].label = "Edificios";
+		actual->children[3].parent = actual;
+		actual->children[3].childrenCount = 0;
+		sprintf(actual->children[3].value, "'%s'", sqlite3_column_text(stmt, 4));
+
+		actual->children[4].label = "Comida";
+		actual->children[4].parent = actual;
+		actual->children[4].childrenCount = 0;
+		sprintf(actual->children[4].value, "%i", sqlite3_column_int(stmt, 5));
+
+		actual->children[5].label = "Dinero";
+		actual->children[5].parent = actual;
+		actual->children[5].childrenCount = 0;
+		sprintf(actual->children[5].value, "%i", sqlite3_column_int(stmt, 6));
+
+		actual->children[6].label = "Produccion";
+		actual->children[6].parent = actual;
+		actual->children[6].childrenCount = 0;
+		sprintf(actual->children[6].value, "%i", sqlite3_column_int(stmt, 7));
+
+		actual->children[7].label = "PosicionX";
+		actual->children[7].parent = actual;
+		actual->children[7].childrenCount = 0;
+		sprintf(actual->children[7].value, "%i", sqlite3_column_int(stmt, 7));
+
+		actual->children[8].label = "PosicionY";
+		actual->children[8].parent = actual;
+		actual->children[8].childrenCount = 0;
+		sprintf(actual->children[8].value, "%i", sqlite3_column_int(stmt, 7));
+	}
+	sqlite3_finalize(stmt);
+
+	servidor.children[2].parent = &servidor;
+		servidor.children[2].label = "Ciudades";
+		guardarServidorEnXML_obtenerDatos(id, "Count(*)", "Ciudad", stmt);
+		i =sqlite3_step(stmt);
+		q = sqlite3_column_int(stmt, 0);
+		sqlite3_finalize(stmt);
+
+		servidor.children[1].children = malloc(sizeof(XMLObject)*q);
+		servidor.children[1].childrenCount = q;
+		guardarServidorEnXML_obtenerDatos(id, "*", "Partidas", stmt);
+		c = 0;
+		i =sqlite3_step(stmt);
+		while(i == SQLITE_ROW){
+			XMLObject *actual = &servidor.children[1].children[c];
+			actual->label = "Partida";
+			actual->parent = &servidor.children[1];
+			actual->children = malloc(sizeof(XMLObject)*5);
+			actual->childrenCount = 5;
+
+			actual->children[0].label = "Jugador";
+			actual->children[0].parent = actual;
+			actual->children[0].childrenCount = 0;
+			sprintf(actual->children[0].value, "%i", sqlite3_column_int(stmt, 0));
+
+			actual->children[1].label = "ID";
+			actual->children[1].parent = actual;
+			actual->children[1].childrenCount = 0;
+			sprintf(actual->children[1].value, "%i", sqlite3_column_int(stmt, 2));
+
+			actual->children[2].label = "Politica";
+			actual->children[2].parent = actual;
+			actual->children[2].childrenCount = 0;
+			sprintf(actual->children[2].value, "%i", sqlite3_column_int(stmt, 3));
+
+			actual->children[3].label = "Investigaciones";
+			actual->children[3].parent = actual;
+			actual->children[3].childrenCount = 0;
+			sprintf(actual->children[3].value, "'%s'", sqlite3_column_text(stmt, 4));
+
+			actual->children[4].label = "Alianzas";
+			actual->children[4].parent = actual;
+			actual->children[4].childrenCount = 0;
+			sprintf(actual->children[4].value, "%i", sqlite3_column_int(stmt, 5));
+		}
+		sqlite3_finalize(stmt);
 }
-int crearBackupUsuarios();
-int importarUsuarios(char* archivo);

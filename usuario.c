@@ -14,13 +14,11 @@ char* stringOpcionesNormales =
 		1)Acceso a estadisticas. \
 		2)Modificar Usuario. \n";
 char endNormales = '3';
-char endAdmin = '7';
+char endAdmin = '5';
 char* stringOpcionesAdmin =
 		"3)Banear usuarios\
 		 4)Importar servidor.\
-		 5)Generar backup de servidor. \
-		 6)Exportar jugadores.\
-		 7)Restablecer jugadores.\n";
+		 5)Generar backup de servidor.\n";
 char* opcionesGenericas = "0)Salir.\n";
 void imprimirUsuario(Usuario user){
 	printf("Usuario: Id->%i, Nombre->'%s', Admin->%i\n", user.id,user.nombre, user.admin);
