@@ -34,11 +34,7 @@ const uint32_t k[64] = {
 
 // These vars will contain the hash
 uint32_t h0, h1, h2, h3;
-void md5pre(char *initial_msg, int initial_len){
-	md5((uint8_t*)initial_msg, (size_t)initial_len);
-}
 void md5(uint8_t *initial_msg, size_t initial_len) {
-
     // Message (to prepare)
     uint8_t *msg = NULL;
     int new_len;
@@ -126,6 +122,7 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
             a = temp;
 
         }
+
 
         // Add this chunk's hash to result so far:
         h0 += a;
