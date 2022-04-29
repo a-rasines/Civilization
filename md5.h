@@ -14,7 +14,6 @@
 
 
 void md5(uint8_t *initial_msg, size_t initial_len);
-void md5pre(char *initial_msg, int initial_len);
 char* encrypt(char *argv);
 
 #endif /* MD5_H_ */

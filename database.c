@@ -39,7 +39,6 @@ int borrar(char* tabla, int id){
 }
 
 int regenerarBaseDatos(){
-	sqlite3_stmt *stmt;
 	    if (
 			update(
 				"CREATE TABLE IF NOT EXISTS UsuarioRaw( \
@@ -55,7 +54,6 @@ int regenerarBaseDatos(){
 	        return 0;
 	    }else if (update("CREATE VIEW IF NOT EXISTS Usuario AS SELECT Nombre, ID, Contrasena, Admin FROM UsuarioRaw WHERE Ban = 0") != SQLITE_OK) {
 			printf("Error al crear la vista Usuario\n");
-			sqlite3_finalize(stmt);
 			return 0;
 	    }else if(update(
 				"CREATE TABLE IF NOT EXISTS Servidor( \
