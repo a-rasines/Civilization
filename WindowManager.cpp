@@ -11,14 +11,14 @@
 #include <cmath>
 
 namespace WindowInternals{
-	MapEntry::MapEntry(HWND *key, void(*func)()){
+	WindowManager::MapEntry::MapEntry(HWND *key, void(*func)()){
 		this->key = key;
 		this->func = func;
 	}
-	void MapEntry::run(){
+	void WindowManager::MapEntry::run(){
 		func();
 	}
-	virtual MapEntry::~MapEntry(){
+	virtual WindowManager::MapEntry::~MapEntry(){
 		key = '\0';
 		func = NULL;
 	}
@@ -32,17 +32,20 @@ namespace WindowInternals{
 					PostQuitMessage(0);
 					break;
 				}
-
-				// Quit when we click the "quit" button
-				case WM_COMMAND:
-				{
-					if (reinterpret_cast<HWND>(lParam) == button)
-					{
-						PostQuitMessage(0);
-						break;
+				case WM_COMMAND:{
+					for(MapEntry b : button){
+						if(b.key == reinterpret_cast<HWND>(lParam)){
+							b.run();
+						}
 					}
 				}
 			}
+	}
+	WindowManager::Element::Element(HWND window){
+		this->window = window;
+	}
+	HWND WindowManager::Element::generateButton(char* title, int posX, int posY, int width, int height){
+		return CreateWindow(TEXT("BUTTON"), TEXT(title), WS_CHILD | WS_VISIBLE, posX, posY, width, height, window, NULL, instance, NULL);
 	}
 	WindowManager::WindowManager(char* title) {
 		button = NULL;
