@@ -1,3 +1,5 @@
+# Fixes especificos
+.settings/language.settings.xml
 # Prerequisites
 *.d
 
