@@ -11,11 +11,11 @@
 namespace WindowInternals{
 	class MapEntry{
 		public:
-			MapEntry(HWND key, void(*func)());
+			MapEntry(HWND *key, void(*func)());
 			void run();
 			virtual ~MapEntry();
 		private:
-			HWND key;
+			HWND *key;
 			void(*func)();
 	};
 	typedef MapEntry MapEntry;
@@ -24,10 +24,12 @@ namespace WindowInternals{
 			WindowManager(char* title);
 			virtual ~WindowManager();
 			void end();
+			void registerButton(HWND *button, void(*func)());
 		private:
-			MapEntry* WindowManager::button;
-			HWND WindowManager::window;
-			HINSTANCE WindowManager::instance;
+			MapEntry button[] = new MapEntry[0];
+			HWND window;
+			HINSTANCE instance;
+			int buttonCount = 0;
 			void onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 	};
 

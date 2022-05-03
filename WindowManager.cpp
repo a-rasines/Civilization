@@ -11,7 +11,7 @@
 #include <cmath>
 
 namespace WindowInternals{
-	MapEntry::MapEntry(HWND key, void(*func)()){
+	MapEntry::MapEntry(HWND *key, void(*func)()){
 		this->key = key;
 		this->func = func;
 	}
@@ -45,7 +45,7 @@ namespace WindowInternals{
 			}
 	}
 	WindowManager::WindowManager(char* title) {
-		button = new MapEntry(0);
+		button = NULL;
 		instance = GetModuleHandle(NULL);
 			// Define a class for our main window
 			WNDCLASS windowClass;
@@ -86,7 +86,23 @@ namespace WindowInternals{
 		DestroyWindow(window);
 	}
 
+	void WindowManager::registerButton(HWND *button, void(*func)()){
+		if(button != NULL){
+			MapEntry temp[] = new MapEntry[buttonCount+1];
+			for(int i = 0; i < buttonCount; i++){
+				temp[i] = button[i];
+			}
+			temp[buttonCount] = new MapEntry(button, func);
+			button = temp;
+			buttonCount++;
+		}
 
+
+		if(button == NULL){
+			button = new MapEntry[1];
+			button[0] = new MapEntry(button, func);
+		}
+	}
 	WindowManager::~WindowManager() {
 		// TODO Auto-generated destructor stub
 	}
