@@ -41,10 +41,10 @@ namespace WindowInternals{
 				}
 			}
 	}
-	WindowManager::Element::Element(HWND window){
+	WindowManager::Component::Component(HWND window){
 		this->window = window;
 	}
-	HWND WindowManager::Element::generateButton(char* title, int posX, int posY, int width, int height){
+	HWND WindowManager::Component::generateButton(char* title, int posX, int posY, int width, int height){
 		return CreateWindow(TEXT("BUTTON"), TEXT(title), WS_CHILD | WS_VISIBLE, posX, posY, width, height, window, NULL, instance, NULL);
 	}
 	WindowManager::WindowManager(char* title) {
@@ -66,7 +66,7 @@ namespace WindowInternals{
 
 			// Let's create the main window
 			window = CreateWindow(TEXT("SFML App"), TEXT(title), WS_SYSMENU | WS_VISIBLE, 200, 200, 660, 520, NULL, NULL, instance, NULL);
-
+			component = new Component(window);
 			// Create a clock for measuring elapsed time
 			sf::Clock clock;
 

@@ -28,13 +28,13 @@ class WindowManager {
 		/**
 		 * Esta clase contiene los generadores de los elementos de SFML
 		 */
-		class Element{
+		class Component{
 			public:
 				/**
 				 * Este constructor solo se llama desde WindowManager. No usar
 				 * window Ventana de los objetos (contenido en WindowManager)
 				 */
-				Element(HWND window);
+				Component(HWND window);
 				/**
 				 * Genera un botón con las especificaciones indicadas
 				 * title -> Texto del botón
@@ -47,7 +47,7 @@ class WindowManager {
 			private:
 				HWND window;
 		};
-		Element element;
+		Component component;
 	private:
 		class MapEntry{
 				public:
