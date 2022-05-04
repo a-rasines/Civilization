@@ -10,7 +10,6 @@
 #include <windows.h>
 #include <cmath>
 
-namespace WindowInternals{
 	WindowManager::MapEntry::MapEntry(HWND *key, void(*func)()){
 		this->key = key;
 		this->func = func;
@@ -22,7 +21,6 @@ namespace WindowInternals{
 		key = '\0';
 		func = NULL;
 	}
-	void(& func)();
 	void WindowManager::onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 		switch (message)
 			{
@@ -109,4 +107,3 @@ namespace WindowInternals{
 	WindowManager::~WindowManager() {
 		// TODO Auto-generated destructor stub
 	}
-}
