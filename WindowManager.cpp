@@ -9,12 +9,16 @@
 #include <SFML/Graphics.hpp>
 #include <windows.h>
 #include <cmath>
+#include <iostream>
+#include <SFML/Window.hpp>
 	LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 		switch (message){
 				// Quit when we close the main window
-				case WM_CLOSE:{
+			case WM_CLOSE:{
 				PostQuitMessage(0);
 				break;
+			}case WM_COMMAND:{
+
 			}
 		}
 		return DefWindowProc(handle, message, wParam, lParam);
@@ -117,17 +121,48 @@
 	WindowManager::~WindowManager() {
 	}
 	int main(){
+		//Se crea la ventana
 		WindowManager window("Test", 0, 0, 1000, 1000);
-		sf::RenderWindow SFMLView1(window.component.generateView(0, 100, 100, 100));
+		//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
+		sf::RenderWindow SFMLView1(window.component.generateView(0, 100, 1000, 900));
+		//Se muetra
 		SFMLView1.display();
-
+		//Esto representa un circulo
+		sf::CircleShape shape(100.f);
+		//Se define la cantidad de vertices
+		shape.setPointCount(128);
+		//El color a rellenar el circulo
+		shape.setFillColor(sf::Color::Green);
+		//Objeto que recoge los eventos de la ventana
+		float x = 0;
+		float y = 0;
+		float v = 1;
 		MSG message;
+		//Reloj para calcular el deltatime y tiempo transcurrido
+		sf::Clock clock;
 		message.message = static_cast<UINT>(~WM_QUIT);
-		printf("Starts");
 		while (message.message != WM_QUIT)
+			//Aqui busca los eventos no recogidos
 			if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE)){
 				TranslateMessage(&message);
 				DispatchMessage(&message);
-			}
+			} else{
+				if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && x != -1)
+					x = 1;
+				else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && x != 1)
+					x = -1;
+				else
+					x = 0;
+				if(sf::Keyboard::isKeyPressed(sf::Keyboard::W) && y != -1)
+					y = 1;
+				else if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) && y != 1)
+					y = -1;
+				else
+					y = 0;
+				shape.setOrigin(sf::Vector2<float>(shape.getOrigin().x + x*v, shape.getOrigin().y + y*v));
+				SFMLView1.clear();
+				SFMLView1.draw(shape);
+				SFMLView1.display();
+	        }
 
 	}

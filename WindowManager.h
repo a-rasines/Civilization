@@ -50,8 +50,8 @@ class WindowManager {
 				 *
 				 */
 				HWND generateView(int posX, int posY, int width, int height);
-			private:
 				HWND window;
+			private:
 				HINSTANCE instance;
 		};
 		Component component;
@@ -92,8 +92,5 @@ class WindowManager {
 		MapEntry button;
 
 };
-LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
-
-
 
 #endif /* WINDOWMANAGER_H_ */
