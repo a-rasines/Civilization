@@ -13,7 +13,7 @@ class WindowManager {
 		/** Genera una ventana de SFML con el título definido
 		 * 	title -> Titulo de la ventana
 		 */
-		WindowManager(char* title);
+		WindowManager(const char* title, int posX, int posY, int width, int height);
 		virtual ~WindowManager();
 		/**
 		 * Destruye y quita de cache la ventana
@@ -55,8 +55,18 @@ class WindowManager {
 				HINSTANCE instance;
 		};
 		Component component;
+	protected:
+		class EmptyMapEntry{
+			public:
+				EmptyMapEntry();
+				virtual ~EmptyMapEntry();
+		};
 	private:
-		class MapEntry{
+		/**
+		 * No pienso romperme la cabeza mas con WindowManager::MapEntry$next
+		 */
+
+		class MapEntry : private EmptyMapEntry{
 				public:
 					/**
 					 * Me da pereza buscar como hacer mapas, asi que me he ideado el mio
@@ -72,7 +82,7 @@ class WindowManager {
 					 */
 					void run();
 					virtual ~MapEntry();
-					WindowManager::MapEntry next;
+					EmptyMapEntry next;
 				private:
 					void(*func)();
 			};
