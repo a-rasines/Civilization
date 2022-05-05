@@ -8,6 +8,7 @@ int main(void){
 	printf("%i", regenerarBaseDatos());
 	int terminarAutent = 0;
 	Usuario user;
+
 	char answ;
 	while(!terminarAutent){
 		if(answ != '\n')

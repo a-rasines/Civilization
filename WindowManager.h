@@ -34,7 +34,8 @@ class WindowManager {
 				 * Este constructor solo se llama desde WindowManager. No usar
 				 * window Ventana de los objetos (contenido en WindowManager)
 				 */
-				Component(HWND window);
+				Component();
+				Component(HWND window, HINSTANCE instance);
 				/**
 				 * Genera un botón con las especificaciones indicadas
 				 * title -> Texto del botón
@@ -44,8 +45,14 @@ class WindowManager {
 				 * height -> tamaño en Y
 				 */
 				HWND generateButton(char* title, int posX, int posY, int width, int height);
+				/**
+				 * Genera una vista en la que pintar sprites
+				 *
+				 */
+				HWND generateView(int posX, int posY, int width, int height);
 			private:
 				HWND window;
+				HINSTANCE instance;
 		};
 		Component component;
 	private:
@@ -57,22 +64,25 @@ class WindowManager {
 					 * *func -> value
 					 */
 					MapEntry(HWND *key, void(*func)());
+					MapEntry();
 					HWND *key;
+					MapEntry addValue(HWND *key, void(*func)());
 					/**
 					 * Corre la funcion asociada a la llave
 					 */
 					void run();
 					virtual ~MapEntry();
+					WindowManager::MapEntry next;
 				private:
 					void(*func)();
 			};
-		MapEntry button[] = new MapEntry[0];
 		HWND window;
 		HINSTANCE instance;
 		int buttonCount = 0;
-		void onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
-};
+		MapEntry button;
 
+};
+LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam);
 
 
 
