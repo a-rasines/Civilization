@@ -11,6 +11,10 @@
 #include <cmath>
 #include <iostream>
 #include <SFML/Window.hpp>
+	HWND blue;
+	HWND red;
+	HWND green;
+	sf::CircleShape shape(100.f);
 	LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 		switch (message){
 				// Quit when we close the main window
@@ -18,7 +22,13 @@
 				PostQuitMessage(0);
 				break;
 			}case WM_COMMAND:{
-
+				if (reinterpret_cast<HWND>(lParam) == blue){
+					shape.setFillColor(sf::Color::Blue);
+				}else if (reinterpret_cast<HWND>(lParam) == red){
+					shape.setFillColor(sf::Color::Red);
+				}else if (reinterpret_cast<HWND>(lParam) == green){
+					shape.setFillColor(sf::Color::Green);
+				}
 			}
 		}
 		return DefWindowProc(handle, message, wParam, lParam);
@@ -127,12 +137,13 @@
 		sf::RenderWindow SFMLView1(window.component.generateView(0, 100, 1000, 900));
 		//Se muetra
 		SFMLView1.display();
-		//Esto representa un circulo
-		sf::CircleShape shape(100.f);
 		//Se define la cantidad de vertices
 		shape.setPointCount(128);
 		//El color a rellenar el circulo
 		shape.setFillColor(sf::Color::Green);
+		blue = window.component.generateButton("Azul", 0, 0, 200, 100);
+		red = window.component.generateButton("Rojo", 200, 0, 200, 100);
+		green = window.component.generateButton("Verde", 400, 0, 200, 100);
 		//Objeto que recoge los eventos de la ventana
 		float x = 0;
 		float y = 0;
