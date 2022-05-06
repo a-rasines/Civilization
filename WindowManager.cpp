@@ -57,7 +57,9 @@
 				TranslateMessage(&message);
 				DispatchMessage(&message);
 			} else{
-				activeWindow->deltatime = (-timeElapsed) + (timeElapsed=clock.getElapsedTime().asMilliseconds());
+				float time = clock.getElapsedTime().asMilliseconds();
+				activeWindow->deltatime = (-timeElapsed) + time;
+				timeElapsed = time;
 				this->activeWindow->update();
 			}
 		}

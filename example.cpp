@@ -48,7 +48,7 @@ void Example::update(){
 		y = -1;
 	else
 		y = 0;
-	shape.setOrigin(sf::Vector2<float>(shape.getOrigin().x + x*v, shape.getOrigin().y + y*v));
+	shape.setOrigin(sf::Vector2<float>(shape.getOrigin().x + x*v*deltatime, shape.getOrigin().y + y*v*deltatime));
 	SFMLView1.clear();
 	SFMLView1.draw(shape);
 	SFMLView1.display();
