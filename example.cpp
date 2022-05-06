@@ -22,7 +22,6 @@ HWND red;
 HWND green;
 sf::RenderWindow SFMLView1;
 void Example::start(){
-	printf("a");
 	//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
 	SFMLView1.create(comp.generateView(0, 100, 1000, 900));
 	//Se muetra

@@ -48,6 +48,7 @@
 		MSG message;
 		//Reloj para calcular el deltatime y tiempo transcurrido
 		sf::Clock clock;
+		float timeElapsed = clock.getElapsedTime();
 		message.message = static_cast<UINT>(~WM_QUIT);
 		window->init(Window::Component(this->window, this->instance));
 		while (message.message != WM_QUIT){
@@ -56,6 +57,7 @@
 				TranslateMessage(&message);
 				DispatchMessage(&message);
 			} else{
+				activeWindow->deltatime = (-timeElapsed) + (timeElapsed=clock.getElapsedTime());
 				this->activeWindow->update();
 			}
 		}

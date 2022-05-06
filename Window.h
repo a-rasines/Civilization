@@ -11,14 +11,15 @@ class Window {
 	public:
 		class Component{
 				public:
-					/**
-					 * Este constructor solo se llama desde WindowManager. No usar
-					 * window Ventana de los objetos (contenido en WindowManager)
-					 */
+
 					Component(){
 						window = NULL;
 						instance = NULL;
-					}
+					}/**
+					 * Este constructor solo se llama desde WindowManager. No usar
+					 * window Ventana de los objetos (contenido en WindowManager)
+					 * instance controlador de la ventana
+					 */
 					Component(HWND window, HINSTANCE instance){
 						this->window = window;
 						this->instance = instance;
@@ -54,6 +55,7 @@ class Window {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones internas
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		float deltatime = 0;
 		Window(){};
 		virtual ~Window(){};
 		void init(Component comp){
