@@ -7,6 +7,7 @@
 
 #ifndef WINDOW_H_
 #define WINDOW_H_
+#include "windows.h"
 class Window {
 	public:
 		class Component{

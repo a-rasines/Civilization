@@ -12,6 +12,7 @@
 #include <iostream>
 #include <SFML/Window.hpp>
 #include "Window.h"
+#include <list>
 	WindowManager *windowInstance;
 	LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 		switch (message){
@@ -21,6 +22,9 @@
 				break;
 			}case WM_COMMAND:{
 				windowInstance->runButton(reinterpret_cast<HWND>(lParam));
+				break;
+			}case WM_PAINT:{
+				//
 			}
 		}
 		return DefWindowProc(handle, message, wParam, lParam);
@@ -38,7 +42,7 @@
 		windowClass.hInstance     = instance;
 		windowClass.hIcon         = NULL;
 		windowClass.hCursor       = 0;
-		windowClass.hbrBackground = reinterpret_cast<HBRUSH>(COLOR_BACKGROUND);
+		windowClass.hbrBackground = (HBRUSH)(COLOR_BACKGROUND);
 		windowClass.lpszMenuName  = NULL;
 		windowClass.lpszClassName = TEXT("SFML App");
 		RegisterClass(&windowClass);
@@ -70,7 +74,21 @@
 	void WindowManager::runButton(HWND button){
 		activeWindow->onButtonPress(button);
 	}
+	bool windowChange = false;
+	std::list<HWND> components;
+	int componentCount = 0;
 	void WindowManager::setWindow(Window *w){
 		this->activeWindow = w;
-		w->init(Window::Component(this->window, this->instance));
+		const tagRECT a = {2000, 2000, 0, 0};
+		InvalidateRect(this->window, &a, true);
+		for(HWND comp : components){
+			DestroyWindow(comp);
+		}
+		components.clear();
+		activeWindow->init(Window::Component(this->window, this->instance));
+		windowChange = true;
+	}
+	HWND WindowManager::registerComponent(HWND comp){
+		components.push_back(comp);
+		return comp;
 	}

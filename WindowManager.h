@@ -29,6 +29,7 @@ class WindowManager {
 		 */
 		void runButton(HWND button);
 		void setWindow(Window *w);
+		HWND registerComponent(HWND comp);
 	private:
 		Window *activeWindow;
 		HWND window;
