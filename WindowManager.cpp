@@ -11,6 +11,7 @@
 #include <cmath>
 #include <iostream>
 #include <SFML/Window.hpp>
+#include "Component.h"
 #include "Window.h"
 #include <list>
 	WindowManager *windowInstance;
@@ -54,7 +55,7 @@
 		sf::Clock clock;
 		float timeElapsed = clock.getElapsedTime().asMilliseconds();
 		message.message = static_cast<UINT>(~WM_QUIT);
-		window->init(Window::Component(this->window, this->instance));
+		window->init(WindowComponent(this->window, this->instance, this));
 		while (message.message != WM_QUIT){
 			//Aqui busca los eventos no recogidos
 			if (PeekMessage(&message, NULL, 0, 0, PM_REMOVE)){
@@ -74,7 +75,6 @@
 	void WindowManager::runButton(HWND button){
 		activeWindow->onButtonPress(button);
 	}
-	bool windowChange = false;
 	std::list<HWND> components;
 	int componentCount = 0;
 	void WindowManager::setWindow(Window *w){
@@ -85,8 +85,7 @@
 			DestroyWindow(comp);
 		}
 		components.clear();
-		activeWindow->init(Window::Component(this->window, this->instance));
-		windowChange = true;
+		activeWindow->init(WindowComponent(this->window, this->instance, this));
 	}
 	HWND WindowManager::registerComponent(HWND comp){
 		components.push_back(comp);

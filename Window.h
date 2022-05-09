@@ -8,45 +8,11 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 #include "windows.h"
+#include "Component.h"
+class WindowManager;
 class Window {
 	public:
-		class Component{
-				public:
 
-					Component(){
-						window = NULL;
-						instance = NULL;
-					}/**
-					 * Este constructor solo se llama desde WindowManager. No usar
-					 * window Ventana de los objetos (contenido en WindowManager)
-					 * instance controlador de la ventana
-					 */
-					Component(HWND window, HINSTANCE instance){
-						this->window = window;
-						this->instance = instance;
-					}
-					/**
-					 * Genera un botón con las especificaciones indicadas
-					 * title -> Texto del botón
-					 * posX -> posicion del boton en el eje X
-					 * posY -> posicion del boton en el eje Y
-					 * width -> tamaño en X
-					 * height -> tamaño en Y
-					 */
-					HWND generateButton(const char* title, int posX, int posY, int width, int height){
-						return CreateWindow(TEXT("BUTTON"), TEXT(title), WS_CHILD | WS_VISIBLE, posX, posY, width, height, window, NULL, instance, NULL);
-					}
-					/**
-					 * Genera una vista en la que pintar sprites
-					 *
-					 */
-					HWND generateView(int posX, int posY, int width, int height){
-						return CreateWindow(TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS, posX,  posY, width, height, window, NULL, instance, NULL);
-					}
-					HWND window;
-				private:
-					HINSTANCE instance;
-			};
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones a copiar
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,12 +25,12 @@ class Window {
 		float deltatime = 0;
 		Window(){};
 		virtual ~Window(){};
-		void init(Component comp){
+		void init(WindowComponent comp){
 			this->comp = comp;
 			start();
 						}
 	protected:
-		Component comp;
+		WindowComponent comp;
 };
 
 #endif /* WINDOW_H_ */
