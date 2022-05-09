@@ -25,17 +25,17 @@ HWND next;
 sf::RenderWindow SFMLView1;
 void Example::start(){
 	//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
-	SFMLView1.create(comp.generateView(0, 100, 1000, 900));
+	SFMLView1.create(generateView(0, 100, 1000, 900));
 	//Se muetra
 	SFMLView1.display();
 	//Se define la cantidad de vertices
 	shape.setPointCount(128);
 	//El color a rellenar el circulo
 	shape.setFillColor(sf::Color::Green);
-	blue = comp.generateButton("Azul", 0, 0, 200, 100);
-	red = comp.generateButton("Rojo", 200, 0, 200, 100);
-	green = comp.generateButton("Verde", 400, 0, 200, 100);
-	next = comp.generateButton("Sprites", 600, 0, 200, 100);
+	blue = generateButton("Azul", 0, 0, 200, 100);
+	red = generateButton("Rojo", 200, 0, 200, 100);
+	green = generateButton("Verde", 400, 0, 200, 100);
+	next = generateButton("Sprites", 600, 0, 200, 100);
 
 }
 void Example::update(){
