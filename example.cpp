@@ -5,14 +5,11 @@
  *      Author: algtc
  */
 #include <SFML/Graphics.hpp>
-#include <windows.h>
 #include <cmath>
 #include <iostream>
-#include <SFML/Window.hpp>
 #include "example.h"
-#include "window.h"
-#include "WindowManager.h"
 #include "Ejemplo2.h"
+#include "WindowManager.h"
 WindowManager wm;
 sf::CircleShape shape(100.f);
 float x = 0;
@@ -22,10 +19,12 @@ HWND blue;
 HWND red;
 HWND green;
 HWND next;
+HWND view;
 sf::RenderWindow SFMLView1;
 void Example::start(){
 	//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
-	SFMLView1.create(generateView(0, 100, 1000, 900));
+	view = generateView(0, 100, 1000, 900);
+	SFMLView1.create(view);
 	//Se muetra
 	SFMLView1.display();
 	//Se define la cantidad de vertices
@@ -57,13 +56,11 @@ void Example::update(){
 	SFMLView1.display();
 }
 void Example::onButtonPress(HWND button){
-	Ejemplo2 a;
 	if(button == red)shape.setFillColor(sf::Color::Red);
 	else if(button == blue)	shape.setFillColor(sf::Color::Blue);
 	else if(button == green) shape.setFillColor(sf::Color::Green);
-	else if(button == next) wm.setWindow(&a);
+	else if(button == next) wm.setWindow(new Ejemplo2());
 }
 int main(){
-	Example e;
-	wm = WindowManager("Ejemplo", 0, 0, 1000, 1000, &e);
+	wm = WindowManager("Ejemplo", 0, 0, 1000, 1000, new Example());
 }

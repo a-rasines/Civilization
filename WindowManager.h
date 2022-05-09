@@ -15,7 +15,6 @@ class WindowManager {
 		WindowManager(){
 			instance = '\0';
 			window = '\0';
-			activeWindow = NULL;
 		}
 		/** Genera una ventana de SFML con el título definido
 		 * 	title -> Titulo de la ventana
@@ -28,17 +27,11 @@ class WindowManager {
 		 * Esta clase contiene los generadores de los elementos de SFML
 		 */
 		void runButton(HWND button);
-		void setWindow(Window *w){
-			this->activeWindow->destroyComponents();
-			this->activeWindow = &(*w);
-			activeWindow->init(this->instance, this->window);
-		}
-//		void repaint();
+		void setWindow(Window *w);
+		void repaint();
 	private:
-		Window *activeWindow;
 		HWND window;
 		HINSTANCE instance;
-		int buttonCount = 0;
 
 };
 #endif /* WINDOWMANAGER_H_ */

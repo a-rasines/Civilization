@@ -10,7 +10,7 @@ typedef struct
 	int idJugador;
 	enum tipo;
 	int vida;
-	bool mejorada;
+	int mejorada;//bool no existe en c
 	int estado;
 	int posicionX;
 	int posicionY;

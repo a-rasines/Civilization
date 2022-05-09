@@ -9,9 +9,11 @@
 #define WINDOW_H_
 #include "windows.h"
 #include <list>
-class WindowManager;
+#include <iostream>
 class Window {
 	public:
+		HINSTANCE static instance;
+		HWND static window;
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones a copiar
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,43 +23,19 @@ class Window {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones internas
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		HWND generateButton(const char* title, int posX, int posY, int width, int height){
-			HWND comp = CreateWindow(TEXT("BUTTON"), TEXT(title), WS_CHILD | WS_VISIBLE, posX, posY, width, height, window, NULL, instance, NULL);
-			components.push_back(comp);
-			return comp;
-		}
+		HWND generateButton(const char* title, int posX, int posY, int width, int height);
 		/**
 		 * Genera una vista en la que pintar sprites
 		 *
 		 */
-		HWND generateView(int posX, int posY, int width, int height){
-			HWND comp = CreateWindow(TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS, posX,  posY, width, height, window, NULL, instance, NULL);
-			components.push_back(comp);
-			return comp;
-		}
-		void destroyComponents(){
-			for(HWND comp : components){
-				DestroyWindow(comp);
-				components.clear();
-			}
-		}
-		void removeComponent(HWND comp){
-			DestroyWindow(comp);
-			components.remove(comp);
-		}
+		HWND generateView(int posX, int posY, int width, int height);
+		void destroyComponents();
+		void removeComponent(HWND comp);
 
 		float deltatime = 0;
-		Window(){};
+		Window(){
+		};
 		virtual ~Window(){};
-		void init(HINSTANCE instance, HWND window){
-			this->instance = instance;
-			this->window = window;
-			start();
-		}
-	private:
-		HINSTANCE instance;
-		HWND window;
-		std::list<HWND> components;
 };
 
 #endif /* WINDOW_H_ */

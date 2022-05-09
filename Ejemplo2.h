@@ -9,9 +9,6 @@
 #define EJEMPLO2_H_
 
 #include "Window.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <windows.h>
 
 class Ejemplo2: public Window {
 public:
