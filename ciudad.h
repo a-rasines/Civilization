@@ -13,7 +13,7 @@ typedef struct
 {
 	int idPartida;
     int idJugador;
-	enum tipo;
+	int idCiudad;
     char* nombre; 
     int edificios;
     int comida;
