@@ -8,7 +8,7 @@
 #ifndef COMPONENT_H_
 #define COMPONENT_H_
 #include "windows.h"
-class WindowManager;
+#include "WindowManager.h"
 class WindowComponent{
 	public:
 

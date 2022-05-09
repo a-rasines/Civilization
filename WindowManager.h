@@ -8,14 +8,13 @@
 #define WINDOWMANAGER_H_
 #include <SFML/Graphics.hpp>
 #include <windows.h>
-#include "Window.h"
+class Window;
 class WindowManager {
 	public:
 		WindowManager(){
 			instance = '\0';
 			window = '\0';
-			Window a;
-			activeWindow = &a;
+			activeWindow = '\0';
 		}
 		/** Genera una ventana de SFML con el título definido
 		 * 	title -> Titulo de la ventana

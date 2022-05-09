@@ -35,7 +35,7 @@ void Example::start(){
 	blue = comp.generateButton("Azul", 0, 0, 200, 100);
 	red = comp.generateButton("Rojo", 200, 0, 200, 100);
 	green = comp.generateButton("Verde", 400, 0, 200, 100);
-	next = comp.generateButton("Siguiente", 600, 0, 200, 100);
+	next = comp.generateButton("Sprites", 600, 0, 200, 100);
 
 }
 void Example::update(){
