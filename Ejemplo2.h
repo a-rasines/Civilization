@@ -8,7 +8,7 @@
 #ifndef EJEMPLO2_H_
 #define EJEMPLO2_H_
 
-#include "Window.h"
+#include "WindowObjects/Window.h"
 class Ejemplo2: public Window {
 public:
 	Ejemplo2();

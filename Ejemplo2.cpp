@@ -6,7 +6,8 @@
  */
 #include <SFML/Graphics.hpp>
 #include "Ejemplo2.h"
-#include "example.h"
+
+#include "Example.h"
 Ejemplo2::Ejemplo2(){
 
 }

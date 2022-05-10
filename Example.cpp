@@ -4,11 +4,12 @@
  *  Created on: 5 may 2022
  *      Author: algtc
  */
+#include "Example.h"
+
 #include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
-#include "example.h"
-#include "WindowManager.h"
+#include "WindowObjects/WindowManager.h"
 #include "Ejemplo2.h"
 void Example::start(){
 	//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
