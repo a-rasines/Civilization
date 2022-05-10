@@ -7,16 +7,6 @@
 #include <SFML/Graphics.hpp>
 #include "Ejemplo2.h"
 #include "example.h"
-sf::CircleShape shape(100.f);
-float x = 0;
-float y = 0;
-float v = 1;
-HWND blue;
-HWND red;
-HWND green;
-HWND next;
-HWND view;
-sf::RenderWindow SFMLView1;
 Ejemplo2::Ejemplo2(){
 
 }
@@ -29,10 +19,9 @@ void Ejemplo2::start(){
 	SFMLView1.create(view);
 	//Se muetra
 	SFMLView1.display();
-	//Se define la cantidad de vertices
-	shape.setPointCount(128);
-	//El color a rellenar el circulo
-	shape.setFillColor(sf::Color::Green);
+	 if (!texture1.loadFromFile("resources/image1.png") || !texture2.loadFromFile("resources/image2.jpg") || !texture3.loadFromFile("resources/image3.jpg"))
+		 return;
+	sprite = sf::Sprite(texture1);
 	blue = generateButton("Textura1", 0, 0, 200, 100);
 	red = generateButton("Textura2", 200, 0, 200, 100);
 	green = generateButton("Textura3", 400, 0, 200, 100);
@@ -52,15 +41,15 @@ void Ejemplo2::update(){
 		y = -1;
 	else
 		y = 0;
-	shape.setOrigin(sf::Vector2<float>(shape.getOrigin().x + x*v*deltatime, shape.getOrigin().y + y*v*deltatime));
+	sprite.setOrigin(sf::Vector2<float>(sprite.getOrigin().x + x*v*deltatime, sprite.getOrigin().y + y*v*deltatime));
 	SFMLView1.clear();
-	SFMLView1.draw(shape);
+	SFMLView1.draw(sprite);
 	SFMLView1.display();
 }
 void Ejemplo2::onButtonPress(HWND button){
-	if(button == red)shape.setFillColor(sf::Color::Red);
-	else if(button == blue)	shape.setFillColor(sf::Color::Blue);
-	else if(button == green) shape.setFillColor(sf::Color::Green);
+	if(button == red)sprite.setTexture(texture2, true);//Si la nueva textura tiene otro tamaño y lo quieres redimensionar se pone true, sino false
+	else if(button == blue)	sprite.setTexture(texture1, true);
+	else if(button == green) sprite.setTexture(texture3, true);
 	else if(button == next) Window::manager->setWindow(new Example());
 }
 
