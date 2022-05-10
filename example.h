@@ -13,15 +13,24 @@
 #include <cmath>
 #include <iostream>
 #include <SFML/Window.hpp>
-
 class Example: public Window {
 public:
 	Example(){};
-	void start();
-	void update();
-	void onButtonPress(HWND button);
+	virtual void start();
+	virtual void update();
+	virtual void onButtonPress(HWND button);
 	virtual ~Example(){};
-
+private:
+	sf::RenderWindow SFMLView1;
+	HWND blue;
+	HWND red;
+	HWND green;
+	HWND next;
+	HWND view;
+	float x = 0;
+	float y = 0;
+	float v = 1;
+	sf::CircleShape shape = sf::CircleShape(100.f);
 };
 
 

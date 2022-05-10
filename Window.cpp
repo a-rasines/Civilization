@@ -8,6 +8,7 @@
 #include <list>
 HINSTANCE Window::instance;
 HWND Window::window;
+WindowManager* Window::manager;
 std::list<HWND> components;
 void Window::removeComponent(HWND comp){
 	DestroyWindow(comp);

@@ -8,19 +8,8 @@
 #include <cmath>
 #include <iostream>
 #include "example.h"
-#include "Ejemplo2.h"
 #include "WindowManager.h"
-WindowManager wm;
-sf::CircleShape shape(100.f);
-float x = 0;
-float y = 0;
-float v = 1;
-HWND blue;
-HWND red;
-HWND green;
-HWND next;
-HWND view;
-sf::RenderWindow SFMLView1;
+#include "Ejemplo2.h"
 void Example::start(){
 	//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
 	view = generateView(0, 100, 1000, 900);
@@ -59,8 +48,8 @@ void Example::onButtonPress(HWND button){
 	if(button == red)shape.setFillColor(sf::Color::Red);
 	else if(button == blue)	shape.setFillColor(sf::Color::Blue);
 	else if(button == green) shape.setFillColor(sf::Color::Green);
-	else if(button == next) wm.setWindow(new Ejemplo2());
+	else if(button == next) Window::manager->setWindow(new Ejemplo2());
 }
 int main(){
-	wm = WindowManager("Ejemplo", 0, 0, 1000, 1000, new Example());
+	Window::manager = new WindowManager("Ejemplo", 0, 0, 1000, 1000, new Example());
 }

@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <windows.h>
 #include <list>
-#include "window.h"
+class Window;
 class WindowManager {
 	public:
 		WindowManager(){

@@ -10,8 +10,10 @@
 #include "windows.h"
 #include <list>
 #include <iostream>
+#include "WindowManager.h"
 class Window {
 	public:
+		WindowManager static *manager;
 		HINSTANCE static instance;
 		HWND static window;
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
