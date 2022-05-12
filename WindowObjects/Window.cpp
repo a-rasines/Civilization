@@ -5,15 +5,13 @@
  *      Author: algtc
  */
 #include "Window.h"
+#include "windows.h"
+#include "string.h"
 #include <list>
 HINSTANCE Window::instance;
 HWND Window::window;
 WindowManager* Window::manager;
 std::list<HWND> components;
-void Window::removeComponent(HWND comp){
-	DestroyWindow(comp);
-	components.remove(comp);
-}
 HWND Window::generateView(int posX, int posY, int width, int height){
 	HWND comp = CreateWindow(TEXT("STATIC"), NULL, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS, posX,  posY, width, height, window, NULL, instance, NULL);
 	components.push_back(comp);
@@ -24,11 +22,35 @@ HWND Window::generateButton(const char* title, int posX, int posY, int width, in
 	components.push_back(comp);
 	return comp;
 }
+HWND Window::generateTextField(int posX, int posY, int width, int height){
+	HWND comp = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(""),
+            WS_CHILD | WS_VISIBLE, posX, posY, width,
+            height, window, NULL, NULL, NULL);
+	components.push_back(comp);
+	return comp;
+}
+HWND Window::generateTextField(const char* text, int posX, int posY, int width, int height){
+	HWND comp = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(text),
+            WS_CHILD | WS_VISIBLE, posX, posY, width,
+            height, window, NULL, NULL, NULL);
+	components.push_back(comp);
+	return comp;
+}
+void Window::removeComponent(HWND comp){
+	DestroyWindow(comp);
+	components.remove(comp);
+}
 void Window::destroyComponents(){
 	for(HWND comp : components){
 		DestroyWindow(comp);
 	}
 	components.clear();
+}
+char* Window::getComponentText(HWND component){
+	std::string text;
+	text.resize(GetWindowTextLengthA(component)+1);
+	printf("%i", GetWindowTextA(component, LPSTR(text.c_str()), GetWindowTextLengthA(component)+1));
+	return &text[0];
 }
 
 

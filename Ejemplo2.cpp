@@ -20,7 +20,7 @@ void Ejemplo2::start(){
 	SFMLView1.create(view);
 	//Se muetra
 	SFMLView1.display();
-	 if (!texture1.loadFromFile("resources/image1.png") || !texture2.loadFromFile("resources/image2.jpg") || !texture3.loadFromFile("resources/image3.jpg"))
+	 if (!texture1.loadFromFile("resources/image1.png", sf::IntRect(250,250,100,100))/* offsetX, offsetY, sizeX, sizeY*/ || !texture2.loadFromFile("resources/image2.jpg") || !texture3.loadFromFile("resources/image3.jpg"))
 		 return;
 	sprite = sf::Sprite(texture1);
 	blue = generateButton("Textura1", 0, 0, 200, 100);
@@ -49,7 +49,7 @@ void Ejemplo2::update(){
 }
 void Ejemplo2::onButtonPress(HWND button){
 	if(button == red)sprite.setTexture(texture2, true);//Si la nueva textura tiene otro tamaño y lo quieres redimensionar se pone true, sino false
-	else if(button == blue)	sprite.setTexture(texture1, true);
+	else if(button == blue)sprite.setTexture(texture1, false);
 	else if(button == green) sprite.setTexture(texture3, true);
 	else if(button == next) Window::manager->setWindow(new Example());
 }

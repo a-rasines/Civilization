@@ -11,6 +11,7 @@
 #include <iostream>
 #include "WindowObjects/WindowManager.h"
 #include "Ejemplo2.h"
+#include <string.h>
 void Example::start(){
 	//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
 	view = generateView(0, 100, 1000, 900);
@@ -25,9 +26,14 @@ void Example::start(){
 	red = generateButton("Rojo", 200, 0, 200, 100);
 	green = generateButton("Verde", 400, 0, 200, 100);
 	next = generateButton("Sprites", 600, 0, 200, 100);
+	textField = generateTextField(800, 0, 200, 100);
+	textButton = generateButton("", 1000, 0, 200, 100);
 
 }
 void Example::update(){
+	if(GetActiveWindow() == textField){ //Si el textField esta siendo usado no queremos que se mueva nada
+		return;
+	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && x != -1)
 		x = 1;
 	else if(sf::Keyboard::isKeyPressed(sf::Keyboard::D) && x != 1)
@@ -50,7 +56,11 @@ void Example::onButtonPress(HWND button){
 	else if(button == blue)	shape.setFillColor(sf::Color::Blue);
 	else if(button == green) shape.setFillColor(sf::Color::Green);
 	else if(button == next) Window::manager->setWindow(new Ejemplo2());
+	else if(button == textButton){
+		removeComponent(textButton); //No se si hay alguna forma de cambiar texto, pero esta funciona
+		textButton = generateButton(getComponentText(textField), 1000, 0, 200, 100);
+	}
 }
 int main(){
-	Window::manager = new WindowManager("Ejemplo", 0, 0, 1000, 1000, new Example());
+	Window::manager = new WindowManager("Ejemplo", 0, 0, 1200, 1000, new Example());
 }

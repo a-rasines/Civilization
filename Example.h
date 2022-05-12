@@ -27,6 +27,8 @@ private:
 	HWND green;
 	HWND next;
 	HWND view;
+	HWND textField;
+	HWND textButton;
 	float x = 0;
 	float y = 0;
 	float v = 1;

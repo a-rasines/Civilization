@@ -28,12 +28,46 @@ class Window {
 		HWND generateButton(const char* title, int posX, int posY, int width, int height);
 		/**
 		 * Genera una vista en la que pintar sprites
-		 *
+		 *	posX -> Posicion de las esquinas izquierdas.
+		 *	posY -> Posicion de las esquinas superiores.
+		 *	width -> Anchura de la vista
+		 *	height -> Altura de la vista
 		 */
 		HWND generateView(int posX, int posY, int width, int height);
+		/**
+		 * Genera un TextBox (AKA TextField en Java) vacio
+		 *	posX -> Posicion de las esquinas izquierdas.
+		 *	posY -> Posicion de las esquinas superiores.
+		 *	width -> Anchura de la vista
+		 *	height -> Altura de la vista
+		 */
+		HWND generateTextField(int posX, int posY, int width, int height);
+		/**
+		 * Genera un TextBox (AKA TextField en Java) con el texto metiod
+		 *  text -> Texto inicial
+		 *	posX -> Posicion de las esquinas izquierdas.
+		 *	posY -> Posicion de las esquinas superiores.
+		 *	width -> Anchura de la vista
+		 *	height -> Altura de la vista
+		 */
+		HWND generateTextField(const char* text, int posX, int posY, int width, int height);
+		/**
+		 * Devuelve el texto dentro de cualquier componente de la ventana (Botones, textbox...).
+		 * component -> componente del que sacar el texto
+		 */
+		char* getComponentText(HWND component);
+		/**
+		 * Elimina todos los componentes presentes en la ventana
+		 */
 		void destroyComponents();
+		/**
+		 * Elimina un componente de la ventana.
+		 * comp -> Componente a eliminar
+		 */
 		void removeComponent(HWND comp);
-
+		/**
+		 * Tiempo desde el anterior frame
+		 */
 		float deltatime = 0;
 		Window(){
 		};
