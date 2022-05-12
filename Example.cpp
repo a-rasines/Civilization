@@ -11,6 +11,7 @@
 #include <iostream>
 #include "WindowObjects/WindowManager.h"
 #include "Ejemplo2.h"
+#include "menuEjemplo.h"
 #include <string.h>
 void Example::start(){
 	//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
@@ -56,7 +57,7 @@ void Example::onButtonPress(HWND button){
 	if(button == red)shape.setFillColor(sf::Color::Red);
 	else if(button == blue)	shape.setFillColor(sf::Color::Blue);
 	else if(button == green) shape.setFillColor(sf::Color::Green);
-	else if(button == next) Window::manager->setWindow(new Ejemplo2());
+	else if(button == next) Window::manager->setWindow(new menuEjemplo());
 	else if(button == textButton){
 		removeComponent(textButton); //No se si hay alguna forma de cambiar texto, pero esta funciona
 		textButton = generateButton(getComponentText(comboBox), 1000, 0, 200, 100);
