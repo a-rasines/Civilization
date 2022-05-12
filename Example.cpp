@@ -28,6 +28,7 @@ void Example::start(){
 	next = generateButton("Sprites", 600, 0, 200, 100);
 	textField = generateTextField(800, 0, 200, 100);
 	textButton = generateButton("", 1000, 0, 200, 100);
+	comboBox = generateComboBox(1000, 100, 200, 100, {"A", "B","C"});
 
 }
 void Example::update(){
@@ -58,7 +59,7 @@ void Example::onButtonPress(HWND button){
 	else if(button == next) Window::manager->setWindow(new Ejemplo2());
 	else if(button == textButton){
 		removeComponent(textButton); //No se si hay alguna forma de cambiar texto, pero esta funciona
-		textButton = generateButton(getComponentText(textField), 1000, 0, 200, 100);
+		textButton = generateButton(getComponentText(comboBox), 1000, 0, 200, 100);
 	}
 }
 int main(){

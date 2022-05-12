@@ -29,6 +29,7 @@ private:
 	HWND view;
 	HWND textField;
 	HWND textButton;
+	HWND comboBox;
 	float x = 0;
 	float y = 0;
 	float v = 1;

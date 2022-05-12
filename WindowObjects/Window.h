@@ -52,9 +52,19 @@ class Window {
 		 */
 		HWND generateTextField(const char* text, int posX, int posY, int width, int height);
 		/**
-		 * Devuelve el texto dentro de cualquier componente de la ventana (Botones, textbox...).
+		 * Genera un ComboBox con los valores indicados en el parametro 5
+		 *	posX -> Posicion de las esquinas izquierdas.
+		 *	posY -> Posicion de las esquinas superiores.
+		 *	width -> Anchura de la vista
+		 *	height -> Altura de la vista
+		 *	values -> Valores del comboBox
+		 */
+		HWND generateComboBox(int posX, int posY, int width, int height, std :: initializer_list <const char*> values);
+		/**
+		 * Devuelve el texto dentro de cualquier componente de la ventana (Botones, textbox, combobox...).
 		 * component -> componente del que sacar el texto
 		 */
+
 		char* getComponentText(HWND component);
 		/**
 		 * Elimina todos los componentes presentes en la ventana
