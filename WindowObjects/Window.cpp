@@ -24,22 +24,19 @@ HWND Window::generateButton(const char* title, int posX, int posY, int width, in
 	components.push_back(comp);
 	return comp;
 }
-HWND Window::generateTextField(int posX, int posY, int width, int height){
-	HWND comp = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(""),
-            WS_CHILD | WS_VISIBLE, posX, posY, width,
-            height, window, NULL, instance, NULL);
-	components.push_back(comp);
-	return comp;
-}
 HWND Window::generateTextField(const char* text, int posX, int posY, int width, int height){
 	HWND comp = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(text), WS_CHILD | WS_VISIBLE, posX, posY, width, height, window, NULL, instance, NULL);
 	components.push_back(comp);
 	return comp;
 }
+HWND Window::generateTextField(int posX, int posY, int width, int height){
+	return generateTextField("", posX, posY, width, height);
+}
 HWND Window::generateComboBox(int posX, int posY, int width, int height, std :: initializer_list <const char*> values){
 	HWND comp = CreateWindow(WC_COMBOBOX, TEXT(""), CBS_DROPDOWN | CBS_HASSTRINGS | WS_CHILD | WS_OVERLAPPED | WS_VISIBLE, posX, posY, width, height, window, NULL, instance, NULL);
 	for(const char* str : values)
 		ComboBox_AddItemData(comp, str);
+	components.push_back(comp);
 	return comp;
 }
 void Window::removeComponent(HWND comp){
