@@ -20,9 +20,10 @@ void Ejemplo2::start(){
 	SFMLView1.create(view);
 	//Se muetra
 	SFMLView1.display();
-	 if (!texture1.loadFromFile("resources/image1.png", sf::IntRect(250,250,100,100))/* offsetX, offsetY, sizeX, sizeY*/ || !texture2.loadFromFile("resources/image2.jpg") || !texture3.loadFromFile("resources/image3.jpg"))
+	 if (!texture1.loadFromFile("resources/SP257.PIC_256.gif", sf::IntRect(1, 177, 15, 15))/* offsetX, offsetY, sizeX, sizeY*/ || !texture2.loadFromFile("resources/image2.jpg") || !texture3.loadFromFile("resources/image3.jpg"))
 		 return;
 	sprite = sf::Sprite(texture1);
+	sprite.setScale(sf::Vector2f(4, 4));
 	blue = generateButton("Textura1", 0, 0, 200, 100);
 	red = generateButton("Textura2", 200, 0, 200, 100);
 	green = generateButton("Textura3", 400, 0, 200, 100);
