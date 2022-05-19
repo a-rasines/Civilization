@@ -7,6 +7,9 @@
 #ifndef SPRITE_H_
 #define SPRITE_H_
 namespace Sprite{
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                              INICIO DE TROPAS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	struct TroopData{
 		int textureX;
 		int textureY;
@@ -118,6 +121,121 @@ namespace Sprite{
 			(TroopData) {97, 177, 15, 15, 0, 0, 2, 30},//Diplomat
 			(TroopData) {113, 177, 15, 15, 0, 1, 1, 50} //Caravan
 	};
-}
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                              FIN DE TROPAS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                              INICIO DE TERRENOS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	class AllowedTroopTypes{
+		public:
+			enum {
+				NONE = 0,
+				GROUND = 1,
+				AIR = 2,
+				//GROUND + AIR = 3
+				WATER = 4,
+				//GROUND + WATER = 5
+				//AIR + WATER = 6
+				//GROUND + AIR + WATER = 7
+				ALL = 8
+			};
+	};
+	struct TerrainType{
+		const int textureX;
+		const int textureY;
+		const int sizeX;
+		const int sizeY;
+		const char* file;
+		int allowedTroops; //Valor de AllowedTroopTypes
+	};
+	class Connections {
+		public:
+			static const Connections
+				NONE,
+				UP,
+				DOWN,
+				LEFT,
+				RIGHT;
+			Connections(){
+
+				value = 0;
+			}
+			virtual ~Connections(){
+
+			}
+			operator int() const {
+				return x[value];
+			}
+			Connections operator+(Connections other) const{
+				return Connections(this->value + other.value);
+			}
+		private:
+			Connections(int value){
+				this->value = value;
+			}
+			int value;
+			static constexpr const int x[]= {0, 16, 64, 80, 128, 144, 192, 208, 32, 48, 96, 112, 160, 176, 224, 240};
+	};
+	enum class StackableConnections{
+		NONE,
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		UP_RIGHT,
+		UP_LEFT,
+		DOWN_RIGHT,
+		DOWN_LEFT
+	};
+	class TerrainTypes{};
+	class ConnectedTerrainTypes : public TerrainTypes{};
+	class NonStackableTerrainTypes : public ConnectedTerrainTypes{
+		public:
+			const char* file;
+			int y;
+			NonStackableTerrainTypes(int y, const char* file){
+				this->file = file;
+				this->y = y;
+			};
+			static NonStackableTerrainTypes
+				RIVER,
+				NOT_FROZEN_SEA,
+				FROZEN_RIVER,
+				NOT_SEA,
+				MOUNTAIN,
+				MOUNT,
+				ICE,
+				CROPS,
+				FOREST,
+				SWAMP,
+				WATERFOREST,
+				RIVER_SEA,
+				BIG_CROPS;
+	};
+	class StackedTerrainTypes : public ConnectedTerrainTypes{
+		public:
+			enum{
+				ROAD = 208,
+				RAIL = 224
+			};
+	};
+	class NonConnectedTerrainTypes{
+
+	};
+	class Terrain{
+
+	};
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                              FIN DE TERRENOS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+	//                              INICIO DE CASILLAS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+};
 
 #endif /* SPRITE_H_ */

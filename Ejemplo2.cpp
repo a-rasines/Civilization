@@ -20,7 +20,7 @@ void Ejemplo2::start(){
 	SFMLView1.create(view);
 	//Se muetra
 	SFMLView1.display();
-	 if (!texture1.loadFromFile("resources/SP257.PIC_256.gif", sf::IntRect(1, 177, 15, 15))/* offsetX, offsetY, sizeX, sizeY*/ || !texture2.loadFromFile("resources/image2.jpg") || !texture3.loadFromFile("resources/image3.jpg"))
+	 if (!texture1.loadFromFile("resources/TER257.PIC_256.gif", sf::IntRect(16,  80, 16, 16))/* offsetX, offsetY, sizeX, sizeY*/ || !texture2.loadFromFile("resources/image2.jpg") || !texture3.loadFromFile("resources/image3.jpg"))
 		 return;
 	sprite = sf::Sprite(texture1);
 	sprite.setScale(sf::Vector2f(4, 4));
