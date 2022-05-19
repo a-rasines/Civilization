@@ -6,6 +6,7 @@
 
 #ifndef SPRITE_H_
 #define SPRITE_H_
+#include <string>
 namespace Sprite{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                              INICIO DE TROPAS
@@ -19,7 +20,6 @@ namespace Sprite{
 		int defense;
 		int movements;
 		int cost;
-
 	};
 	struct TransporterData : public TroopData{
 		TransporterData(int textureX, int textureY, int sizeX, int sizeY, int damage, int defense, int movements, int cost, int capacity){
@@ -59,7 +59,7 @@ namespace Sprite{
 			TroopData::cost = cost;
 		}
 	};
-	enum TroopType{
+	enum class TroopType{
 		SETTLER,
 		MILITIA,
 		PHALANX,
@@ -88,10 +88,10 @@ namespace Sprite{
 		NUCLEAR,
 		DIPLOMAT,
 		CARAVAN,
-		NULL //Valor para tener constancia del tamaño del enum
+		NONE //Valor para tener constancia del tamaño del enum
 
 	};
-	const TroopData Troop[TroopType::NULL] = {
+	const TroopData Troop[(int)TroopType::NONE] = {
 			(TroopData) {1,161,15,15, 0, 1, 1, 40},//Settler
 			(TroopData) {17, 161, 15, 15, 1, 1, 1, 10},//Militia
 			(TroopData) {33, 161, 15, 15, 1, 2, 1, 20},//Phalanx
@@ -130,29 +130,74 @@ namespace Sprite{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	class AllowedTroopTypes{
 		public:
-			enum {
-				NONE = 0,
-				GROUND = 1,
-				AIR = 2,
-				//GROUND + AIR = 3
-				WATER = 4,
-				//GROUND + WATER = 5
-				//AIR + WATER = 6
-				//GROUND + AIR + WATER = 7
-				ALL = 8
-			};
+			AllowedTroopTypes(){
+				value = 0;
+			}
+			bool isAllowed(AllowedTroopTypes other){
+				if(other.value == value)return true;
+				else if(other.value > value)return false;
+				return compare(other.value);
+			}
+			static AllowedTroopTypes
+				AIR,
+				GROUND,
+				WATER,
+				NONE;
+			AllowedTroopTypes operator+(AllowedTroopTypes other){
+				return AllowedTroopTypes(value + other.value);
+			}
+		private:
+			int value;
+			std::string toBinary(int n){
+				std::string r;
+				while(n!=0) {r=(n%2==0 ?"0":"1")+r; n/=2;}
+				return r;
+			}
+			bool compare(int otherValue){
+				std::string v1 = toBinary(value);
+				std::string v2 = toBinary(otherValue);
+				for(unsigned int i = 0; i < (v1.length()>v2.length()? v2.length():v1.length());i++){
+					if(v1[i] == 1 && v2[i] == 0)return false;
+				}
+				return true;
+			}
+			AllowedTroopTypes(int val){
+				value = val;
+			}
+//			enum {
+//				NONE = 0,
+//				GROUND = 1,
+//				AIR = 2,
+//				//GROUND + AIR = 3
+//				WATER = 4,
+//				//GROUND + WATER = 5
+//				//AIR + WATER = 6
+//				//GROUND + AIR + WATER = 7
+//				ALL = 8
 	};
 	struct TerrainType{
-		const int textureX;
-		const int textureY;
-		const int sizeX;
-		const int sizeY;
+		TerrainType(){
+			this->textureX = 0;
+			this->textureY = 0;
+			this->file = "";
+			this->allowedTroops = new AllowedTroopTypes();
+		}
+		TerrainType(int textureX, int textureY, const char* file, AllowedTroopTypes *allowedTroops){
+			this->textureX = textureX;
+			this->textureY = textureY;
+			this->file = file;
+			this->allowedTroops = allowedTroops;
+		}
+		int textureX;
+		int textureY;
+		const int sizeX = 16;
+		const int sizeY = 16;
 		const char* file;
-		int allowedTroops; //Valor de AllowedTroopTypes
+		AllowedTroopTypes *allowedTroops; //Valor de AllowedTroopTypes
 	};
 	class Connections {
 		public:
-			static const Connections
+			static Connections
 				NONE,
 				UP,
 				DOWN,
@@ -189,17 +234,20 @@ namespace Sprite{
 		DOWN_RIGHT,
 		DOWN_LEFT
 	};
-	class TerrainTypes{};
-	class ConnectedTerrainTypes : public TerrainTypes{};
-	class NonStackableTerrainTypes : public ConnectedTerrainTypes{
+	class ConnectedTerrainType : public TerrainType{
+	};
+	class NonStackableTerrainType : public ConnectedTerrainType{
 		public:
-			const char* file;
-			int y;
-			NonStackableTerrainTypes(int y, const char* file){
+			NonStackableTerrainType(int y, const char* file, AllowedTroopTypes *allowedTroops){
 				this->file = file;
-				this->y = y;
+				textureY = y;
+				textureX = 0;
+				this->allowedTroops = allowedTroops;
 			};
-			static NonStackableTerrainTypes
+			TerrainType generate(Connections con){
+				return (TerrainType){(int) con, textureY, file, allowedTroops};
+			}
+			static NonStackableTerrainType
 				RIVER,
 				NOT_FROZEN_SEA,
 				FROZEN_RIVER,
@@ -214,28 +262,20 @@ namespace Sprite{
 				RIVER_SEA,
 				BIG_CROPS;
 	};
-	class StackedTerrainTypes : public ConnectedTerrainTypes{
+	class StackedTerrainType : public ConnectedTerrainType{
 		public:
 			enum{
 				ROAD = 208,
 				RAIL = 224
 			};
 	};
-	class NonConnectedTerrainTypes{
-
-	};
-	class Terrain{
+	class NonConnectedTerrainType{
 
 	};
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                              FIN DE TERRENOS
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
-	//                              INICIO DE CASILLAS
-	/////////////////////////////////////////////////////////////////////////////////////////////////////
-
 };
 
 #endif /* SPRITE_H_ */
