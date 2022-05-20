@@ -1,0 +1,25 @@
+<patch id="CIV1_SKIP_INTRO_FADEIN">
+	<title>Attempt to speed up the intro logo transition</title>
+	<description>Attempt to speed up the intro logo transition</description>
+	<author>darkpanda</author>
+	<date>2014/06/10</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+<!--
+======== EN_47401 ========
+      ovr02:0B7C (0x2CD7C) - B8140050B8010050
+======== EN_47403 ========
+      ovr02:0B83 (0x2C583) - B8140050B8010050
+======== EN_47404 ========
+      ovr02:0B83 (0x2C583) - B8140050B8010050
+======== EN_47405 ========
+      ovr02:0B83 (0x2CD83) - B8140050B8010050
+======== FR_47405 ========
+      ovr02:0B83 (0x2E183) - B8140050B8010050
+-->
+	<data versions="EN47401,EN47501"><parts><part><offset>0x2CD7C</offset><bytes>B8 03 0050B8010050</bytes><original>B8 14 0050B8010050</original></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part><offset>0x2C583</offset><bytes>B8 03 0050B8010050</bytes><original>B8 14 0050B8010050</original></part></parts></data>
+	<data versions="EN47405"><parts><part><offset>0x2CD83</offset><bytes>B8 03 0050B8010050</bytes><original>B8 14 0050B8010050</original></part></parts></data>
+	<data versions="FR47405"><parts><part><offset>0x2E183</offset><bytes>B8 03 0050B8010050</bytes><original>B8 14 0050B8010050</original></part></parts></data>
+
+</patch>

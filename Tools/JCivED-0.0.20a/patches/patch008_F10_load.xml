@@ -1,0 +1,67 @@
+<patch id="CIV1_F10_LOAD_GAME">
+	<title>Rewires F10 shortcut key to load saved game from within CIV</title>
+	<description>After applying this patch, pressing F10 key will open the "Load Saved Game" screen and allow the player to directly load a previously saved game; the World Map can still be shown by using the menu item from the WORLD menu; note: some side effects have been noticed, this functionality is not guaranteed</description>
+	<author>darkpanda</author>
+	<date>2013/09/09</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=12766006#post12766006</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?p=12766006#post12766006
+
+EN 47401 / 47501
+offset: 0x743C
+original bytes: B8 01 00 BA 00 00 52 50 CD 3F 0C 00 00
+  hacked bytes: B8 FF FF BA 00 00 52 50 CD 3F 0B 00 00
+
+FR 47405
+        offset: 0x758A
+original bytes: B8 01 00 BA 00 00 52 50 CD 3F 0C 00 00
+  hacked bytes: B8 FF FF BA 00 00 52 50 CD 3F 0B 00 00
+
+EN 47405
+        offset: 0x74A6
+original bytes: B8 01 00 BA 00 00 52 50 CD 3F 0C 00 00
+  hacked bytes: B8 FF FF BA 00 00 52 50 CD 3F 0B 00 00
+
+EN 47403 & EN 47404
+        offset: 0x6E9A
+original bytes: B8 01 00 99 52 50 CD 3F 0C 00 00
+  hacked bytes: B8 FF FF 99 52 50 CD 3F 0B 00 00
+-->
+	<data versions="EN47401,EN47501">
+		<parts>
+			<part>
+				<offset>0x743C</offset>
+				   <bytes>B8 FF FF BA 00 00 52 50 CD 3F 0B 00 00</bytes>
+				<original>B8 01 00 BA 00 00 52 50 CD 3F 0C 00 00</original>
+			</part>
+		</parts>
+	</data>
+	<data versions="FR47405">
+		<parts>
+			<part>
+				<offset>0x758A</offset>
+				   <bytes>B8 FF FF BA 00 00 52 50 CD 3F 0B 00 00</bytes>
+				<original>B8 01 00 BA 00 00 52 50 CD 3F 0C 00 00</original>
+			</part>
+		</parts>
+	</data>
+	<data versions="EN47405">
+		<parts>
+			<part>
+				<offset>0x74A6</offset>
+				   <bytes>B8 FF FF BA 00 00 52 50 CD 3F 0B 00 00</bytes>
+				<original>B8 01 00 BA 00 00 52 50 CD 3F 0C 00 00</original>
+			</part>
+		</parts>
+	</data>
+	<data versions="EN47403,EN47404">
+		<parts>
+			<part>
+				<offset>0x6E9A</offset>
+				   <bytes>B8 FF FF 99 52 50 CD 3F 0B 00 00</bytes>
+				<original>B8 01 00 99 52 50 CD 3F 0C 00 00</original>
+			</part>
+		</parts>
+	</data>
+</patch>

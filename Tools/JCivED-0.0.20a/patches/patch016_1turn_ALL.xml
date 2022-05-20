@@ -1,0 +1,57 @@
+<patch id="CIV1_1TURN_TERRAIN_IMPROVMENT_ALL">
+	<title>All terrain improvement tasks take 1 turn</title>
+	<description>This patch changes the time a Settler takes to perform any terrain improvement task to 1 turn: irrigation, mining, road/railroad building, fortress building and de-pollution</description>
+	<author>darkpanda</author>
+	<date>2013/11/20</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=514255</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?t=514255
+
+address of "Unit SpecialMoves" by versions:
+ EN 474 01, 475 01: 0x90F9 (F9 90)
+ EN 474 03, 04, 05: 0x81D9 (D9 81)
+         FR 474 05: 0x88D9 (D9 88)
+-->
+	<data versions="EN47401,EN47501"><parts>
+		<part> <offset>0x24FEB</offset> <original>FE FF 05 00 FE FF 05 00 00 00 00 00 FE FF 05 00 02 00 0F 00 01 00 01 00 FE FF 05 00 02 00 0A 00 00 00 01 00 06 00 05 00 FF FF 05 00 00 00 00 00 FE FF 0A 00 FC FF 0A 00 01 00 01 00 FF FF 00 00 FE FF 0A 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FE FF 05 00 FF FF 00 00 00 00 01 00</original><bytes>FE FF 01 00 FE FF 01 00 00 00 00 00 FE FF 01 00 02 00 01 00 01 00 01 00 FE FF 01 00 02 00 01 00 00 00 01 00 06 00 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FC FF 01 00 01 00 01 00 FF FF 01 00 FE FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FF FF 01 00 00 00 01 00</bytes></part>
+		<part> <offset>0x5215</offset> <original>04</original><bytes>01</bytes></part>
+		<part> <offset>0x590D</offset> <original>05</original><bytes>01</bytes></part>
+		<part> <offset>0x550B</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+		<part> <offset>0x5387</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x538E</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+	</parts></data>
+	<data versions="EN47403">        <parts>
+		<part> <offset>0x2469D</offset> <original>FE FF 05 00 FE FF 05 00 00 00 00 00 FE FF 05 00 02 00 0F 00 01 00 01 00 FE FF 05 00 02 00 0A 00 00 00 01 00 06 00 05 00 FF FF 05 00 00 00 00 00 FE FF 0A 00 FC FF 0A 00 01 00 01 00 FF FF 00 00 FE FF 0A 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FE FF 05 00 FF FF 00 00 00 00 01 00</original><bytes>FE FF 01 00 FE FF 01 00 00 00 00 00 FE FF 01 00 02 00 01 00 01 00 01 00 FE FF 01 00 02 00 01 00 00 00 01 00 06 00 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FC FF 01 00 01 00 01 00 FF FF 01 00 FE FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FF FF 01 00 00 00 01 00</bytes></part>
+		<part> <offset>0x50CF</offset> <original>04</original><bytes>01</bytes></part>
+		<part> <offset>0x56B5</offset> <original>05</original><bytes>01</bytes></part>
+		<part> <offset>0x5359</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+		<part> <offset>0x521B</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x5222</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+	</parts></data>
+	<data versions="EN47404">        <parts>
+		<part> <offset>0x246A3</offset> <original>FE FF 05 00 FE FF 05 00 00 00 00 00 FE FF 05 00 02 00 0F 00 01 00 01 00 FE FF 05 00 02 00 0A 00 00 00 01 00 06 00 05 00 FF FF 05 00 00 00 00 00 FE FF 0A 00 FC FF 0A 00 01 00 01 00 FF FF 00 00 FE FF 0A 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FE FF 05 00 FF FF 00 00 00 00 01 00</original><bytes>FE FF 01 00 FE FF 01 00 00 00 00 00 FE FF 01 00 02 00 01 00 01 00 01 00 FE FF 01 00 02 00 01 00 00 00 01 00 06 00 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FC FF 01 00 01 00 01 00 FF FF 01 00 FE FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FF FF 01 00 00 00 01 00</bytes></part>
+		<part> <offset>0x50CF</offset> <original>04</original><bytes>01</bytes></part>
+		<part> <offset>0x56B5</offset> <original>05</original><bytes>01</bytes></part>
+		<part> <offset>0x5359</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+		<part> <offset>0x521B</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x5222</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+	</parts></data>
+	<data versions="EN47405">        <parts>
+		<part> <offset>0x24EB7</offset> <original>FE FF 05 00 FE FF 05 00 00 00 00 00 FE FF 05 00 02 00 0F 00 01 00 01 00 FE FF 05 00 02 00 0A 00 00 00 01 00 06 00 05 00 FF FF 05 00 00 00 00 00 FE FF 0A 00 FC FF 0A 00 01 00 01 00 FF FF 00 00 FE FF 0A 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FE FF 05 00 FF FF 00 00 00 00 01 00</original><bytes>FE FF 01 00 FE FF 01 00 00 00 00 00 FE FF 01 00 02 00 01 00 01 00 01 00 FE FF 01 00 02 00 01 00 00 00 01 00 06 00 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FC FF 01 00 01 00 01 00 FF FF 01 00 FE FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FF FF 01 00 00 00 01 00</bytes></part>
+		<part> <offset>0x5247</offset> <original>04</original><bytes>01</bytes></part>
+		<part> <offset>0x5944</offset> <original>05</original><bytes>01</bytes></part>
+		<part> <offset>0x553D</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+		<part> <offset>0x53B9</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x553D</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+	</parts></data>
+	<data versions="FR47405">        <parts>
+		<part> <offset>0x25C8F</offset> <original>FE FF 05 00 FE FF 05 00 00 00 00 00 FE FF 05 00 02 00 0F 00 01 00 01 00 FE FF 05 00 02 00 0A 00 00 00 01 00 06 00 05 00 FF FF 05 00 00 00 00 00 FE FF 0A 00 FC FF 0A 00 01 00 01 00 FF FF 00 00 FE FF 0A 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 0A 00 0F 00 02 00 0F 00 00 00 00 00 FF FF 00 00 FF FF 00 00 00 00 00 00 FE FF 05 00 FF FF 00 00 00 00 01 00</original><bytes>FE FF 01 00 FE FF 01 00 00 00 00 00 FE FF 01 00 02 00 01 00 01 00 01 00 FE FF 01 00 02 00 01 00 00 00 01 00 06 00 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FC FF 01 00 01 00 01 00 FF FF 01 00 FE FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 0A 00 01 00 02 00 01 00 00 00 00 00 FF FF 01 00 FF FF 01 00 00 00 00 00 FE FF 01 00 FF FF 01 00 00 00 01 00</bytes></part>
+		<part> <offset>0x532B</offset> <original>04</original><bytes>01</bytes></part>
+		<part> <offset>0x5A28</offset> <original>05</original><bytes>01</bytes></part>
+		<part> <offset>0x5621</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+		<part> <offset>0x549D</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x5621</offset> <original>8B C8</original><bytes>B1 01</bytes></part>
+	</parts></data>
+
+
+
+
+
+
+</patch>

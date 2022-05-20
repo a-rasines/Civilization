@@ -1,0 +1,30 @@
+<patch id="CIV1_STARTING_POSITIONS">
+	<title>Changes the EARTH starting positions</title>
+	<description>This patch allows to modify the starting positions for Civs on EARTH map(MAP.PIC)</description>
+	<author>darkpanda</author>
+	<date>2015/04/06</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+	<cfgclass>dd.jcived.patches.StartingPositionsConfigurator</cfgclass>
+<!-- 
+  input=24132d16
+ lookup=24132D16
+bitmask=FFFFFFFF
+======== EN_47401 ========
+      seg031:358C (0x27D4B) - 24132D16
+======== EN_47403 ========
+      seg031:35DC (0x2744D) - 24132D16
+======== EN_47404 ========
+      seg031:35DC (0x27453) - 24132D16
+======== EN_47405 ========
+      seg031:35DC (0x27C67) - 24132D16
+======== FR_47405 ========
+      seg031:3A22 (0x28E56) - 24132D16
+
+   -->
+	<data versions="EN47401,EN47501"><parts><part><offset>0x27D49</offset><bytes>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</bytes><original>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</original></part></parts></data>
+	<data versions="EN47403">        <parts><part><offset>0x2744B</offset><bytes>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</bytes><original>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</original></part></parts></data>
+	<data versions="EN47404">        <parts><part><offset>0x27451</offset><bytes>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</bytes><original>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</original></part></parts></data>
+	<data versions="EN47405">        <parts><part><offset>0x27C65</offset><bytes>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</bytes><original>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</original></part></parts></data>
+	<data versions="FR47405">        <parts><part><offset>0x28E54</offset><bytes>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</bytes><original>000024132D16260F29180C122712391800002C0C2A2A2110051742131F0E3113</original></part></parts></data>
+</patch>

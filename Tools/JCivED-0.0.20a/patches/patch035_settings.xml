@@ -1,0 +1,43 @@
+<patch id="CIV1_CUSTOM_SETTINGS">
+	<title>Changes the default game settings</title>
+	<description>This patch makes it possible to modify the default game settings: auto advice, sound off, animations, palace, end of turn, ...</description>
+	<author>darkpanda</author>
+	<date>2014/12/01</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+	<cfgclass>dd.jcived.patches.DefaultSettingsConfigurator</cfgclass>
+<!-- 
+  input=C7 06 ?? ?? FA 00
+ lookup=C7060000FA00
+bitmask=FFFF0000FFFF
+======== EN_47401 ========
+      ovr05:02F2 (0x2FAF2) - C706C019FA00
+======== EN_47403 ========
+      ovr05:02F7 (0x2F2F7) - C706C019FA00
+======== EN_47404 ========
+      ovr05:02F7 (0x2F2F7) - C706C019FA00
+======== EN_47405 ========
+      ovr05:02F7 (0x2FAF7) - C706C019FA00
+======== FR_47405 ========
+      ovr05:02F7 (0x30EF7) - C706241BFA00
+      
+
+"FA" is the default settings byte, this patch changes it to "86"
+
+0xFA|86|
+====|==|=================
+0: 0| 0|Instant advice
+1: 1| 1|Auto-save
+2: 0| 1|End of turn
+3: 1| 0|Animations
+4:1 |0 |Sound
+5:1 |0 |Enemy moves
+6:1 |0 |Civilopedia text
+7:1 |1 |Palace
+
+   -->
+	<data versions="EN47401,EN47501"><parts><part><offset>0x2FAF2</offset><bytes>C706C019 86 00</bytes><original>C706C019 FA 00</original></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part><offset>0x2F2F7</offset><bytes>C706C019 86 00</bytes><original>C706C019 FA 00</original></part></parts></data>
+	<data versions="EN47405">        <parts><part><offset>0x2FAF7</offset><bytes>C706C019 86 00</bytes><original>C706C019 FA 00</original></part></parts></data>
+	<data versions="FR47405">        <parts><part><offset>0x30EF7</offset><bytes>C706241B 86 00</bytes><original>C706241B FA 00</original></part></parts></data>
+</patch>

@@ -1,0 +1,100 @@
+<patch id="CIV1_SPECIAL_RES_RAND">
+	<title>Random special resources</title>
+	<description>This patch rewrites the "CheckSpecialResource" routine that checks whether a map square should be have a special resource or not: the original CIV routine follows a well known pattern, this patch makes it much more random</description>
+	<author>darkpanda</author>
+	<date>2014/05/16</date>
+	<revision>1</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=13224157#post13224157</reference>
+<!--
+New routine details (IDA format):
+
+	 : Routine initialization
+	                proc far
+                     	var_4           = word ptr -4 ; temporary storage for Random seed 1
+                     	var_2           = word ptr -2 ; temporary storage for Random seed 2
+                     	arg_2           = word ptr  2 ; map square X
+                     	arg_4           = word ptr  4 ; map square Y
+[b]55 [/b][color=blue]                              push    bp[/color]
+[b]8B EC [/b][color=blue]                           mov     bp, sp[/color]
+[b]83 EC 04 [/b][color=blue]                        sub     sp, 4[/color]
+	
+	 : Making backup copies of random seeds
+[b]A1 DA 5B [/b][color=blue]                        mov     ax, ds:5BDAh[/color]
+[b]89 46 FE [/b][color=blue]                        mov     [bp+var_2], ax[/color]
+[b]A1 DC 5B [/b][color=blue]                        mov     ax, ds:5BDCh[/color]
+[b]89 46 FC [/b][color=blue]                        mov     [bp+var_4], ax[/color]
+	
+	 : Manually re-seeding the random generator using the TerrainMasterWord (ds:6E00h) from the SVE as seed1
+	 : and the static value 0xBABE as seed2 
+[b]A1 00 6E [/b][color=blue]                        mov     ax, ds:6E00h[/color]
+[b]A3 DA 5B [/b][color=blue]                        mov     ds:5BDAh, ax[/color]
+[b]C7 06 DC 5B BE BA [/b][color=blue]	             mov     word ptr ds:5BDCh, 0BABEh[/color]
+	
+	 : Computing base value of random call argument: base = X * seed2 + Y * seed1
+[b]8B 46 08 [/b][color=blue]                        mov     ax, [bp+arg_2][/color]
+[b]F7 2E DC 5B [/b][color=blue]                     imul    word ptr ds:5BDCh[/color]
+[b]8B C8 [/b][color=blue]                           mov     cx, ax[/color]
+[b]8B 46 0A [/b][color=blue]                        mov     ax, [bp+arg_4][/color]
+[b]F7 2E DA 5B [/b][color=blue]                     imul    word ptr ds:5BDAh[/color]
+[b]03 C1 [/b][color=blue]                           add     ax, cx[/color]
+	
+	 : Calling Random routine
+[b]50 [/b][color=blue]                              push    ax[/color]
+[b]9A 5B 00 DE 1D [/b][color=blue]	                 call    far ptr 1DDEh:5Bh[/color]
+[b]83 C4 02 [/b][color=blue]                        add     sp, 2[/color]
+	
+	 : Additional computation on random routine result: ( random(base) XOR 0xCAFE ) / 5
+[b]35 FE CA [/b][color=blue]                        xor     ax, 0CAFEh[/color]
+[b]BA 00 00 [/b][color=blue]                        mov     dx, 0[/color]
+[b]B9 05 00 [/b][color=blue]                        mov     cx, 5[/color]
+[b]F7 F9 [/b][color=blue]                           idiv    cx[/color]
+	
+	 : Rollback seeds to their original values
+[b]8B 46 FE [/b][color=blue]                        mov     ax, [bp+var_2][/color]
+[b]A3 DA 5B [/b][color=blue]                        mov     ds:5BDAh, ax[/color]
+[b]8B 46 FC [/b][color=blue]                        mov     ax, [bp+var_4][/color]
+[b]A3 DC 5B [/b][color=blue]                        mov     ds:5BDCh, ax[/color]
+	
+	 : Return "false" by default
+[b]2B C0 [/b][color=blue]                           sub     ax, ax[/color]
+	
+	 : Checks if DX == 0; if so, it means that ( random(base) XOR 0xCAFE ) MODULO 5 == 0, in which case 
+	 : the map square *has* a special resource
+[b]0B D2 [/b][color=blue]                           or      dx, dx[/color]
+	
+	 : If DX is NOT equal to 0, directly jump to routine end
+[b]75 03 [/b][color=blue]                           jnz     short loc_56[/color]
+	
+	 : ELSE return TRUE: the map square DOES contains a special resource
+[b]B8 01 00 [/b][color=blue]                        mov     ax, 1[/color]
+	
+	 : Routine termination
+	loc_56:                                 ; CODE XREF: sub_0+51
+[b]8B E5 [/b][color=blue]                           mov     sp, bp[/color]
+[b]5D [/b][color=blue]                              pop     bp[/color]
+[b]CB [/b][color=blue]                              retf[/color]
+	sub_0           endp
+
+-->
+	<data versions="EN47401,EN47501">
+		<parts>
+			<part> <!-- This part is the new, overwritten, routine -->
+				<offset>0x1C867</offset>
+				   <bytes>55 8B EC 83 EC 04 A1 DA 5B 89 46 FE A1 DC 5B 89 46 FC A1 00 6E A3 DA 5B C7 06 DC 5B BE BA 8B 46 08 F7 2E DC 5B 8B C8 8B 46 0A F7 2E DA 5B 03 C1 50 9A 5B 00 DE 1D 83 C4 02 35 FE CA BA 00 00 B9 05 00 F7 F9 8B 46 FE A3 DA 5B 8B 46 FC A3 DC 5B 2B C0 0B D2 75 03 B8 01 00 8B E5 5D CB</bytes>
+				<original>55 8B EC 83 EC 02 83 7E 0A 01 7E 06 83 7E 0A 30 7C 04 2B C0 EB 44 8B 46 08 D1 F8 D1 F8 B9 0D 00 F7 E9 8B C8 8B 46 0A D1 F8 D1 F8 BB 0B 00 F7 EB 03 C8 03 0E 00 6E 89 4E FE 8B 46 08 25 03 00 D1 E0 D1 E0 8B 4E 0A 83 E1 03 03 C1 8A 4E FE 2A ED 83 E1 0F 3B C1 75 BB B8 01 00 8B E5 5D</original>
+			</part>
+
+			<!-- The 2 parts below deal with EXE relocation tables, because the new routine introduces an additional Random call, that must be added to relocation tables as well for proper execution -->
+			<part><!-- Incrementing the packed relocation table size by 1 (this is done directly in the EXEPACK'ed CIV.EXE --> 
+				<offset>0x2Ad1B</offset>
+				   <bytes>69 04</bytes>
+				<original>68 04</original>
+			</part>
+			<part><!-- Adding the new relocation entry (2 first bytes below) at the end of section 0x10000, and pushing the sections 0x20000 and 0x30000 accordingly (442 bytes) - this is also done directly in the EXEPACK'ed CIV.EXE -->
+				<offset>0x2B5ED</offset>
+				   <bytes>AC C8 94 00 52 02 20 02 FF 01 D2 01 C6 01 A2 01 64 013D 01 1A 01 0B 01 06 01 CE 00 B9 00 A6 00 9E 0064 00 4F 00 3C 00 C6 03 7A 03 5C 03 05 03 B5 0272 05 48 05 3F 05 33 05 00 05 F5 04 C8 04 7C 0412 04 E4 F9 A3 05 C3 05 CB 05 13 06 1A 06 1F 0632 06 38 06 3B 06 4D 06 52 06 78 FA 51 07 CA 07DE 07 24 08 2D 08 69 0A D0 0B C4 0B AD 0B 8F 0B75 0B 68 0B 44 0B 02 0C 38 0C 26 0C 05 0E D6 0D9A 0D 63 0D 00 0D C4 0C 53 0E 80 0F 60 0F 2E 0FE6 0E B8 0E 28 10 A4 11 84 11 63 11 EB 10 D9 1116 12 03 13 A5 13 E6 16 A9 16 FA 15 E4 15 C1 1591 15 2F 15 D1 13 81 19 F3 18 DE 18 3D 18 FE 1BCA 1B A0 1B 16 1B 3C 20 D1 22 E2 FB E6 FB EA FBEE FB F2 FB 55 25 3D 25 26 25 10 26 FF 25 F4 25CB 25 B9 25 AD 25 B5 26 4A 29 29 29 E8 28 E1 28A6 28 42 28 28 28 BA 27 58 27 3A 27 26 27 BD 2A7B 2A AB 29 3B 2B A7 2B 67 2C 1B 2C 11 2C FF 2BDD 2B 56 2E 26 2E F3 2D CB 2D AF 2D 7C 2D 81 30D8 30 05 34 44 34 54 34 61 38 47 00 74 04 76 0478 04 7A 04 7C 04 7E 04 80 04 82 04 84 04 86 0488 04 8A 04 8C 04 8E 04 90 04 92 04 94 04 96 0498 04 9A 04 9C 04 9E 04 A0 04 A2 04 2C 05 30 052E 05 32 05 34 05 36 05 38 05 3A 05 3C 05 3E 0542 05 40 05 46 05 44 05 48 05 4A 05 52 05 50 054E 05 4C 05 56 05 54 05 5A 05 58 05 5C 05 5E 0562 05 60 05 68 05 66 05 64 05 6A 05 6E 05 6C 0570 05 72 05 74 05 76 05 78 05 7C 05 7A 05 7E 0580 05 86 05 84 05 82 05 64 04</bytes>
+				<original>94 00 52 02 20 02 FF 01 D2 01 C6 01 A2 01 64 013D 01 1A 01 0B 01 06 01 CE 00 B9 00 A6 00 9E 0064 00 4F 00 3C 00 C6 03 7A 03 5C 03 05 03 B5 0272 05 48 05 3F 05 33 05 00 05 F5 04 C8 04 7C 0412 04 E4 F9 A3 05 C3 05 CB 05 13 06 1A 06 1F 0632 06 38 06 3B 06 4D 06 52 06 78 FA 51 07 CA 07DE 07 24 08 2D 08 69 0A D0 0B C4 0B AD 0B 8F 0B75 0B 68 0B 44 0B 02 0C 38 0C 26 0C 05 0E D6 0D9A 0D 63 0D 00 0D C4 0C 53 0E 80 0F 60 0F 2E 0FE6 0E B8 0E 28 10 A4 11 84 11 63 11 EB 10 D9 1116 12 03 13 A5 13 E6 16 A9 16 FA 15 E4 15 C1 1591 15 2F 15 D1 13 81 19 F3 18 DE 18 3D 18 FE 1BCA 1B A0 1B 16 1B 3C 20 D1 22 E2 FB E6 FB EA FBEE FB F2 FB 55 25 3D 25 26 25 10 26 FF 25 F4 25CB 25 B9 25 AD 25 B5 26 4A 29 29 29 E8 28 E1 28A6 28 42 28 28 28 BA 27 58 27 3A 27 26 27 BD 2A7B 2A AB 29 3B 2B A7 2B 67 2C 1B 2C 11 2C FF 2BDD 2B 56 2E 26 2E F3 2D CB 2D AF 2D 7C 2D 81 30D8 30 05 34 44 34 54 34 61 38 47 00 74 04 76 0478 04 7A 04 7C 04 7E 04 80 04 82 04 84 04 86 0488 04 8A 04 8C 04 8E 04 90 04 92 04 94 04 96 0498 04 9A 04 9C 04 9E 04 A0 04 A2 04 2C 05 30 052E 05 32 05 34 05 36 05 38 05 3A 05 3C 05 3E 0542 05 40 05 46 05 44 05 48 05 4A 05 52 05 50 054E 05 4C 05 56 05 54 05 5A 05 58 05 5C 05 5E 0562 05 60 05 68 05 66 05 64 05 6A 05 6E 05 6C 0570 05 72 05 74 05 76 05 78 05 7C 05 7A 05 7E 0580 05 86 05 84 05 82 05 64 04 00 00</original>
+			</part>
+		</parts>
+	</data>
+</patch>

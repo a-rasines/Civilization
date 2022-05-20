@@ -1,0 +1,28 @@
+<patch id="CIV1_NO_QUIZ">
+	<title>Remove Quiz</title>
+	<description>This patch bypasses the technology quiz</description>
+	<author>darkpanda</author>
+	<date>2014/08/13</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=13387476#post13387476</reference>
+<!-- 
+offsets:
+	EN_47401: 0x276F
+	EN_47501: 0x276F
+	EN_47403: 0x277D
+	EN_47404: 0x277D
+	EN_47405: 0x277D
+	FR_47405: 0x27F5
+
+original bytes: CD 3F 10 00 00
+ patched bytes: 90 90 90 90 90   -->
+	<data versions="EN47401,EN47501">        <parts>
+		<part><offset>0x276F</offset><bytes>90 90 90 90 90</bytes><original>CD 3F 10 00 00</original></part>
+	</parts></data>
+	<data versions="EN47403,EN47404,EN47405"><parts>
+		<part><offset>0x277D</offset><bytes>90 90 90 90 90</bytes><original>CD 3F 10 00 00</original></part>
+	</parts></data>
+	<data versions="FR47405">                <parts>
+		<part><offset>0x27F5</offset><bytes>90 90 90 90 90</bytes><original>CD 3F 10 00 00</original></part>
+	</parts></data>
+</patch>

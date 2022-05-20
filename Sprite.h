@@ -197,12 +197,6 @@ namespace Sprite{
 	};
 	class Connections {
 		public:
-			static Connections
-				NONE,
-				UP,
-				DOWN,
-				LEFT,
-				RIGHT;
 			Connections(){
 
 				value = 0;
@@ -216,10 +210,10 @@ namespace Sprite{
 			Connections operator+(Connections other) const{
 				return Connections(this->value + other.value);
 			}
-		private:
 			Connections(int value){
 				this->value = value;
 			}
+		private:
 			int value;
 			static constexpr const int x[]= {0, 16, 64, 80, 128, 144, 192, 208, 32, 48, 96, 112, 160, 176, 224, 240};
 	};
@@ -234,10 +228,11 @@ namespace Sprite{
 		DOWN_RIGHT,
 		DOWN_LEFT
 	};
-	class ConnectedTerrainType : public TerrainType{
-	};
-	class NonStackableTerrainType : public ConnectedTerrainType{
+	class NonStackableTerrainType : public TerrainType{
 		public:
+			NonStackableTerrainType(){
+
+			}
 			NonStackableTerrainType(int y, const char* file, AllowedTroopTypes *allowedTroops){
 				this->file = file;
 				textureY = y;
@@ -247,31 +242,45 @@ namespace Sprite{
 			TerrainType generate(Connections con){
 				return (TerrainType){(int) con, textureY, file, allowedTroops};
 			}
-			static NonStackableTerrainType
-				RIVER,
-				NOT_FROZEN_SEA,
-				FROZEN_RIVER,
-				NOT_SEA,
-				MOUNTAIN,
-				MOUNT,
-				ICE,
-				CROPS,
-				FOREST,
-				SWAMP,
-				WATERFOREST,
-				RIVER_SEA,
-				BIG_CROPS;
-	};
-	class StackedTerrainType : public ConnectedTerrainType{
-		public:
-			enum{
-				ROAD = 208,
-				RAIL = 224
+			NonStackableTerrainType operator+ (Connections c){
+				return NonStackableTerrainType(textureY, (int) c, file, allowedTroops);
+			}
+		private:
+			NonStackableTerrainType(int y, int x, const char* file, AllowedTroopTypes *allowedTroops){
+				this->file = file;
+				textureY = y;
+				textureX = x;
+				this->allowedTroops = allowedTroops;
 			};
 	};
-	class NonConnectedTerrainType{
-
+	class StackedTerrainType : public TerrainType{
+		public:
+			enum{
+				ROAD,
+				RAIL
+			};
 	};
+	static const Connections
+		NONE(0),
+		UP(1),
+		DOWN(2),
+		LEFT(4),
+		RIGHT(8);
+	static const NonStackableTerrainType
+	RIVER(80, "SP257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	NOT_FROZEN_SEA(64, "SPRITES.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::WATER)),
+	FROZEN_RIVER(80, "SPRITES.PIC_256.gif",new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	NOT_SEA(160, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::WATER)),
+	MOUNTAIN(80, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	MOUNT(64, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	ICE(96, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	SNOW(112, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	CROPS(16, "TER257.PIC_256.gif",new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	FOREST(48, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	SWAMP(128, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	WATERFOREST(144, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
+	RIVER_SEA(176 ,"TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR + AllowedTroopTypes::WATER)),
+	BIG_CROPS(0, "TER257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR));
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	//                              FIN DE TERRENOS

@@ -1,0 +1,26 @@
+<patch id="CIV1_BUGFIX_LAND_VALUE">
+	<title>Fixes land value calculation</title>
+	<description>Parts of the original CIV algorithm to compute land calculation is deemed incorrect; this patch fixes this bug</description>
+	<author>darkpanda</author>
+	<date>2013/10/23</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=12851553#post12851553</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?p=12851553#post12851553
+
+offsets:
+  EN 47401: 0x35456
+  EN 47403: 0x34C7C
+  EN 47404: 0x34C7C
+  EN 47405: 0x3549C
+  EN 47501: 0x35456
+  FR 47405: 0x3687C
+
+original bytes: 837EC0097D068B46FC0146FC837EC00075068B46FC0146FC
+ patched bytes: 8B46FC837EC0097D03D1E090837EC0147506B90400F7E990
+-->
+	<data versions="EN47401,EN47501"><parts><part> <offset>0x35456</offset> <original>837EC0097D068B46FC0146FC837EC00075068B46FC0146FC8B46FC</original><bytes>8B46FC837EC0087D03D1E090837EC0147506B90400F7E990909090</bytes></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part> <offset>0x34C7C</offset> <original>837EC0097D068B46FC0146FC837EC00075068B46FC0146FC8B46FC</original><bytes>8B46FC837EC0087D03D1E090837EC0147506B90400F7E990909090</bytes></part></parts></data>
+	<data versions="EN47405">        <parts><part> <offset>0x3549C</offset> <original>837EC0097D068B46FC0146FC837EC00075068B46FC0146FC8B46FC</original><bytes>8B46FC837EC0087D03D1E090837EC0147506B90400F7E990909090</bytes></part></parts></data>
+	<data versions="FR47405">        <parts><part> <offset>0x3687C</offset> <original>837EC0097D068B46FC0146FC837EC00075068B46FC0146FC8B46FC</original><bytes>8B46FC837EC0087D03D1E090837EC0147506B90400F7E990909090</bytes></part></parts></data>
+</patch>

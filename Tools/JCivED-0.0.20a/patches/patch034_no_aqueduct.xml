@@ -1,0 +1,23 @@
+<patch id="CIV1_SKIP_AQUEDUCT">
+	<title>Skips the aqueduct requirement for city size 10+</title>
+	<description>This patch discards the requirement for a city to have an aqueduct for growing above size 10</description>
+	<author>darkpanda</author>
+	<date>2014/11/18</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+<!-- 
+Do not require Aqueduct to grow above city pop 10
+
+en01	d07:8da	7f03 (jg)	9090 (nop)
+en03	c91:8d7	7f03 (jg)	9090 (nop)
+en04	c91:8dd	7f03 (jg)	9090 (nop)
+en05	d12:8e1	7f03 (jg)	9090 (nop)
+fr05	e35:821	770a 7e66	(cmp 10 jle)	7700 7f66 (cmp 00 jg)
+   -->
+	<data versions="EN47401,EN47501"><parts><part><offset>0xD936</offset><bytes>90 90</bytes><original>7F 03</original></part></parts></data>
+	<data versions="EN47403">        <parts><part><offset>0xD1D3</offset><bytes>90 90</bytes><original>7F 03</original></part></parts></data>
+	<data versions="EN47404">        <parts><part><offset>0xD1D9</offset><bytes>90 90</bytes><original>7F 03</original></part></parts></data>
+	<data versions="EN47405">        <parts><part><offset>0xD9ED</offset><bytes>90 90</bytes><original>7F 03</original></part></parts></data>
+
+	<data versions="FR47405">        <parts><part><offset>0xEB5D</offset><bytes>77 00 7F 66</bytes><original>77 0A 7E 66</original></part></parts></data>
+</patch>

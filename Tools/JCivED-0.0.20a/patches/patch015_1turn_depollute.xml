@@ -1,0 +1,26 @@
+<patch id="CIV1_1TURN_DE-POLLUTION">
+	<title>Cleaning pollution takes 1 turn only</title>
+	<description>This patch changes the time a Settler takes to clean a polluted square to 1 turn only (originally 4)</description>
+	<author>darkpanda</author>
+	<date>2013/11/20</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=514255</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?t=514255
+
+offsets:
+  EN 474.01 = 0x5215
+  EN 474.03 = 0x50CF
+  EN 474.04 = 0x50CF
+  EN 474.05 = 0x5247
+  EN 475.01 = 0x5215
+  FR 474.05 = 0x532B
+
+original bytes: 04      -> cmp [Settler's special moves], 4;   
+ patched bytes: 01      -> cmp [Settler's special moves], 1;
+-->
+	<data versions="EN47401,EN47501"><parts><part> <offset>0x5215</offset> <original>04</original><bytes>01</bytes></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part> <offset>0x50CF</offset> <original>04</original><bytes>01</bytes></part></parts></data>
+	<data versions="EN47405">        <parts><part> <offset>0x5247</offset> <original>04</original><bytes>01</bytes></part></parts></data>
+	<data versions="FR47405">        <parts><part> <offset>0x532B</offset> <original>04</original><bytes>01</bytes></part></parts></data>
+</patch>

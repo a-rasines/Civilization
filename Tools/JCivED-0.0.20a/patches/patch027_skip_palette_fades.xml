@@ -1,0 +1,48 @@
+<patch id="CIV1_SKIP_FADEIN/OUT">
+	<title>Attempt to skip palette fade-in/outs</title>
+	<description>Attempt to skip palette fade-in/outs</description>
+	<author>darkpanda</author>
+	<date>2014/06/11</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+<!-- first attempt:
+======== EN_47401 ========
+      seg000:04FE (0x600) - B406F6E48BE8A166000BC07506
+======== EN_47403 ========
+      seg000:050C (0x60E) - B406F6E48BE8A166000BC07506
+======== EN_47404 ========
+      seg000:050C (0x60E) - B406F6E48BE8A166000BC07506
+======== EN_47405 ========
+      seg000:050C (0x60E) - B406F6E48BE8A166000BC07506
+======== FR_47405 ========
+      seg000:04FE (0x600) - B406F6E48BE8A166000BC07506
+-->
+	<data versions="EN47401,EN47501,FR47405"><parts><part><offset>0x600</offset><bytes>B8030090 8BE8A166000BC07506</bytes><original>B406F6E4 8BE8A166000BC07506</original></part></parts></data>
+	<data versions="EN47403,EN47404,EN47405"><parts><part><offset>0x60E</offset><bytes>B8030090 8BE8A166000BC07506</bytes><original>B406F6E4 8BE8A166000BC07506</original></part></parts></data>
+
+<!-- second attempt: // disabled
+======== EN_47401 ========
+      seg000:04B2 (0x5B4) - E891008B4606E84300
+      seg000:04EA (0x5EC) - E859008B4606E80B00
+======== EN_47403 ========
+      seg000:04C0 (0x5C2) - E891008B4606E84300
+      seg000:04F8 (0x5FA) - E859008B4606E80B00
+======== EN_47404 ========
+      seg000:04C0 (0x5C2) - E891008B4606E84300
+      seg000:04F8 (0x5FA) - E859008B4606E80B00
+======== EN_47405 ========
+      seg000:04C0 (0x5C2) - E891008B4606E84300
+      seg000:04F8 (0x5FA) - E859008B4606E80B00
+======== FR_47405 ========
+      seg000:04B2 (0x5B4) - E891008B4606E84300
+      seg000:04EA (0x5EC) - E859008B4606E80B00
+-->
+	<!-- <data versions="EN47401,EN47501,FR47405"><parts>
+		<part><offset>0x5B4</offset><bytes>E89100 B80100 E84300</bytes><original>E891008B4606E84300</original></part>
+		<part><offset>0x5EC</offset><bytes>E85900 B80100 E80B00</bytes><original>E859008B4606E80B00</original></part>
+	</parts></data>
+	<data versions="EN47403,EN47404,EN47405"><parts>
+		<part><offset>0x5C2</offset><bytes>E89100 B80100 E84300</bytes><original>E891008B4606E84300</original></part>
+		<part><offset>0x5FA</offset><bytes>E85900 B80100 E80B00</bytes><original>E859008B4606E80B00</original></part>
+	</parts></data>-->
+</patch>

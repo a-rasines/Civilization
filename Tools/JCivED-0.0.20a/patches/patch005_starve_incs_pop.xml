@@ -1,0 +1,36 @@
+<patch id="CIV1_STARVE_INC_POP">
+	<title>Food-starving cities have their population... increase!</title>
+	<description>This pointless -yet fun- patch makes the population of cities that endure food shortage *increase* by 1 instead of decreasing by 1 in the original game rules... My very first CIV.EXE hack ;)</description>
+	<author>darkpanda, Renergy</author>
+	<date>2013/08/14</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=497438</reference>
+	<data versions="EN47401,EN47501">
+		<parts>			<part>				<offset>0xD877</offset>				<bytes>87</bytes>				<original>8F</original>				</part></parts></data>
+	<data versions="EN47405">
+		<parts>			<part>				<offset>0xD92E</offset>				<bytes>87</bytes>				<original>8F</original>			</part></parts>	</data>
+</patch>
+
+<!--
+Source: http://forums.civfanatics.com/showthread.php?t=497438
+
+To do this, you need a Hex editor, and find the following hex string, which should be at offset 0xD876:
+Code:
+
+FE 8F 73 70 74 03 E9 39
+
+Replace the 8F byte with 87:
+Code:
+
+FE 87 73 70 74 03 E9 39
+
+Et voila! Cities that have food shortage will increase by 1 size...
+
+Hopes this enlightens your day with a pointless hack!
+
+Nice! For me (english civ 474.05) the offset was 0xD92D and the original sequence of bytes was
+
+FE 8F F3 70 74 03 E9 39
+
+changed 8F to 87 and it works as you write
+-->

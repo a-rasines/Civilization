@@ -1,0 +1,15 @@
+<patch id="CIV1_PILLAGE_MAKES_ARCTIC">
+	<title>Pillaging transform lands to arctic</title>
+	<description>This patch replaces the action occuring when pressing SHIFT+P: instead of pillaging, units tranform the land into Arctic</description>
+	<author>darkpanda</author>
+	<date>2015/04/20</date>
+	<revision>1</revision>
+	<reference>n/a</reference>
+<!-- 
+-->
+	<data versions="EN47401,EN47501"><parts><part><offset>0x4D8A</offset><bytes>e90e009090909Ac117051b83C408E9910DB8020050b00F50FF76D0FF76D4e9e5ff</bytes><original>FF76D0FF76D49A7715051B83C404A8017403E92900B80C00F76ECE8BD8B80006F7</original></part></parts></data>
+	<data versions="EN47403"><parts><part><offset>0x4C6C</offset><bytes>e90e009090909AD517681A83C408E9D80BB8020050b00F50FF76D0FF76D4e9e5ff</bytes><original>FF76D0FF76D49A8B15681A83C404A801751FB80C00F76ECE8BD8B80006F76E068B</original></part></parts></data>
+	<data versions="EN47404"><parts><part><offset>0x4C6C</offset><bytes>e90e009090909ACB17691A83C408E9D80BB8020050b00F50FF76D0FF76D4e9e5ff</bytes><original>FF76D0FF76D49A8115691A83C404A801751FB80C00F76ECE8BD8B80006F76E068B</original></part></parts></data>
+	<data versions="EN47405"><parts><part><offset>0x4DB7</offset><bytes>e90e009090909ACF17EA1A83C408E9B20DB8020050b00F50FF76D0FF76D4e9e5ff</bytes><original>FF76D0FF76D49A8515EA1A83C404A8017403E92900B80C00F76ECE8BD8B80006F7</original></part></parts></data>
+	<data versions="FR47405"><parts><part><offset>0x4E9B</offset><bytes>e90e009090909AC717A31B83C408E9B20DB8020050b00F50FF76D0FF76D4e9e5ff</bytes><original>FF76D0FF76D49A7D15A31B83C404A8017403E92900B80C00F76ECE8BD8B80006F7</original></part></parts></data>
+</patch>

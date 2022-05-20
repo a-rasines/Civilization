@@ -1,0 +1,75 @@
+<patch id="CIV1_BUGFIX_LAND_PATHFIND">
+	<title>Fixes a bug in CIV generation of land pathfinding data</title>
+	<description>After applying this patch, the high-level path-finding data for land movement (also present in SVE files) will be generated properly by CIV; the actual impact on CIV games is unknown</description>
+	<author>darkpanda</author>
+	<date>2013/08/18</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/threads/sve-file-format.493581/page-3#post-12554133</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?p=12686797#post12686797
+
+
+The original (wrong) calls are the 2 following bytes sequences:
+
+Code:
+
+9A 3C 13 05 1B ; // call to wrong GetTerrainType
+9A 2F 19 05 1B ; // call to wrong GetContinentOrOceanID
+
+Hereunder are the byte sequences to the correct functions:
+
+Code:
+
+9A 0C 17 88 23 ; // call to correct GetTerrainType
+9A 2D 17 88 23 ; // call to correct GetContinentOrOceanID
+
+The "continent pathfinding" subroutine makes totally 16 calls to the above functions, at the following offsets, given as absolute offset in the original CIV.EXE (WARNING: there may be other occurences of those bytes; DO NOT modify them!):
+
+Code:
+
+GetTerrainType
+  [0] offset in file: 218477 [0x3556D]
+  [1] offset in file: 218519 [0x35597]
+  [2] offset in file: 218608 [0x355F0]
+  [3] offset in file: 218665 [0x35629]
+  [4] offset in file: 218715 [0x3565B]
+  [5] offset in file: 218757 [0x35685]
+  [6] offset in file: 218862 [0x356EE]
+  [7] offset in file: 218919 [0x35727]
+GetContinentOrOceanID
+  [0] offset in file: 218494 [0x3557E]
+  [1] offset in file: 218536 [0x355A8]
+  [2] offset in file: 218630 [0x35606]
+  [3] offset in file: 218680 [0x35638]
+  [4] offset in file: 218732 [0x3566C]
+  [5] offset in file: 218777 [0x35699]
+  [6] offset in file: 218884 [0x35704]
+  [7] offset in file: 218937 [0x35739]
+
+
+-->
+	<data versions="EN47401,EN47501">
+		<parts>
+			<!-- GetTerrainType fix -->
+			<part>			<offset>0x3556D</offset>			<bytes>9A 0C 17 88 23</bytes>			<original>9A 3C 13 05 1B</original>			</part>
+			<part>			<offset>0x35597</offset>			<bytes>9A 0C 17 88 23</bytes>			<original>9A 3C 13 05 1B</original>			</part>
+			<part>			<offset>0x355F0</offset>			<bytes>9A 0C 17 88 23</bytes>			<original>9A 3C 13 05 1B</original>			</part>
+			<part>			<offset>0x35629</offset>			<bytes>9A 0C 17 88 23</bytes>			<original>9A 3C 13 05 1B</original>			</part>
+			<part>			<offset>0x3565B</offset>			<bytes>9A 0C 17 88 23</bytes>			<original>9A 3C 13 05 1B</original>			</part>
+			<part>			<offset>0x35685</offset>			<bytes>9A 0C 17 88 23</bytes>			<original>9A 3C 13 05 1B</original>			</part>
+			<part>			<offset>0x356EE</offset>			<bytes>9A 0C 17 88 23</bytes>			<original>9A 3C 13 05 1B</original>			</part>
+			<part>			<offset>0x35727</offset>			<bytes>9A 0C 17 88 23</bytes>			<original>9A 3C 13 05 1B</original>			</part>
+			<!-- GetContinentOrOceanID fix -->
+			<part>			<offset>0x3557E</offset>			<bytes>9A 2D 17 88 23</bytes>			<original>9A 2F 19 05 1B</original>			</part>
+			<part>			<offset>0x355A8</offset>			<bytes>9A 2D 17 88 23</bytes>			<original>9A 2F 19 05 1B</original>			</part>
+			<part>			<offset>0x35606</offset>			<bytes>9A 2D 17 88 23</bytes>			<original>9A 2F 19 05 1B</original>			</part>
+			<part>			<offset>0x35638</offset>			<bytes>9A 2D 17 88 23</bytes>			<original>9A 2F 19 05 1B</original>			</part>
+			<part>			<offset>0x3566C</offset>			<bytes>9A 2D 17 88 23</bytes>			<original>9A 2F 19 05 1B</original>			</part>
+			<part>			<offset>0x35699</offset>			<bytes>9A 2D 17 88 23</bytes>			<original>9A 2F 19 05 1B</original>			</part>
+			<part>			<offset>0x35704</offset>			<bytes>9A 2D 17 88 23</bytes>			<original>9A 2F 19 05 1B</original>			</part>
+			<part>			<offset>0x35739</offset>			<bytes>9A 2D 17 88 23</bytes>			<original>9A 2F 19 05 1B</original>			</part>
+		</parts>
+	</data>
+
+
+</patch>

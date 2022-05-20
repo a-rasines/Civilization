@@ -1,0 +1,26 @@
+<patch id="CIV1_BUGFIX_MAP_LAYOUT">
+	<title>Fixes terrain layout glitch</title>
+	<description>For some terrain types (jungle, swamp, tundra and arctic), contiguous map squares are rendered using single-square graphics; applying this patch fixes this glitch and makes all terrain types display using their contiguous square graphics</description>
+	<author>darkpanda</author>
+	<date>2013/10/22</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=12851553#post12851553</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?p=12851553#post12851553
+
+offsets:
+   EN 47401: 0x30D0E
+   EN 47403: 0x30525
+   EN 47404: 0x30525
+   EN 47405: 0x30D25
+   EN 47501: 0x30D0E
+   FR 47405: 0x32134
+
+original bytes: 83 7E FC 06
+ patched bytes: 83 7E FC 0A
+-->
+	<data versions="EN47401,EN47501"><parts><part> <offset>0x30D0E</offset> <original>83 7E FC 06</original><bytes>83 7E FC 0A</bytes></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part> <offset>0x30525</offset> <original>83 7E FC 06</original><bytes>83 7E FC 0A</bytes></part></parts></data>
+	<data versions="EN47405">        <parts><part> <offset>0x30D25</offset> <original>83 7E FC 06</original><bytes>83 7E FC 0A</bytes></part></parts></data>
+	<data versions="FR47405">        <parts><part> <offset>0x32134</offset> <original>83 7E FC 06</original><bytes>83 7E FC 0A</bytes></part></parts></data>
+</patch>

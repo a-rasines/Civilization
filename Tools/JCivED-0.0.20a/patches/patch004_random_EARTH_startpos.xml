@@ -1,0 +1,45 @@
+<patch id="CIV1_EARTH_RAND_START">
+	<title>Play on earth with random starting positions</title>
+	<description>This patch bypasses the hard-coded starting positions when playing on Earth, and makes Civ choose random positions instead. This can be especially useful when playing with a custom-designed MAP.PIC</description>
+	<author>darkpanda, Renergy</author>
+	<date>2013/08/14</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=499611</reference>
+	<data versions="EN47401,EN47501">
+		<parts>			<part>				<offset>0x30422</offset>				<bytes>7D</bytes>				<original>74</original>			</part></parts>  </data>
+	<data versions="EN47405">
+		<parts>			<part>				<offset>0x30427</offset>				<bytes>7D</bytes>				<original>74</original>			</part></parts>  </data>
+	<data versions="EN47404">
+		<parts>			<part>				<offset>0x2FC27</offset>				<bytes>7D</bytes>				<original>74</original>			</part></parts>  </data>
+	<data versions="FR47405">
+		<parts>			<part>				<offset>0x31827</offset>				<bytes>7D</bytes>				<original>74</original>			</part></parts>  </data>
+</patch>
+
+<!--
+Source: http://forums.civfanatics.com/showthread.php?t=499611
+
+ Another small hack into CIV.EXE (v474.01) that chooses random starting positions when playing the EARTH map!
+
+Look for the following the sequence (occurs at offset 0x3041F in my version):
+
+Code:
+0003041F: 8A E6 00 74 20 8B 5E
+
+Replace the by 0x74 with 0x7D:
+
+Code:
+0003041F: 8A E6 00 7D 20 8B 5E
+
+
+ For CIV.EXE EN v474.05 look for the following sequence starting at offset 0x30424:
+
+Code:
+00030424: 6A D7 00 74 20 8B 5E
+
+Replace the 0x74 with 0x7D:
+
+Code:
+00030424: 6A D7 00 7D 20 8B 5E
+
+I.e., the change occurs at offset 0x30427. Again, this is for EN v474.05.
+-->

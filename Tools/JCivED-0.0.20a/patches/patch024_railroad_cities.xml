@@ -1,0 +1,34 @@
+<patch id="CIV1_CITY_RAILROAD">
+	<title>Allows Settlers to build railroad in cities (finally!)</title>
+	<description>With this patch, Settlers can finally build railroad in cities, at last!</description>
+	<author>darkpanda</author>
+	<date>2014/06/09</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=13263682#post13263682</reference>
+<!--
+-->
+	<data versions="EN47401,EN47501"> <parts>
+		<part>	<offset> 0x5439 </offset>
+			   <bytes>83C4043D000075 0C E91200</bytes>
+			<original>83C4043D000075 03 E91200</original> </part>
+	</parts></data>
+
+	<data versions="FR47405"> <parts>
+		<part>	<offset> 0x554F </offset>
+			   <bytes>83C4043D000075 0C E91200</bytes>
+			<original>83C4043D000075 03 E91200</original> </part>
+	</parts></data>
+
+	<data versions="EN47405"> <parts>
+		<part>	<offset> 0x546B </offset>
+			   <bytes>83C4043D000075 0C E91200</bytes>
+			<original>83C4043D000075 03 E91200</original> </part>
+	</parts></data>
+
+	<data versions="EN47403, EN47404"> <parts>
+		<part>	<offset>0x52BB</offset>
+			   <bytes>F646C001 9090 F646C010</bytes>
+			<original>F646C001 7506 F646C010</original> </part>
+	</parts></data>
+
+</patch>

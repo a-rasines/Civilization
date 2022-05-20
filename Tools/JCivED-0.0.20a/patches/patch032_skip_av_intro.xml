@@ -1,0 +1,25 @@
+<patch id="CIV1_SKIP_PREGAME_SETUP">
+	<title>Skip the pre-game setup menu</title>
+	<description>This patch discards the initial selection menu for video and audio setup</description>
+	<author>darkpanda</author>
+	<date>2014/08/14</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+<!-- 
+Bypass A/V selection menu:
+
+original bytes: CD 3F 01 00 00
+ patched bytes: 90 90 90 90 90
+ 
+offsets:
+	EN_47401: 0x1A84
+	EN_47501: 0x1A84
+	EN_47403: 0x1A92
+	EN_47404: 0x1A92
+	EN_47405: 0x1A92
+	FR_47405: 0x1B0A
+   -->
+	<data versions="EN47401,EN47501">        <parts><part><offset>0x1A84</offset><bytes>90 90 90 90 90</bytes><original>CD 3F 01 00 00</original></part></parts></data>
+	<data versions="EN47403,EN47404,EN47405"><parts><part><offset>0x1A92</offset><bytes>90 90 90 90 90</bytes><original>CD 3F 01 00 00</original></part></parts></data>
+	<data versions="FR47405">                <parts><part><offset>0x1B0A</offset><bytes>90 90 90 90 90</bytes><original>CD 3F 01 00 00</original></part></parts></data>
+</patch>

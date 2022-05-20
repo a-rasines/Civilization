@@ -1,0 +1,26 @@
+<patch id="CIV1_1TURN_FORTRESS">
+	<title>Improving fortress takes 1 turn only</title>
+	<description>This patch changes the time a Settler takes to make a fortress to 1 turn only</description>
+	<author>darkpanda</author>
+	<date>2013/11/20</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=514255</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?t=514255
+
+offsets:
+  EN 474.01 = 0x5387
+  EN 474.03 = 0x521B
+  EN 474.04 = 0x521B
+  EN 474.05 = 0x53B9
+  EN 475.01 = 0x5387
+  FR 474.05 = 0x549D
+
+original bytes: 05 04 00 xx xx xx xx 8B C8      -> add ax, 4; xxx; mov cx, ax; sets 'cx' value to the actual fortress turn cost  
+ patched bytes: 2A ED 90 xx xx xx xx B1 01      -> sub ch, ch; nop; xxx; mov cl, 1;  sets 'cx' value to 1
+-->
+	<data versions="EN47401,EN47501"><parts><part> <offset>0x5387</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x538E</offset> <original>8B C8</original><bytes>B1 01</bytes></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part> <offset>0x521B</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x5222</offset> <original>8B C8</original><bytes>B1 01</bytes></part></parts></data>
+	<data versions="EN47405">        <parts><part> <offset>0x53B9</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x553D</offset> <original>8B C8</original><bytes>B1 01</bytes></part></parts></data>
+	<data versions="FR47405">        <parts><part> <offset>0x549D</offset> <original>05 04 00</original><bytes>2A ED 90</bytes></part> <part> <offset>0x5621</offset> <original>8B C8</original><bytes>B1 01</bytes></part></parts></data>
+</patch>

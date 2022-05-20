@@ -1,0 +1,48 @@
+<patch id="CIV1_CANT_SABOTAGE_CITY_WALLS">
+	<title>Protects City Walls from sabotage by Diplomat</title>
+	<description>This patch excludes City Walls from possible targets of Diplomat sabotage</description>
+	<author>darkpanda</author>
+	<date>2014/11/19</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+<!-- 
+8B D8 	mov bx, ax
+8B 87 6C 70 	mov ax, ...
+8B 97 6E 70 	mov dx, ...
+8B C8 	mov cx, ax
+B8 01 00	mov ax, 1
+8B D9 	mov bx, cx
+8A 4E DE 	mov cl, var_22
+D3 E0 	shl ax, cl
+8B CA 	mov cx, dx
+99 	cwd
+
+
+8B D8 	mov bx, ax
+8B 8D 6C 70 	mov ax, ...
+8B 97 6E 70 	mov dx, ...
+*8B D8 	mov bx, ax
+B8 01 00	mov ax, 1
+*8A 4E DE 	mov cl, var_22
+*D3 E0 	shl ax, cl
+*8B CA 	mov cx, dx
+*25 FE FE 	and ax, FF7Eh
+ 	
+
+======== EN_47401 ======== - 8A4EDED3E08BCA257EFF
+      ovr22:032F (0x48D2F) - 8BD98A4EDED3E08BCA99
+======== EN_47403 ========
+      ovr22:032F (0x4872F) - 8BD98A4EDED3E08BCA99
+======== EN_47404 ========
+      ovr22:032F (0x4872F) - 8BD98A4EDED3E08BCA99
+======== EN_47405 ========
+      ovr22:032F (0x48F2F) - 8BD98A4EDED3E08BCA99
+======== FR_47405 ========
+      ovr22:034F (0x4AB4F) - 8BD98A4EDED3E08BCA99
+
+   -->
+	<data versions="EN47401,EN47501"><parts><part><offset>0x48D2A</offset><bytes>8BD8B801008A4EDED3E08BCA257EFF</bytes><original>8BC8B801008BD98A4EDED3E08BCA99</original></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part><offset>0x4872A</offset><bytes>8BD8B801008A4EDED3E08BCA257EFF</bytes><original>8BC8B801008BD98A4EDED3E08BCA99</original></part></parts></data>
+	<data versions="EN47405">        <parts><part><offset>0x48F2A</offset><bytes>8BD8B801008A4EDED3E08BCA257EFF</bytes><original>8BC8B801008BD98A4EDED3E08BCA99</original></part></parts></data>
+	<data versions="FR47405">        <parts><part><offset>0x4AB4A</offset><bytes>8BD8B801008A4EDED3E08BCA257EFF</bytes><original>8BC8B801008BD98A4EDED3E08BCA99</original></part></parts></data>
+</patch>

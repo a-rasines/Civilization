@@ -1,0 +1,33 @@
+<patch id="CIV1_REPLAY_LOWER_CASE">
+	<title>Replay text is lower case for all Civs, including player</title>
+	<description>After applying this patch, replay text for the player is written in lower case just like for all other civs</description>
+	<author>darkpanda</author>
+	<date>2022/03/01</date>
+	<revision>0</revision>
+	<reference></reference>
+	<!--
+	EN47401=e1
+		ovr09:08B9 (0x38AB9) - 67 75 0C B8
+		                       67 EB 0C B8
+	u1
+		ovr09:08BA (0x406DA) - 67 75 0C B8
+		
+	e3, e4
+		0x382B9 - 68 75 0C B8
+	
+	e5
+		0x38AB9 - 68 75 0C B8
+	
+	f5
+		
+	 -->
+	<data versions="EN47401,EN47501">      <parts><part><offset>0x38AB9</offset><bytes>67 EB 0C B8</bytes><original>67 75 0C B8</original></part></parts></data>
+	<data versions="EN47401UNP,EN47501UNP"><parts><part><offset>0x406DA</offset><bytes>67 EB 0C B8</bytes><original>67 75 0C B8</original></part></parts></data>
+	<data versions="EN47403,EN47404">      <parts><part><offset>0x382B9</offset><bytes>68 EB 0C B8</bytes><original>68 75 0C B8</original></part></parts></data>
+	<data versions="EN47405">              <parts><part><offset>0x38AB9</offset><bytes>68 EB 0C B8</bytes><original>68 75 0C B8</original></part></parts></data>
+
+	<!-- 
+	<data versions="FR47405">              <parts><part><offset>0x748C</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 6E DB   CD 3F 0E BD 03</original></part></parts></data>
+	<data versions="FR47405UNP">           <parts><part><offset>0x9C00</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 6E DB   CD 3F 0E BD 03</original></part></parts></data>
+	-->
+</patch>

@@ -1,0 +1,22 @@
+<patch id="CIV1_CUSTOM_TRIBE_NAME+COLOR">
+	<title>Choose the Civ color AND a custom tribe name !</title>
+	<description>After applying this patch, the player will be prompted to enter their own Tribe name even after selecting the Civ color they desire, with no need to press the ESC key</description>
+	<author>darkpanda</author>
+	<date>2013/08/08</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=12686797#post12686797</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?p=12686797#post12686797
+
+  EN 47401: replace bytes "75 24" at offset 0x2FC97 with bytes "90 90"
+  EN 47405: replace bytes "75 24" at offset 0x2FC9C with bytes "90 90"
+  FR 47405: replace bytes "75 24" at offset 0x3109C with bytes "90 90"
+-->
+	<data versions="EN47401,EN47501">
+		<parts><part>			<offset>0x2FC97</offset>			<bytes>9090</bytes>			<original>7524</original>			</part></parts></data>
+	<data versions="EN47405">
+		<parts><part>			<offset>0x2FC9C</offset>			<bytes>9090</bytes>			<original>7524</original>			</part></parts></data>
+	<data versions="FR47405">
+		<parts><part>			<offset>0x3109C</offset>			<bytes>9090</bytes>			<original>7524</original>			</part></parts></data>
+
+</patch>

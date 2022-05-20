@@ -1,0 +1,17 @@
+<patch id="CIV1_CUSTOM_CIV_COLORS">
+	<title>Replace the standard Civ colors</title>
+	<description>With this patch, players can choose different colors for Civs, taken from the SP256.PAL color palette</description>
+	<author>darkpanda</author>
+	<date>2013/11/26</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=499617</reference>
+	<cfgclass>dd.jcived.patches.CivCustomColorsConfigurator</cfgclass>
+<!--
+-->
+	<data versions="EN47401,EN47501"> <parts><part>	<offset> 0x26193 </offset> <bytes>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</bytes> <original>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</original> </part></parts></data>
+	<data versions="EN47403">         <parts><part>	<offset> 0x25845 </offset> <bytes>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</bytes> <original>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</original> </part></parts></data>
+	<data versions="EN47404">         <parts><part>	<offset> 0x2584B </offset> <bytes>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</bytes> <original>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</original> </part></parts></data>
+	<data versions="EN47405">         <parts><part>	<offset> 0x2605F </offset> <bytes>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</bytes> <original>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</original> </part></parts></data>
+	<data versions="FR47405">         <parts><part>	<offset> 0x26F6D </offset> <bytes>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</bytes> <original>0C 00 0F 00 0A 00 09 00 0E 00 0B 00 0D 00 07 00 04 00 07 00 02 00 01 00 0A 00 03 00 04 00 08 00</original> </part></parts></data>
+
+</patch>

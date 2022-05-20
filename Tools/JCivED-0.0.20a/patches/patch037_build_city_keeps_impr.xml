@@ -1,0 +1,31 @@
+<patch id="CIV1_PRESERVE_IMPR_ON_BUILD_CITY">
+	<title>Preserves terrain improvements when a city is built (mining, fortress)</title>
+	<description>This patch keeps improvements on a square when a city is built on it, This only applies to fortress and mining, which are the only improvements forcefully destroyed as part of the Build City routine</description>
+	<author>darkpanda</author>
+	<date>2015/04/17</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+<!-- 
+======== EN_47401 ========
+      ovr20:0175 (0x46B75) - 83C40CFF760CFF760AB8240050
+======== EN_47403 ========
+      ovr20:0174 (0x46374) - 83C40CFF760CFF760AB8240050
+======== EN_47404 ========
+      ovr20:0174 (0x46374) - 83C40CFF760CFF760AB8240050
+======== EN_47405 ========
+      ovr20:0174 (0x46B74) - 83C40CFF760CFF760AB8240050
+======== FR_47405 ========
+      ovr20:0174 (0x48774) - 83C40CFF760CFF760AB8240050
+
+[MGRAPHIC.EXE]   -->
+	<data versions="EN47401,EN47501"><parts><part><offset>0x46B75</offset><bytes>83C40CFF760CFF760AB8000050</bytes><original>83C40CFF760CFF760AB8240050</original></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part><offset>0x46374</offset><bytes>83C40CFF760CFF760AB8000050</bytes><original>83C40CFF760CFF760AB8240050</original></part></parts></data>
+	<data versions="EN47405">        <parts><part><offset>0x46B74</offset><bytes>83C40CFF760CFF760AB8000050</bytes><original>83C40CFF760CFF760AB8240050</original></part></parts></data>
+	<data versions="FR47405">        <parts><part><offset>0x48774</offset><bytes>83C40CFF760CFF760AB8000050</bytes><original>83C40CFF760CFF760AB8240050</original></part></parts></data>
+
+	<data versions="EN47401UNP,EN47501UNP"><parts><part><offset>0x4E796</offset><bytes>83C40CFF760CFF760AB8000050</bytes><original>83C40CFF760CFF760AB8240050</original></part></parts></data>
+	<data versions="EN47403UNP,EN47404UNP"><parts><part><offset>0x4EEC9</offset><bytes>83C40CFF760CFF760AB8000050</bytes><original>83C40CFF760CFF760AB8240050</original></part></parts></data>
+	<data versions="EN47405UNP">        <parts><part><offset>0x4F735</offset><bytes>83C40CFF760CFF760AB8000050</bytes><original>83C40CFF760CFF760AB8240050</original></part></parts></data>
+	<data versions="FR47405UNP">        <parts><part><offset>0x5173F</offset><bytes>83C40CFF760CFF760AB8000050</bytes><original>83C40CFF760CFF760AB8240050</original></part></parts></data>
+
+</patch>

@@ -1,0 +1,26 @@
+<patch id="CIV1_RERESPAWN">
+	<title>Opponent Civs can now respawn more than once</title>
+	<description>The original CIV code only allows a Civ to be respawned once after it is destroyed (not including the special case of SCHISM); this patch removes this limit by skipping the verification that the Civ is being re-spawned for the 2nd time; Note: discrepancies in the Replay are to be expected</description>
+	<author>darkpanda</author>
+	<date>2013/11/13</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=514562</reference>
+<!--
+source: http://forums.civfanatics.com/showthread.php?t=514562
+
+offsets:
+  EN 47401: 0x30449
+  EN 47403: 0x2FC4E
+  EN 47404: 0x2FC4E
+  EN 47405: 0x3044E
+  EN 47501: 0x30449
+  FR 47405: 0x3184E
+
+original bytes: 74 3E 8B 5E 06
+ patched bytes: EB 3E 8B 5E 06
+-->
+	<data versions="EN47401,EN47501"><parts><part> <offset>0x30449</offset> <original>74 3E 8B 5E 06</original><bytes>EB 3E 8B 5E 06</bytes></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part> <offset>0x2FC4E</offset> <original>74 3E 8B 5E 06</original><bytes>EB 3E 8B 5E 06</bytes></part></parts></data>
+	<data versions="EN47405">        <parts><part> <offset>0x3044E</offset> <original>74 3E 8B 5E 06</original><bytes>EB 3E 8B 5E 06</bytes></part></parts></data>
+	<data versions="FR47405">        <parts><part> <offset>0x3184E</offset> <original>74 3E 8B 5E 06</original><bytes>EB 3E 8B 5E 06</bytes></part></parts></data>
+</patch>

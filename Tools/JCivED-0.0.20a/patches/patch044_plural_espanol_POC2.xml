@@ -1,0 +1,18 @@
+<patch id="CIV1_REPLAY_ESPANOL_PLURAL_2">
+	<title>Plural for Mongol set to "Mongoles", chinese translated to Chino</title>
+	<description>Plural for Mongol set to "Mongoles", Chinese translated to Chino as a proof-of-concept for Spanish port</description>
+	<author>darkpanda</author>
+	<date>2022/03/03</date>
+	<revision>0</revision>
+	<reference>https://forums.civfanatics.com/threads/edit-tribes.674240/page-2#post-16235770</reference>
+	<data versions="EN47401,EN47501">
+		<parts>
+			<part><offset>0x26037</offset><bytes>FF FF 01 00 14 00 06 00 4D 61 6F 20 54 73 65 20 54 75 6E 67 00 15 00 B2 00 13 00 B0 43 68 69 6E 6F 05 00 B2 00 0F 00 B0 01 00 1D 00 0F 00 45 6C 69 7A 61 62 65 74 68 20 49 00 00 00 00 00 45 6E 67 6C 69 73 68 1D 00 B2 00 09 00 B0 45 6E 67 6C 69 73 68 07 00 B2 00 0B 00 B0 01 00 00 00 1B 00 0D 00 47 65 6E 67 68 69 73 20 4B 68 61 6E 00 00 00 00 4D 6F 6E 67 6F 6C 65 73 20 00 B2 00 08 00 B0 4D 6F 6E 67 6F 6C 06 00 B2</bytes><original>FF FF 01 00 14 00 06 00 4D 61 6F 20 54 73 65 20 54 75 6E 67 00 00 00 00 43 68 69 6E 65 73 65 1F 00 B2 00 09 00 B0 43 68 69 6E 65 73 65 07 00 B2 00 0D 00 B0 01 00 1D 00 0F 00 45 6C 69 7A 61 62 65 74 68 20 49 00 00 00 00 00 45 6E 67 6C 69 73 68 1D 00 B2 00 09 00 B0 45 6E 67 6C 69 73 68 07 00 B2 00 0B 00 B0 01 00 00 00 1B 00 0D 00 47 65 6E 67 68 69 73 20 4B 68 61 6E 14 00 B2 00 14 00 B0 4D 6F 6E 67 6F 6C 06 00 B2</original></part>
+		</parts>
+	</data>
+	<data versions="EN47404,EN47504">
+		<parts>
+			<part><offset>0x256EF</offset><bytes>FF FF 01 00 14 00 06 00 4D 61 6F 20 54 73 65 20 54 75 6E 67 00 15 00 B2 00 13 00 B0 43 68 69 6E 6F 05 00 B2 00 0F 00 B0 01 00 1D 00 0F 00 45 6C 69 7A 61 62 65 74 68 20 49 00 00 00 00 00 45 6E 67 6C 69 73 68 1D 00 B2 00 09 00 B0 45 6E 67 6C 69 73 68 07 00 B2 00 0B 00 B0 01 00 00 00 1B 00 0D 00 47 65 6E 67 68 69 73 20 4B 68 61 6E 00 00 00 00 4D 6F 6E 67 6F 6C 65 73 20 00 B2 00 08 00 B0 4D 6F 6E 67 6F 6C 06 00 B2</bytes><original>FF FF 01 00 14 00 06 00 4D 61 6F 20 54 73 65 20 54 75 6E 67 00 00 00 00 43 68 69 6E 65 73 65 1F 00 B2 00 09 00 B0 43 68 69 6E 65 73 65 07 00 B2 00 0D 00 B0 01 00 1D 00 0F 00 45 6C 69 7A 61 62 65 74 68 20 49 00 00 00 00 00 45 6E 67 6C 69 73 68 1D 00 B2 00 09 00 B0 45 6E 67 6C 69 73 68 07 00 B2 00 0B 00 B0 01 00 00 00 1B 00 0D 00 47 65 6E 67 68 69 73 20 4B 68 61 6E 14 00 B2 00 14 00 B0 4D 6F 6E 67 6F 6C 06 00 B2</original></part>
+		</parts>
+	</data>
+</patch>

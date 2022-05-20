@@ -1,0 +1,30 @@
+<patch id="CIV1_PRESERVE_IMPR_ON_DESTROY_CITY">
+	<title>Preserves terrain improvements when a city is destroyed</title>
+	<description>This patch keeps improvements on a square when a city is destroyed</description>
+	<author>darkpanda</author>
+	<date>2015/04/17</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+<!-- 
+  input=FF 76 0A FF 76 08 2B C0  50 ??????????
+ lookup=FF760AFF76082BC0500000000000
+bitmask=FFFFFFFFFFFFFFFFFF0000000000
+======== EN_47401 ========
+      seg006:01F7 (0xAF33) - FF760AFF76082BC0509A4516051B
+======== EN_47403 ========
+      seg006:01F1 (0xA7BD) - FF760AFF76082BC0509A5916681A
+======== EN_47404 ========
+      seg006:01F1 (0xA7BD) - FF760AFF76082BC0509A4F16691A
+======== EN_47405 ========
+      seg006:01F5 (0xAFC1) - FF760AFF76082BC0509A5316EA1A
+======== FR_47405 ========
+      seg006:01F6 (0xC1C2) - FF760AFF76082BC0509A4B16A31B
+-->
+	<data versions="EN47401,EN47501"><parts><part><offset>0xAF33</offset><bytes>FF760AFF76082BC050 EB03 000000</bytes><original>FF760AFF76082BC0509A4516051B</original></part></parts></data>
+	<data versions="EN47403">        <parts><part><offset>0xA7BD</offset><bytes>FF760AFF76082BC050 EB03 000000</bytes><original>FF760AFF76082BC0509A5916681A</original></part></parts></data>
+	<data versions="EN47404">        <parts><part><offset>0xA7BD</offset><bytes>FF760AFF76082BC050 EB03 000000</bytes><original>FF760AFF76082BC0509A4F16691A</original></part></parts></data>
+	<data versions="EN47403">        <parts><part><offset>0xAFC1</offset><bytes>FF760AFF76082BC050 EB03 000000</bytes><original>FF760AFF76082BC0509A5316EA1A</original></part></parts></data>
+	<data versions="FR47405">        <parts><part><offset>0xC1C2</offset><bytes>FF760AFF76082BC050 EB03 000000</bytes><original>FF760AFF76082BC0509A4B16A31B</original></part></parts></data>
+
+
+</patch>

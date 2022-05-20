@@ -1,0 +1,66 @@
+<patch id="CIV1_PLAY_1TO1">
+	<title>Play against just 1 computer Civ... Or even 0!</title>
+	<description>This patch adds the possibility to select "2 Civilizations" or "1 Civilizations" to the number of Civ selection screen, and then starts the Civ game with the corresponding number of Civs: if 2 is selected, the player is playing against a single computer opponent; if 1 is selected, the player is playing alone!</description>
+	<author>darkpanda</author>
+	<date>2013/08/14</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=499613</reference>
+<!--
+	Source: http://forums.civfanatics.com/showthread.php?t=499613
+	Code:
+	
+	Original:
+	0002F976h: 83 7E F6 02
+	0002F998h: B8 06 00 50 B8 02 00 50
+	
+	Patched:
+	0002F976h: 83 7E F6 00
+	0002F998h: B8 06 00 50 B8 00 00 50
+	
+	The offsets above are given for EN versions of Civ (474.01, 474.05 and 475.01).
+	For FR versions, the offsets are 30D76h and 30D98h.
+-->
+	<data versions="EN47401,EN47405,EN47501">
+		<parts>
+			<part>
+				<offset>0x2F979</offset>
+				<bytes>00</bytes>
+				<original>02</original>
+			</part>
+			<part>
+				<offset>0x2F99D</offset>
+				<bytes>00</bytes>
+				<original>02</original>
+			</part>
+		</parts>
+	</data>
+	<data versions="EN47404">
+		<parts>
+			<part>
+				<offset>0x2F179</offset>
+				<bytes>00</bytes>
+				<original>02</original>
+			</part>
+			<part>
+				<offset>0x2F19D</offset>
+				<bytes>00</bytes>
+				<original>02</original>
+			</part>
+		</parts>
+	</data>
+	<data versions="FR47405">
+		<parts>
+			<part>
+				<offset>0x30D79</offset>
+				<bytes>00</bytes>
+				<original>02</original>
+			</part>
+			<part>
+				<offset>0x30D9D</offset>
+				<bytes>00</bytes>
+				<original>02</original>
+			</part>
+		</parts>
+	</data>
+
+</patch>

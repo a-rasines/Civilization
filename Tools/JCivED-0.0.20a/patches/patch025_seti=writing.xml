@@ -1,0 +1,15 @@
+<patch id="CIV1_SETI_WRITING_POC">
+	<title>Assignes the effect of SETI program to knowing 'Writing' tech</title>
+	<description>With this patch, a Civ benefits of the orginal effect of SETI Program as soon as they discover Writing - this is a proof of concept patch, to demonstrate the replacement of Wonder effect with Tech effect</description>
+	<author>darkpanda</author>
+	<date>2014/06/09</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=13257808#post13257808</reference>
+<!--
+-->
+	<data versions="EN47401,EN47501"> <parts>
+		<part>	<offset> 0x13275 </offset> <bytes>B8 16 00 50 FF 36 CA 64 9A 93 22 D5 0A</bytes> <original>B8 14 00 50 FF 36 CA 64 9A CB 6A 07 0D</original> </part> <!--  this part computes the number of bulbs -->
+		<part>	<offset> 0x3EEE2 </offset> <bytes>B8 16 00 50 FF 36 10 E7 9A 93 22 D5 0A</bytes> <original>B8 14 00 50 FF 36 10 E7 9A CB 6A 07 0D</original> </part> <!--  this part is used when displaying the TRADE screen (number of turns for tech) -->
+	</parts></data>
+
+</patch>

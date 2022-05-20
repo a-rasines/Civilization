@@ -1,0 +1,55 @@
+<patch id="CIV1_NO_BARBARIANS">
+	<title>Play without Barbarians</title>
+	<description>This patch completely discards Barbarians from the game</description>
+	<author>darkpanda</author>
+	<date>2014/08/13</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?p=13387379#post13387379</reference>
+<!-- 
+Bypass game loop spawning barbarian:
+original bytes: E8 D7 06
+ patched bytes: 90 90 90
+ 
+offsets:
+  EN 474.01: 0x2604
+  EN 474.03: 0x2612
+  EN 474.04: 0x2612
+  EN 474.05: 0x2612
+  EN 475.01: 0x2604
+
+original bytes: E8 F7 06
+ patched bytes: 90 90 90
+
+offset:
+  FR 474.05: 0x268A
+
+
+Bypass tribe hut spawning barbarian:
+	version	offset	original	patched
+EN_47401	0xA145	75 65	90 90
+EN_47501	0xA145	75 65	90 90
+EN_47403	0x99E0	75 65	90 90
+EN_47404	0x99E0	75 65	90 90
+EN_47405	0xA1E4	75 65	90 90
+FR_47405	0xAF48	74 03	EB 03
+
+   -->
+	<data versions="EN47401,EN47501">        <parts>
+		<part><offset>0x2604</offset><bytes>90 90 90</bytes><original>E8 D7 06</original></part>
+		<part><offset>0xA145</offset><bytes>90 90</bytes><original>75 65</original></part>
+	</parts></data>
+	<data versions="EN47403,EN47404"><parts>
+		<part><offset>0x2612</offset><bytes>90 90 90</bytes><original>E8 D7 06</original></part>
+		<part><offset>0x99E0</offset><bytes>90 90</bytes><original>75 65</original></part>
+	</parts></data>
+	<data versions="EN47405"><parts>
+		<part><offset>0x2612</offset><bytes>90 90 90</bytes><original>E8 D7 06</original></part>
+		<part><offset>0xA1E4</offset><bytes>90 90</bytes><original>75 65</original></part>
+	</parts></data>
+	<data versions="FR47405">                <parts>
+		<part><offset>0x268A</offset><bytes>90 90 90</bytes><original>E8 F7 06</original></part>
+		<part><offset>0xAF48</offset><bytes>EB 03</bytes><original>74 03</original></part>
+		
+	</parts></data>
+	
+</patch>

@@ -1,0 +1,17 @@
+<patch id="CIV1_NO_POLES">
+	<title>Remove North and South poles</title>
+	<description>This patch makes CIV bypass the generation of landmass at North and South poles, for both Earth and random maps</description>
+	<author>Gowron, darkpanda</author>
+	<date>2013/08/14</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=495521</reference>
+	<data versions="EN47401,EN47501">		<parts>			<part>				<offset>0x351F0</offset>				<bytes>5E5F8BE55DCB</bytes>				<original>B80F00502BC0</original>				</part></parts></data>
+	<data versions="EN47403">		<parts>			<part>				<offset>0x34A16</offset>				<bytes>5E5F8BE55DCB</bytes>				<original>B80F00502BC0</original>				</part></parts></data>
+	<data versions="EN47404">		<parts>			<part>				<offset>0x34A16</offset>				<bytes>5E5F8BE55DCB</bytes>				<original>B80F00502BC0</original>				</part></parts></data>
+	<data versions="EN47405">		<parts>			<part>				<offset>0x35236</offset>				<bytes>5E5F8BE55DCB</bytes>				<original>B80F00502BC0</original>				</part></parts></data>
+	<data versions="FR47405">		<parts>			<part>				<offset>0x36616</offset>				<bytes>5E5F8BE55DCB</bytes>				<original>B80F00502BC0</original>				</part></parts></data>
+</patch>
+<!--
+by Gowron
+source: http://forums.civfanatics.com/showthread.php?t=495521
+  --> 

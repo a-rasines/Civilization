@@ -1,0 +1,27 @@
+<patch id="CIV1_UNLIMITED_ADD_SETTLERS">
+	<title>Settlers can be added to a city regardless the size</title>
+	<description>This patch removes the city population limit which prevents adding settlers to a city of size 10 or more (it actually sets the limit to 127 instead of 10)</description>
+	<author>darkpanda</author>
+	<date>2015/04/17</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+<!-- 
+  input=80 3C 0A ????
+ lookup=803C0A0000
+bitmask=FFFFFF0000
+======== EN_47401 ========
+      seg004:1A07 (0x5A13) - 803C0A7C03
+======== EN_47403 ========
+      seg004:1797 (0x57B3) - 803C0A7D32
+======== EN_47404 ========
+      seg004:1797 (0x57B3) - 803C0A7D32
+======== EN_47405 ========
+      seg004:1A45 (0x5A61) - 803C0A7C03
+======== FR_47405 ========
+      seg004:1A39 (0x5B45) - 803C0A7C03
+-->
+	<data versions="EN47401,EN47501"><parts><part><offset>0x5A13</offset><bytes>803C7F</bytes><original>803C0A</original></part></parts></data>
+	<data versions="EN47403,EN47404"><parts><part><offset>0x57B3</offset><bytes>803C7F</bytes><original>803C0A</original></part></parts></data>
+	<data versions="EN47403">        <parts><part><offset>0x5A61</offset><bytes>803C7F</bytes><original>803C0A</original></part></parts></data>
+	<data versions="FR47405">        <parts><part><offset>0x5B45</offset><bytes>803C7F</bytes><original>803C0A</original></part></parts></data>
+</patch>

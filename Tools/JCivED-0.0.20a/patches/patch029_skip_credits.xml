@@ -1,0 +1,51 @@
+<patch id="CIV1_SKIP_CREDITS">
+	<title>Skip opening credits</title>
+	<description>This patch skips the opening credits and directly opens the main menu</description>
+	<author>darkpanda</author>
+	<date>2014/08/12</date>
+	<revision>0</revision>
+	<reference>n/a</reference>
+	<!--
+======== EN_47401 ========
+      ovr02:0348 (0x2C548) - E98001
+======== EN_47403 ========
+      ovr02:034F (0x2BD4F) - E98001
+======== EN_47404 ========
+      ovr02:034F (0x2BD4F) - E98001
+======== EN_47405 ========
+      ovr02:034F (0x2C54F) - E98001
+======== FR_47405 ========
+      ovr02:034F (0x2D94F) - E98001 
+      
+      
+  input=83 3e ?? ?? fe 74 03
+ lookup=833E0000FE7403
+bitmask=FFFF0000FFFFFF
+======== EN_47401 ========
+      ovr02:0A08 (0x2CC08) - 833EB26AFE7403
+======== EN_47403 ========
+      ovr02:0A0F (0x2C40F) - 833E326BFE7403
+======== EN_47404 ========
+      ovr02:0A0F (0x2C40F) - 833E326BFE7403
+======== EN_47405 ========
+      ovr02:0A0F (0x2CC0F) - 833E326BFE7403
+======== FR_47405 ========
+      ovr02:0A0F (0x2E00F) - 833E3272FE7403
+	 -->
+	<data versions="EN47401,EN47501"><parts>
+		<part><offset>0x2C548</offset><bytes>E9 F0 04</bytes><original>E9 80 01</original></part>
+		<part><offset>0x2CC08</offset><bytes>C7 06 B2 6A FF FF 90</bytes><original>83 3E B2 6A FE 74 03</original></part>
+	</parts></data>
+	<data versions="EN47403,EN47404"><parts>
+		<part><offset>0x2BD4F</offset><bytes>E9 F0 04</bytes><original>E9 80 01</original></part>
+		<part><offset>0x2C40F</offset><bytes>C7 06 B2 6A FF FF 90</bytes><original>83 3E 32 6B FE 74 03</original></part>
+	</parts></data>
+	<data versions="EN47405"><parts>
+		<part><offset>0x2C54F</offset><bytes>E9 F0 04</bytes><original>E9 80 01</original></part>
+		<part><offset>0x2CC0F</offset><bytes>C7 06 B2 6A FF FF 90</bytes><original>83 3E 32 6B FE 74 03</original></part>
+	</parts></data>
+	<data versions="FR47405"><parts>
+		<part><offset>0x2D94F</offset><bytes>E9 F0 04</bytes><original>E9 80 01</original></part>
+		<part><offset>0x2E00F</offset><bytes>C7 06 32 72 FF FF 90</bytes><original>83 3E 32 72 FE 74 03</original></part>
+	</parts></data>
+</patch>

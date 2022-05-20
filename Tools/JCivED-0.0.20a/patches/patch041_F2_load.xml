@@ -1,0 +1,39 @@
+<patch id="CIV1_F2_LOAD_GAME">
+	<title>Rewires F2 shortcut key to load saved game from within CIV</title>
+	<description>After applying this patch, pressing F2 key will open the "Load Saved Game" screen and allow the player to directly load a previously saved game; the World Map can still be shown by using the menu item from the WORLD menu; note: some side effects have been noticed, this functionality is not guaranteed</description>
+	<author>darkpanda</author>
+	<date>2015/05/07</date>
+	<revision>0</revision>
+	<reference></reference>
+	<!--
+	EN47401=e1
+		seg004:3332 (0x733E) - FF 36 10 E7   CD 3F 0E AD 03
+		                       B8 FF FF 50   CD 3F 0B 00 00
+	u1
+		seg004:3332 (0x9AD2) - FF3610E7CD3F0EAD03
+		
+	e3, e4
+	seg004:2DA4 (0x6DC0) - FF36EED7CD3F0EAD03
+	u3, u4
+	seg004:2DA4 (0x9484) - FF36EED7CD3F0EAD03
+	
+	e5
+		seg004:338C (0x73A8) - FF36EED7CD3F0EAD03
+	u5
+		seg004:338C (0x9B5C) - FF36EED7CD3F0EAD03
+	
+	f5
+		seg004:3380 (0x748C) - FF366EDBCD3F0EBD03
+	uf5
+		seg004:3380 (0x9C00) - FF366EDBCD3F0EBD03
+	 -->
+	<data versions="EN47401,EN47501">      <parts><part><offset>0x733E</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 10 E7   CD 3F 0E AD 03</original></part></parts></data>
+	<data versions="EN47401UNP,EN47501UNP"><parts><part><offset>0x9AD2</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 10 E7   CD 3F 0E AD 03</original></part></parts></data>
+	<data versions="EN47403,EN47404">      <parts><part><offset>0x6DC0</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 EE D7   CD 3F 0E AD 03</original></part></parts></data>
+	<data versions="EN47403UNP,EN47404UNP"><parts><part><offset>0x9484</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 EE D7   CD 3F 0E AD 03</original></part></parts></data>
+	<data versions="EN47405">              <parts><part><offset>0x73A8</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 EE D7   CD 3F 0E AD 03</original></part></parts></data>
+	<data versions="EN47405UNP">           <parts><part><offset>0x9B5C</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 EE D7   CD 3F 0E AD 03</original></part></parts></data>
+
+	<data versions="FR47405">              <parts><part><offset>0x748C</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 6E DB   CD 3F 0E BD 03</original></part></parts></data>
+	<data versions="FR47405UNP">           <parts><part><offset>0x9C00</offset><bytes>B8 FF FF 50   CD 3F 0B 00 00</bytes><original>FF 36 6E DB   CD 3F 0E BD 03</original></part></parts></data>
+</patch>

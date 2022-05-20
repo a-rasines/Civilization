@@ -1,0 +1,78 @@
+<patch id="CIV1_PLAY_FOREVER">
+	<title>Play never-ending games!</title>
+	<description>This patch removes the "retirement" limitation that ends games on year 2100 (Chieftain) to 2020 (Emperor). It does NOT remove other endgame conditions such as conquest (all opponents destroyed) or space conquest (spaceship reaches Alpha Centauri)</description>
+	<author>darkpanda</author>
+	<date>2013/08/14</date>
+	<revision>0</revision>
+	<reference>http://forums.civfanatics.com/showthread.php?t=499911</reference>
+	<data versions="EN47401,EN47501">
+		<parts>			<part>				<offset>0x2A14</offset>				<bytes>40C1EB5E</bytes>				<original>40C1755E</original>			</part>
+								<part>				<offset>0x2A92</offset>				<bytes>40C19090</bytes>				<original>40C17403</original>			</part>
+								<part>				<offset>0x2B33</offset>				<bytes>40C1EB5D</bytes>				<original>40C1755D</original>			</part>		</parts>	</data>
+	<data versions="EN47405,EN47404">
+		<parts>			<part>				<offset>0x2A22</offset>				<bytes>20B2EB5E</bytes>				<original>20B2755E</original>			</part>
+								<part>				<offset>0x2AA0</offset>				<bytes>20B29090</bytes>				<original>20B27403</original>			</part>
+								<part>				<offset>0x2B41</offset>				<bytes>20B2EB5D</bytes>				<original>20B2755D</original>			</part>
+									</parts>	</data>
+	<data versions="FR47405">
+		<parts>			<part>				<offset>0x2a9a</offset>				<bytes>20B9EB5E</bytes>				<original>20B9755E</original>			</part>
+								<part>				<offset>0x2b18</offset>				<bytes>20B99090</bytes>				<original>20B97403</original>			</part>
+								<part>				<offset>0x2bc9</offset>				<bytes>20B9EB6D</bytes>				<original>20B9756D</original>			</part>		</parts>	</data>
+</patch>
+
+<!--
+Source: http://forums.civfanatics.com/showthread.php?t=499911
+
+Some players are trying their best to finish a Civ game as shortly as possible, but as far as I remember, what often frustrated me was not to be able to play as long as possible...
+
+Well that can now be fixed with the below patch, which basically removes the deadline before which you must finish your game!
+
+There are 3 places to patch in CIV.EXE (permanent patch):
+
+    The announcement that you "will retire in 20 years"
+    The "end of game" verification, that checks whether current year = 2100 - (20 * difficulty)
+    The "end of game type selection", that also checks whether current year = 2100 - (20 * difficulty)
+
+
+The most important place to patch is the 2nd one, as this is the actual one that will trigger the end of the game...
+
+The first one will simply discard the newspaper anouncement that you will retire 20 years prior to the deadline: you may leave it untouched, the newspaper will popup, but the game will not end as announced... What a political twist
+
+The last one should not really be a problem: it is a check in the "end of game code" to determine what is the reason for which the game is ending; this check happens only after checking whether you conquered all other Civs, or a spaceship arrived, so it is very unlikely that it may actually be triggered if you patch the 2nd item... But you never know...
+
+EN 47401
+
+Original
+1: 00002a14h: 40 C1 75 5E
+2: 00002a92h: 40 C1 74 03
+3: 00002b33h: 40 C1 75 5D
+
+Patched
+1: 00002a14h: 40 C1 EB 5E
+2: 00002a92h: 40 C1 00 00
+3: 00002b33h: 40 C1 EB 5D
+
+EN 47405
+
+Original
+1: 00002a22h: 20 B2 75 5E
+2: 00002aa0h: 20 B2 74 03
+3: 00002b41h: 20 B2 75 5D
+
+Patched
+1: 00002a22h: 20 B2 EB 5E
+2: 00002aa0h: 20 B2 00 00
+3: 00002b41h: 20 B2 EB 5D
+
+FR 47405
+
+Original
+1: 00002a9ah: 20 B9 75 5E
+2: 00002b18h: 20 B9 74 03
+3: 00002bc9h: 20 B9 75 6D
+
+Patched
+1: 00002a9ah: 20 B9 EB 5E
+2: 00002b18h: 20 B9 00 00
+3: 00002bc9h: 20 B9 EB 6D
+-->
