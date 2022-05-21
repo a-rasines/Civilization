@@ -20,11 +20,12 @@ public:
 	void reposition(float x, float y);//Se llama para mover el mapa
 	void onResize(int newWidth, int newHeight);//Esta funcion se llama cuando la ventana cambia de tamaño
 	virtual ~MapWindow();
+	static int zoom = 1;
 private:
 	sf::RenderWindow mapView;
 	static float x;
 	static float y;
-	std::list<std::list<sprite::TerrainType>> activeCells;
+	std::list<std::list<sf::RectangleShape>> activeCells;
 };
 
 #endif /* MAPWINDOW_H_ */

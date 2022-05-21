@@ -175,8 +175,8 @@ namespace sprite{
 		}
 		int textureX;
 		int textureY;
-		const int sizeX = 16;
-		const int sizeY = 16;
+		int sizeX = 16;
+		int sizeY = 16;
 		const char* file;
 		AllowedTroopTypes *allowedTroops; //Valor de AllowedTroopTypes
 	};
@@ -189,9 +189,7 @@ namespace sprite{
 			virtual ~Connections(){
 
 			}
-			operator int() const {
-				return x[value];
-			}
+			operator int() const;
 			Connections operator+(Connections other) const{
 				return Connections(this->value + other.value);
 			}
@@ -213,6 +211,12 @@ namespace sprite{
 		DOWN_RIGHT,
 		DOWN_LEFT
 	};
+	static const Connections
+			NONE(0),
+			UP(1),
+			DOWN(2),
+			LEFT(4),
+			RIGHT(8);
 	class NonStackableTerrainType : public TerrainType{
 		public:
 			NonStackableTerrainType(){
@@ -228,15 +232,21 @@ namespace sprite{
 				return (TerrainType){(int) con, textureY, file, allowedTroops};
 			}
 			NonStackableTerrainType operator+ (Connections c){
-				return NonStackableTerrainType(textureY, (int) c, file, allowedTroops);
+				if(con == NONE)
+					return NonStackableTerrainType(textureY, c, file, allowedTroops);
+				else{
+					con = con + c;
+					return *this;
+				}
 			}
 		private:
-			NonStackableTerrainType(int y, int x, const char* file, AllowedTroopTypes *allowedTroops){
+			NonStackableTerrainType(int y, Connections con, const char* file, AllowedTroopTypes *allowedTroops){
 				this->file = file;
 				textureY = y;
-				textureX = x;
+				textureX = (int) con;
 				this->allowedTroops = allowedTroops;
 			};
+			Connections con;
 	};
 	class StackedTerrainType : public TerrainType{
 		public:
@@ -245,13 +255,7 @@ namespace sprite{
 				RAIL
 			};
 	};
-	static const Connections
-		NONE(0),
-		UP(1),
-		DOWN(2),
-		LEFT(4),
-		RIGHT(8);
-	static const NonStackableTerrainType
+	static NonStackableTerrainType
 	RIVER(80, "SP257.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
 	NOT_FROZEN_SEA(64, "SPRITES.PIC_256.gif", new (AllowedTroopTypes)(AllowedTroopTypes::WATER)),
 	FROZEN_RIVER(80, "SPRITES.PIC_256.gif",new (AllowedTroopTypes)(AllowedTroopTypes::GROUND + AllowedTroopTypes::AIR)),
