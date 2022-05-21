@@ -11,6 +11,7 @@
 float MapWindow::x;
 float MapWindow::y;
 int MapWindow::zoom;
+sf::Texture MapWindow::background;
 MapWindow::MapWindow() {
 	x = 0;
 	y = 0;
@@ -20,6 +21,8 @@ void MapWindow::start(){
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	mapView.create(generateView(0, 0, size.x, size.y));
 	setResizable(true);
+	std::string file = "resources/" + (std::string)RIVER.file;
+	background.loadFromFile(file, sf::IntRect(RIVER.textureX, RIVER.textureY, RIVER.sizeX, RIVER.sizeY));
 }
 void MapWindow::update(){
 	mapView.clear();
@@ -28,10 +31,13 @@ void MapWindow::update(){
 		std::string file = "resources/" + (std::string)cell.file;
 		tex.loadFromFile(file, cell.texData);
 		sf::RectangleShape rect;
-		rect.setTexture(&tex, false);
+		rect.setTexture(&background, false);
 		rect.setSize(sf::Vector2f(cell.sizeX, cell.sizeY));
 		rect.setPosition(sf::Vector2f(cell.posX, cell.posY));
 		mapView.draw(rect);
+		rect.setTexture(&tex, false);
+		mapView.draw(rect);
+
 	}
 	mapView.display();
 

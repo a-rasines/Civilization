@@ -37,6 +37,7 @@ private:
 	static float x;
 	static float y;
 	std::vector<Cell> activeCells;
+	static sf::Texture background;
 };
 
 #endif /* MAPWINDOW_H_ */
