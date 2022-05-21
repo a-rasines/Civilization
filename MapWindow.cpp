@@ -12,12 +12,10 @@ float MapWindow::x;
 float MapWindow::y;
 int MapWindow::zoom;
 MapWindow::MapWindow() {
-	x = 0;
-	y = 0;
+	x = 100;
+	y = 100;
 	zoom = 5;
 }
-//int MapWindow::x;
-//int MapWindow::y;
 void MapWindow::start(){
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	mapView.create(generateView(0, 0, size.x, size.y));
@@ -38,20 +36,33 @@ void MapWindow::update(){
 	mapView.display();
 
 }
-void MapWindow::reposition(float x, float y){
+void MapWindow::reposition(int x, int y){
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	activeCells.clear();
 	y = -y;
 	for(TerrainType row[100] : foreground){
 		y += row[0].sizeY * zoom;
-		if(y >= size.y + row[0].sizeY)break;
+		if(y >= size.y + row[0].sizeY * zoom)break;
 		else if(y<0)continue;
 		int cx = -x;
 		for(TerrainType cell : row){
 			cx += cell.sizeX * zoom;
-			if(cx >= size.x + cell.sizeX)break;
+			if(cx >= size.x + cell.sizeX * zoom)break;
 			else if(cx<0)continue;
-			activeCells.push_back((Cell){cx-cell.sizeX*zoom, y-cell.sizeY*zoom, cell.sizeX * zoom, cell.sizeY * zoom, cell.file, sf::IntRect(cell.textureX, cell.textureY, cell.sizeX, cell.sizeY)});
+			activeCells.push_back((Cell){
+				cx-cell.sizeX*zoom,
+				y-cell.sizeY*zoom,
+				cell.sizeX * zoom,
+				cell.sizeY * zoom,
+				cell.file,
+				sf::IntRect(
+						cell.textureX,
+						cell.textureY,
+						cell.sizeX,
+						cell.sizeY
+					)
+				}
+			);
 		}
 	}
 }
