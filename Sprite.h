@@ -239,6 +239,7 @@ namespace sprite{
 			NonStackableTerrainType(int y, Connections con, const char* file, AllowedTroopTypes *allowedTroops){
 				this->file = file;
 				textureY = y;
+				this->con = con;
 				textureX = (int) con;
 				this->allowedTroops = allowedTroops;
 			};
