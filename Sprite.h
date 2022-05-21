@@ -191,7 +191,7 @@ namespace sprite{
 			}
 			operator int() const;
 			Connections operator+(Connections other) const{
-				return Connections(this->value + other.value);
+				return Connections(this->value | other.value);
 			}
 			Connections(int value){
 				this->value = value;
@@ -226,18 +226,14 @@ namespace sprite{
 				this->file = file;
 				textureY = y;
 				textureX = 0;
+				con = NONE;
 				this->allowedTroops = allowedTroops;
 			};
 			TerrainType generate(Connections con){
 				return (TerrainType){(int) con, textureY, file, allowedTroops};
 			}
 			NonStackableTerrainType operator+ (Connections c){
-				if(con == NONE)
-					return NonStackableTerrainType(textureY, c, file, allowedTroops);
-				else{
-					con = con + c;
-					return *this;
-				}
+					return NonStackableTerrainType(textureY, con + c, file, allowedTroops);
 			}
 		private:
 			NonStackableTerrainType(int y, Connections con, const char* file, AllowedTroopTypes *allowedTroops){

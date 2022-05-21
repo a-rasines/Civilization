@@ -12,8 +12,8 @@ float MapWindow::x;
 float MapWindow::y;
 int MapWindow::zoom;
 MapWindow::MapWindow() {
-	x = 100;
-	y = 100;
+	x = 0;
+	y = 0;
 	zoom = 5;
 }
 void MapWindow::start(){
