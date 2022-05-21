@@ -134,9 +134,7 @@ namespace Sprite{
 				value = 0;
 			}
 			bool isAllowed(AllowedTroopTypes other){
-				if(other.value == value)return true;
-				else if(other.value > value)return false;
-				return compare(other.value);
+				return (value & other.value) == other.value;
 			}
 			static AllowedTroopTypes
 				AIR,
@@ -148,19 +146,6 @@ namespace Sprite{
 			}
 		private:
 			int value;
-			std::string toBinary(int n){
-				std::string r;
-				while(n!=0) {r=(n%2==0 ?"0":"1")+r; n/=2;}
-				return r;
-			}
-			bool compare(int otherValue){
-				std::string v1 = toBinary(value);
-				std::string v2 = toBinary(otherValue);
-				for(unsigned int i = 0; i < (v1.length()>v2.length()? v2.length():v1.length());i++){
-					if(v1[i] == 1 && v2[i] == 0)return false;
-				}
-				return true;
-			}
 			AllowedTroopTypes(int val){
 				value = val;
 			}
