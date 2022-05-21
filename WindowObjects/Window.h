@@ -22,6 +22,7 @@ class Window {
 		virtual void start(){}; //Esta funcion se llama al cambiar de pantalla
 		virtual void update(){};//Esta funcion se llama cada vez que de una vuelta al bucle
 		virtual void onButtonPress(HWND button){};//Esta funcion se llama cuando un boton sea pulsado
+		virtual void onResize(int newWidth, int newHeight){};//Esta funcion se llama cuando la ventana cambia de tamaño
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones internas
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -64,7 +65,7 @@ class Window {
 		 * Devuelve el texto dentro de cualquier componente de la ventana (Botones, textbox, combobox...).
 		 * component -> componente del que sacar el texto
 		 */
-
+		void setResizable(bool resizable);
 		char* getComponentText(HWND component);
 		/**
 		 * Elimina todos los componentes presentes en la ventana

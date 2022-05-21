@@ -15,6 +15,8 @@
 #include "Fonts.h"
 WindowManager *windowInstance;
 Window *activeWindow;
+int wWidth;
+int wHeight;
 LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 	switch (message){
 			// Quit when we close the main window
@@ -22,22 +24,30 @@ LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam
 			PostQuitMessage(0);
 			break;
 		}case WM_COMMAND:{
-			windowInstance->runButton(reinterpret_cast<HWND>(lParam));
+			activeWindow->onButtonPress(reinterpret_cast<HWND>(lParam));
 			break;
 		}case WM_PAINT:{
 			windowInstance->repaint();
+			break;
+		}case WM_SIZE:{
+			wWidth = LOWORD(lParam);
+			wHeight = HIWORD(lParam);
+			activeWindow->onResize(wWidth, wHeight);
+
 		}
 	}
 	return DefWindowProc(handle, message, wParam, lParam);
 }
 MSG message;
 WindowManager::WindowManager(const char* title, int posX, int posY, int width, int height, Window *window) {
+	wWidth = width;
+	wHeight = height;
 	activeWindow = window;
 	instance = GetModuleHandle(NULL);
 	windowInstance = this;
 	// Define a class for our main window
 	WNDCLASS windowClass;
-	windowClass.style         = 0;
+	windowClass.style         = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
 	windowClass.lpfnWndProc   = &onEvent;
 	windowClass.cbClsExtra    = 0;
 	windowClass.cbWndExtra    = 0;
@@ -48,9 +58,8 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 	windowClass.lpszMenuName  = NULL;
 	windowClass.lpszClassName = TEXT("SFML App");
 	RegisterClass(&windowClass);
-
 	// Let's create the main window
-	this->window = CreateWindow(TEXT("SFML App"), TEXT(title), WS_SYSMENU | WS_VISIBLE, posX, posY, width, height, NULL, NULL, instance, NULL);
+	this->window = CreateWindowEx(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, TEXT("SFML App"), TEXT(title), WS_SYSMENU | WS_VISIBLE, posX, posY, width, height, NULL, NULL, instance, NULL);
 	//Reloj para calcular el deltatime y tiempo transcurrido
 	sf::Clock clock;
 	float timeElapsed = clock.getElapsedTime().asMilliseconds();
@@ -80,10 +89,9 @@ void WindowManager::setWindow(Window *w){
 	activeWindow = w;
 	activeWindow->start();
 }
-void WindowManager::runButton(HWND button){
-	activeWindow->onButtonPress(button);
+WindowManager::Dimension WindowManager::getWindowSize(){
+	return (WindowManager::Dimension){wWidth, wHeight};
 }
-
 void WindowManager::repaint(){
 	PAINTSTRUCT ps;
 	BeginPaint( window, &ps);

@@ -13,7 +13,6 @@ class Window;
 class WindowManager {
 	public:
 		WindowManager(){
-			instance = '\0';
 			window = '\0';
 		}
 		/** Genera una ventana de SFML con el título definido
@@ -28,10 +27,15 @@ class WindowManager {
 		 */
 		void runButton(HWND button);
 		void setWindow(Window *w);
+		struct Dimension{
+			int x;
+			int y;
+		};
+		Dimension getWindowSize();
 		void repaint();
 	private:
 		HWND window;
-		HINSTANCE instance;
+		HINSTANCE instance = GetModuleHandle(NULL);
 
 };
 #endif /* WINDOWMANAGER_H_ */

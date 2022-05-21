@@ -6,6 +6,7 @@
  */
 #include "Window.h"
 #include "windows.h"
+#include "winuser.h"
 #include "CommCtrl.h"
 #include "string.h"
 #include <list>
@@ -48,6 +49,12 @@ void Window::destroyComponents(){
 		DestroyWindow(comp);
 	}
 	components.clear();
+}
+void Window::setResizable(bool resizable){
+	if(resizable)
+		SetWindowLongPtr(window, GWL_STYLE,  WS_OVERLAPPEDWINDOW | WS_SYSMENU | WS_VISIBLE);
+	else
+		SetWindowLongPtr(window, GWL_STYLE,  WS_SYSMENU | WS_VISIBLE);
 }
 char* Window::getComponentText(HWND component){
 	std::string text;
