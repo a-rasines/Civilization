@@ -23,6 +23,7 @@ class Window {
 		virtual void update(){};//Esta funcion se llama cada vez que de una vuelta al bucle
 		virtual void onButtonPress(HWND button){};//Esta funcion se llama cuando un boton sea pulsado
 		virtual void onResize(int newWidth, int newHeight){};//Esta funcion se llama cuando la ventana cambia de tamaño
+		virtual void onMessage(char* message){};//Esta función se llama cuando un mensaje TCP es recibido
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones internas
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////

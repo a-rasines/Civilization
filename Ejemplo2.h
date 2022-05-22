@@ -11,7 +11,7 @@
 #include "WindowObjects/Window.h"
 class Ejemplo2: public Window {
 public:
-	Ejemplo2();
+	Ejemplo2(){};
 	virtual void start(); //Esta funcion se llama al cambiar de pantalla
 	virtual void update();//Esta funcion se llama cada vez que de una vuelta al bucle
 	virtual void onButtonPress(HWND button);//Esta funcion se llama cuando un boton sea pulsado

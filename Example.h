@@ -9,32 +9,35 @@
 #define EXAMPLE_H_
 #include "WindowObjects/Window.h"
 
-//#include <windows.h>
-//#include <cmath>
-//#include <iostream>
-//#include <SFML/Window.hpp>
-//class Example: public Window {
-//public:
-//	Example(){};
-//	virtual void start();
-//	virtual void update();
-//	virtual void onButtonPress(HWND button);
-//	virtual ~Example(){};
-//private:
-//	sf::RenderWindow SFMLView1;
-//	HWND blue;
-//	HWND red;
-//	HWND green;
-//	HWND next;
-//	HWND view;
-//	HWND textField;
-//	HWND textButton;
-//	HWND comboBox;
-//	float x = 0;
-//	float y = 0;
-//	float v = 1;
-//	sf::CircleShape shape = sf::CircleShape(100.f);
-//};
-//
-//
+#include <windows.h>
+#include <cmath>
+#include <iostream>
+#include <SFML/Window.hpp>
+class Example: public Window {
+public:
+	Example(){};
+	virtual void start();
+	virtual void update();
+	virtual void onButtonPress(HWND button);
+	virtual void onMessage(char* message);
+	virtual ~Example(){};
+private:
+	sf::RenderWindow SFMLView1;
+	HWND blue;
+	HWND red;
+	HWND green;
+	HWND next;
+	HWND view;
+	HWND textField;
+	HWND textButton;
+	HWND comboBox;
+	HWND client;
+	HWND server;
+	float x = 0;
+	float y = 0;
+	float v = 1;
+	sf::CircleShape shape = sf::CircleShape(100.f);
+};
+
+
 #endif /* EXAMPLE_H_ */

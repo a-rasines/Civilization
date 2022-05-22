@@ -7,14 +7,18 @@
 
 #include "WindowManager.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include <windows.h>
 #include <cmath>
 #include <iostream>
 #include <SFML/Window.hpp>
+#include <string>
 #include "Window.h"
 #include "Fonts.h"
 WindowManager *windowInstance;
 Window *activeWindow;
+WindowManager::TCPConnectionHandler tcpHandler;
+sf::Thread *commThread;
 int wWidth;
 int wHeight;
 LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
@@ -77,6 +81,10 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 			float time = clock.getElapsedTime().asMilliseconds();
 			activeWindow->deltatime = (-timeElapsed) + time;
 			timeElapsed = time;
+			if(tcpHandler.receivedMessages.size() != 0){
+				activeWindow->onMessage(tcpHandler.receivedMessages.front());
+				tcpHandler.receivedMessages.pop_front();
+			}
 			activeWindow->update();
 		}
 	}
@@ -91,6 +99,63 @@ void WindowManager::setWindow(Window *w){
 }
 WindowManager::Dimension WindowManager::getWindowSize(){
 	return (WindowManager::Dimension){wWidth, wHeight};
+}
+WindowManager::TCPConnectionHandler::TCPConnectionHandler(sf::IpAddress ip, long long port){
+	this->ip = ip;
+	this->port = port;
+	client = false;
+}
+void WindowManager::TCPConnectionHandler::main(){
+	bool lastMessage;
+	sf::TcpSocket socket;
+	if(client){
+		std::cout << "server";
+		sf::TcpListener listener;
+		if (listener.listen(port) != sf::Socket::Done || listener.accept(socket) != sf::Socket::Done)return;
+		pendingMessages.push_back("Connected");
+		lastMessage = false;
+	}else{
+		if (socket.connect(ip, port) != sf::Socket::Done)
+			return;
+		lastMessage = true;
+	}
+	while(true){
+		const char* msg;
+		if(pendingMessages.size() != 0 && !lastMessage){ //Si no hay mensaje que mandar o no ha recibido respuesta no se ejecuta
+				msg = pendingMessages.front();
+				pendingMessages.pop_front();
+			if (socket.send(msg, 128) != sf::Socket::Done)
+				return;
+			lastMessage = true;
+		}
+		if(lastMessage){ //Si ha mandado un mensaje espera la respuesta
+			char in[128];
+			std::size_t received;
+			if (socket.receive(in, sizeof(in), received) != sf::Socket::Done)
+				return;
+			lastMessage = false;
+			std::cout<< in;
+			receivedMessages.push_back(in);
+		}
+		sf::sleep(sf::milliseconds(1000));
+	}
+}
+void WindowManager::sendMessage(const char* message){
+	tcpHandler.pendingMessages.push_back(message);
+}
+void WindowManager::startTCPServer(){
+	commThread = new sf::Thread(&TCPConnectionHandler::main, &tcpHandler);
+	commThread->launch();
+
+}
+void WindowManager::stopConnection(){
+	commThread->terminate();
+}
+void WindowManager::startTCPClient(sf::IpAddress ip){
+	tcpHandler = TCPConnectionHandler(ip, 50001);
+	commThread = new sf::Thread(&TCPConnectionHandler::main, &tcpHandler);
+	commThread->launch();
+
 }
 void WindowManager::repaint(){
 	PAINTSTRUCT ps;

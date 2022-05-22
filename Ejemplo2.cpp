@@ -8,9 +8,6 @@
 #include "Ejemplo2.h"
 
 #include "Example.h"
-Ejemplo2::Ejemplo2(){
-
-}
 Ejemplo2::~Ejemplo2(){
 
 }
@@ -52,6 +49,6 @@ void Ejemplo2::onButtonPress(HWND button){
 	if(button == red)sprite.setTexture(texture2, true);//Si la nueva textura tiene otro tamaño y lo quieres redimensionar se pone true, sino false
 	else if(button == blue)sprite.setTexture(texture1, false);
 	else if(button == green) sprite.setTexture(texture3, true);
-//	else if(button == next) Window::manager->setWindow(new Example());
+	else if(button == next) Window::manager->setWindow(new Example());
 }
 

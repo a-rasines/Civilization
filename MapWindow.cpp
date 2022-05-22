@@ -77,6 +77,6 @@ void MapWindow::onResize(int newWidth, int newHeight){
 }
 MapWindow::~MapWindow() {}
 
-int main(){
-	Window::manager = new WindowManager("S", 0, 0, 1200, 1000, new MapWindow());
-}
+//int main(){
+//	Window::manager = new WindowManager("S", 0, 0, 1200, 1000, new MapWindow());
+//}

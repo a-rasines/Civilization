@@ -28,8 +28,10 @@ void Example::start(){
 	green = generateButton("Verde", 400, 0, 200, 100);
 	next = generateButton("Sprites", 600, 0, 200, 100);
 	textField = generateTextField(800, 0, 200, 100);
-	textButton = generateButton("", 1000, 0, 200, 100);
+	textButton = generateButton("Send", 1000, 0, 200, 100);
 	comboBox = generateComboBox(1000, 100, 200, 100, {"A", "B","C"});
+	client = generateButton("Client", 1000, 125, 200, 100);
+	server = generateButton("Server", 1000, 225, 200, 100);
 
 }
 void Example::update(){
@@ -58,10 +60,14 @@ void Example::onButtonPress(HWND button){
 	else if(button == blue)	shape.setFillColor(sf::Color::Blue);
 	else if(button == green) shape.setFillColor(sf::Color::Green);
 	else if(button == next) Window::manager->setWindow(new Ejemplo2());
+	else if(button == client)Window::manager->startTCPClient("127.0.0.1");
+	else if(button == server)Window::manager->startTCPServer();
 	else if(button == textButton){
-		removeComponent(textButton); //No se si hay alguna forma de cambiar texto, pero esta funciona
-		textButton = generateButton(getComponentText(comboBox), 1000, 0, 200, 100);
+		Window::manager->sendMessage(getComponentText(comboBox));
 	}
+}
+void Example::onMessage(char* message){
+	textField = generateTextField(message, 800, 0, 200, 100);
 }
 int main(){
 	Window::manager = new WindowManager("Ejemplo", 0, 0, 1200, 1000, new Example());
