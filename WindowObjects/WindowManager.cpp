@@ -109,7 +109,6 @@ void WindowManager::TCPConnectionHandler::main(){
 	bool lastMessage;
 	sf::TcpSocket socket;
 	if(client){
-		std::cout << "server";
 		sf::TcpListener listener;
 		if (listener.listen(port) != sf::Socket::Done || listener.accept(socket) != sf::Socket::Done)return;
 		pendingMessages.push_back("Connected");
@@ -120,9 +119,9 @@ void WindowManager::TCPConnectionHandler::main(){
 		lastMessage = true;
 	}
 	while(true){
-		const char* msg;
 		if(pendingMessages.size() != 0 && !lastMessage){ //Si no hay mensaje que mandar o no ha recibido respuesta no se ejecuta
-				msg = pendingMessages.front();
+				char* msg = (char*)pendingMessages.front();
+				std::cout << msg << "\n";
 				pendingMessages.pop_front();
 			if (socket.send(msg, 128) != sf::Socket::Done)
 				return;
@@ -134,14 +133,13 @@ void WindowManager::TCPConnectionHandler::main(){
 			if (socket.receive(in, sizeof(in), received) != sf::Socket::Done)
 				return;
 			lastMessage = false;
-			std::cout<< in;
 			receivedMessages.push_back(in);
 		}
 		sf::sleep(sf::milliseconds(1000));
 	}
 }
 void WindowManager::sendMessage(const char* message){
-	tcpHandler.pendingMessages.push_back(message);
+	tcpHandler.pendingMessages.push_back((char*)message);
 }
 void WindowManager::startTCPServer(){
 	commThread = new sf::Thread(&TCPConnectionHandler::main, &tcpHandler);

@@ -57,10 +57,9 @@ void Window::setResizable(bool resizable){
 		SetWindowLongPtr(window, GWL_STYLE,  WS_SYSMENU | WS_VISIBLE);
 }
 char* Window::getComponentText(HWND component){
-	std::string text;
-	text.resize(GetWindowTextLengthA(component)+1);
-	printf("%i", GetWindowTextA(component, LPSTR(text.c_str()), GetWindowTextLengthA(component)+1));
-	return &text[0];
+	char* text = new char[GetWindowTextLengthA(component)+1];
+	GetWindowTextA(component, text, GetWindowTextLengthA(component)+1);
+	return text;
 }
 
 

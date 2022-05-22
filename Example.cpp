@@ -62,11 +62,10 @@ void Example::onButtonPress(HWND button){
 	else if(button == next) Window::manager->setWindow(new Ejemplo2());
 	else if(button == client)Window::manager->startTCPClient("127.0.0.1");
 	else if(button == server)Window::manager->startTCPServer();
-	else if(button == textButton){
-		Window::manager->sendMessage(getComponentText(comboBox));
-	}
+	else if(button == textButton)Window::manager->sendMessage(getComponentText(textField));
 }
 void Example::onMessage(char* message){
+	removeComponent(textField);
 	textField = generateTextField(message, 800, 0, 200, 100);
 }
 int main(){
