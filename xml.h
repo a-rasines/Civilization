@@ -11,7 +11,6 @@
 typedef struct XMLObject XMLObject;
 struct XMLObject{
 	char* label;
-	char* raw;
 	XMLObject **children;
 	XMLObject *parent;
 	int childrenCount;

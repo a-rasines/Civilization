@@ -109,7 +109,6 @@ XMLObject loadXML(char* plainText){
 			obj->label = getLabelName(line);
 			obj->value = getValue(line);
 			obj->parent = actual;
-			obj->raw = removeTabs(nextLine(plainText, i+1));
 			obj->childrenCount = 0;
 			obj->children = malloc(sizeof(XMLObject) * (lineCount-i));
 			actual->children[actual->childrenCount]=obj;
