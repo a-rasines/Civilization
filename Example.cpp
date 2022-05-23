@@ -13,6 +13,9 @@
 #include "Ejemplo2.h"
 #include "menuEjemplo.h"
 #include <string.h>
+extern "C"{
+	#include "xml.h"
+}
 void Example::start(){
 	//Se crea una ventana de render (un container dentro de la ventana donde se pueden meter sprites)
 	view = generateView(0, 100, 1000, 900);
@@ -35,7 +38,7 @@ void Example::start(){
 
 }
 void Example::update(){
-	if(GetActiveWindow() == textField){ //Si el textField esta siendo usado no queremos que se mueva nada
+	if(GetActiveWindow() == textField){ //Si el textField esta siendo usado no queremos que se mueva nada NO FUNCIONA
 		return;
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A) && x != -1)
