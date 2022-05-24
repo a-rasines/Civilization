@@ -16,10 +16,15 @@ public:
 	virtual ~menuEjemplo();
 	virtual void start();
 	virtual void update();
+	virtual void onButtonPress(HWND button);//Esta funcion se llama cuando un boton sea pulsado
 private:
 	sf::Text text;
 	HWND view;
+	HWND startG, loadG, quit;
 	sf::RenderWindow SFMLView1;
+	HBITMAP hImage;
+	static sf::Texture background;
+
 };
 
 #endif /* MENUEJEMPLO_H_ */

@@ -71,6 +71,6 @@ void Example::onMessage(char* message){
 	removeComponent(textField);
 	textField = generateTextField(message, 800, 0, 200, 100);
 }
-int main(){
-	Window::manager = new WindowManager("Ejemplo", 0, 0, 1200, 1000, new Example());
-}
+//int main(){
+	//Window::manager = new WindowManager("Ejemplo", 0, 0, 1200, 1000, new Example());
+//}
