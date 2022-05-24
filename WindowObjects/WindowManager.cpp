@@ -37,7 +37,10 @@ LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam
 			wWidth = LOWORD(lParam);
 			wHeight = HIWORD(lParam);
 			activeWindow->onResize(wWidth, wHeight);
-
+			break;
+		}case WM_KEYDOWN:{
+			activeWindow->onKeyDown(wParam);
+			break;
 		}
 	}
 	return DefWindowProc(handle, message, wParam, lParam);
@@ -64,8 +67,6 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 	RegisterClass(&windowClass);
 	// Let's create the main window
 	this->window = CreateWindowEx(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE, TEXT("SFML App"), TEXT(title), WS_SYSMENU | WS_VISIBLE, posX, posY, width, height, NULL, NULL, instance, NULL);
-	//Reloj para calcular el deltatime y tiempo transcurrido
-	sf::Clock clock;
 	float timeElapsed = clock.getElapsedTime().asMilliseconds();
 	message.message = static_cast<UINT>(~WM_QUIT);
 	Window::instance = instance;

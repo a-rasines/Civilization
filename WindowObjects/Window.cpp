@@ -5,8 +5,6 @@
  *      Author: algtc
  */
 #include "Window.h"
-#include "windows.h"
-#include "winuser.h"
 #include "CommCtrl.h"
 #include "string.h"
 #include <list>

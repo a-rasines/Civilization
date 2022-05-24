@@ -16,16 +16,16 @@ MapWindow::MapWindow() {
 	x = 0;
 	y = 0;
 	zoom = 5;
+	lastMovement = 0;
 }
-void MapWindow::troopMove(Tropa toca, int x, int y){
-	if(posibleMove(toca,x,y)){
-		toca.posicionX=x;
-		toca.posicionY=y;
+void MapWindow::troopMove(TropaInst *toca, int x, int y){
+	if(posibleMove(*toca,x,y)){
+		toca->posicionX=x;
+		toca->posicionY=y;
 	}
-	std::cout<<"coso";
 }
-bool MapWindow::posibleMove(Tropa t ,int x, int y){
-	return ((int)foreground[y][x].allowedTroops | t.tipoTropa) == t.tipoTropa;
+bool MapWindow::posibleMove(TropaInst t ,int x, int y){
+	return foreground[y][x].allowedTroops->isAllowed(t.data.type);
 }
 void MapWindow::start(){
 	WindowManager::Dimension size = Window::manager->getWindowSize();
@@ -33,10 +33,7 @@ void MapWindow::start(){
 	setResizable(true);
 	std::string file = "resources/" + (std::string)RIVER.file;
 	background.loadFromFile(file, sf::IntRect(RIVER.textureX, RIVER.textureY, RIVER.sizeX, RIVER.sizeY));
-	TropaDos t1;
-	t1.posicionX=6;
-	t1.posicionY=6;
-	t1.tipoTropa=2;
+	TropaInst t1 = {0, 0, 0, 1, 5, 5};
 	activeTroops.push_back(t1);
 }
 void MapWindow::update(){
@@ -54,7 +51,7 @@ void MapWindow::update(){
 		mapView.draw(rect);
 
 	}
-	for(TropaDos t: activeTroops){
+	for(TropaInst t: activeTroops){
 		sf::Texture tex;
 		sprite::TroopData coso = sprite::Troop[t.tipo];
 		tex.loadFromFile("resources/SP257.PIC_256.gif",sf::IntRect(coso.textureX,coso.textureY,coso.sizeX,coso.sizeY));
@@ -65,14 +62,17 @@ void MapWindow::update(){
 		mapView.draw(rect);
 	}
 	mapView.display();
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-	  TropaDos troop = activeTroops.front();
-	  troopMove(troop,
-	    troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up),
-	    troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
-	  );
-	  activeTroops.remove(troop);
-	  activeTroops.push_back(troop);
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+	   sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+	   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+	   sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+		TropaInst troop = activeTroops.front();
+		troopMove(&troop,
+	    	troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
+	    	troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
+		);
+		activeTroops.remove(troop);
+		activeTroops.push_back(troop);
 	}
 }
 void MapWindow::reposition(int x, int y){
@@ -107,6 +107,21 @@ void MapWindow::reposition(int x, int y){
 }
 void MapWindow::onResize(int newWidth, int newHeight){
 	reposition(x, y);
+}
+void MapWindow::onKeyDown(int keycode){
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+	   sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+	   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+	   sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+		TropaInst troop = activeTroops.front();
+		troopMove(&troop,
+			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
+			troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
+		);
+		activeTroops.remove(troop);
+		activeTroops.push_back(troop);
+
+	}
 }
 MapWindow::~MapWindow() {}
 

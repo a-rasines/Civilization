@@ -55,6 +55,7 @@ class WindowManager {
 				int port;
 				bool client;
 		};
+		sf::Clock clock;
 	protected:
 	private:
 		HWND window;

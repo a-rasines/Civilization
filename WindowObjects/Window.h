@@ -24,6 +24,7 @@ class Window {
 		virtual void onButtonPress(HWND button){};//Esta funcion se llama cuando un boton sea pulsado
 		virtual void onResize(int newWidth, int newHeight){};//Esta funcion se llama cuando la ventana cambia de tamaño
 		virtual void onMessage(char* message){};//Esta función se llama cuando un mensaje TCP es recibido
+		virtual void onKeyDown(int keycode){};//Esta función se llama cuando una tecla es pulsada
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones internas
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,8 +67,11 @@ class Window {
 		 * Devuelve el texto dentro de cualquier componente de la ventana (Botones, textbox, combobox...).
 		 * component -> componente del que sacar el texto
 		 */
-		void setResizable(bool resizable);
 		char* getComponentText(HWND component);
+		/**
+		 * Establece si la ventana se debe poder redimensionar o no
+		 */
+		void setResizable(bool resizable);
 		/**
 		 * Elimina todos los componentes presentes en la ventana
 		 */
