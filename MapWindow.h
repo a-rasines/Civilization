@@ -11,11 +11,15 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+#include <list>
 #include "Sprite.h"
+#include "tropa.h"
 #include"Ejemplo2.h"
 class MapWindow : public Window{
 public:
 	MapWindow();
+	void troopMove(Tropa t, int x, int y);
+	bool posibleMove(Tropa t,int x, int y);
 	void start(); //Esta funcion se llama al cambiar de pantalla
 	void update();//Esta funcion se llama cada vez que de una vuelta al bucle
 	void onButtonPress(HWND button){};//Esta funcion se llama cuando un boton sea pulsado
@@ -30,6 +34,11 @@ public:
 		sf::IntRect texData;
 
 	};
+	struct TropaDos : public Tropa{
+		bool operator == (Tropa t){
+			return idTropa==t.idTropa;
+		}
+	};
 	virtual ~MapWindow();
 	static int zoom;
 private:
@@ -37,6 +46,7 @@ private:
 	static float x;
 	static float y;
 	std::vector<Cell> activeCells;
+	std::list<TropaDos> activeTroops;
 	static sf::Texture background;
 };
 

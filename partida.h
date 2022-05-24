@@ -12,7 +12,7 @@ typedef struct
 {
 	char* jugador;
 	int server;
-	enum politica;
+	//enum politica;
     int investigaciones;
     char* alianzas;
 } Partida;

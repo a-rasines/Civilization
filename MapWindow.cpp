@@ -17,12 +17,27 @@ MapWindow::MapWindow() {
 	y = 0;
 	zoom = 5;
 }
+void MapWindow::troopMove(Tropa toca, int x, int y){
+	if(posibleMove(toca,x,y)){
+		toca.posicionX=x;
+		toca.posicionY=y;
+	}
+	std::cout<<"coso";
+}
+bool MapWindow::posibleMove(Tropa t ,int x, int y){
+	return ((int)foreground[y][x].allowedTroops | t.tipoTropa) == t.tipoTropa;
+}
 void MapWindow::start(){
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	mapView.create(generateView(0, 0, size.x, size.y));
 	setResizable(true);
 	std::string file = "resources/" + (std::string)RIVER.file;
 	background.loadFromFile(file, sf::IntRect(RIVER.textureX, RIVER.textureY, RIVER.sizeX, RIVER.sizeY));
+	TropaDos t1;
+	t1.posicionX=6;
+	t1.posicionY=6;
+	t1.tipoTropa=2;
+	activeTroops.push_back(t1);
 }
 void MapWindow::update(){
 	mapView.clear();
@@ -39,8 +54,26 @@ void MapWindow::update(){
 		mapView.draw(rect);
 
 	}
+	for(TropaDos t: activeTroops){
+		sf::Texture tex;
+		sprite::TroopData coso = sprite::Troop[t.tipo];
+		tex.loadFromFile("resources/SP257.PIC_256.gif",sf::IntRect(coso.textureX,coso.textureY,coso.sizeX,coso.sizeY));
+		sf::RectangleShape rect;
+		rect.setTexture(&tex, false);
+		rect.setSize(sf::Vector2f(coso.sizeX*zoom, coso.sizeY*zoom));
+		rect.setPosition(sf::Vector2f(t.posicionX*16*zoom-x, t.posicionY*16*zoom-y));
+		mapView.draw(rect);
+	}
 	mapView.display();
-
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+	  TropaDos troop = activeTroops.front();
+	  troopMove(troop,
+	    troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up),
+	    troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
+	  );
+	  activeTroops.remove(troop);
+	  activeTroops.push_back(troop);
+	}
 }
 void MapWindow::reposition(int x, int y){
 	WindowManager::Dimension size = Window::manager->getWindowSize();
@@ -77,6 +110,6 @@ void MapWindow::onResize(int newWidth, int newHeight){
 }
 MapWindow::~MapWindow() {}
 
-//int main(){
-//	Window::manager = new WindowManager("S", 0, 0, 1200, 1000, new MapWindow());
-//}
+int main(){
+	Window::manager = new WindowManager("S", 0, 0, 1200, 1000, new MapWindow());
+}

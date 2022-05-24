@@ -8,12 +8,14 @@ typedef struct
 {
 	int idServidor;
 	int idJugador;
-	enum tipo;
+	int idTropa;
+	int tipo;
 	int vida;
-	int mejorada;//bool no existe en c
+	int mejorada;
 	int estado;
 	int posicionX;
 	int posicionY;
+	int tipoTropa;
 } Tropa;
 
 

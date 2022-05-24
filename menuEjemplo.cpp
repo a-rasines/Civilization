@@ -54,6 +54,6 @@ void menuEjemplo::onButtonPress(HWND button){
 	if(button == startG) cout << "Hello World!";
 
 }
-int main(){
+/*int main(){
 	Window::manager = new WindowManager("S", 0, 0, 1200, 1000, new menuEjemplo());
-}
+}*/
