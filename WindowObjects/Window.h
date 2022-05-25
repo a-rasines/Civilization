@@ -25,6 +25,7 @@ class Window {
 		virtual void onResize(int newWidth, int newHeight){};//Esta funcion se llama cuando la ventana cambia de tamaño
 		virtual void onMessage(char* message){};//Esta función se llama cuando un mensaje TCP es recibido
 		virtual void onKeyDown(int keycode){};//Esta función se llama cuando una tecla es pulsada
+		virtual void onKeyUp(int keycode){};//Esta función se llama cuando una tecla es soltada
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones internas
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -81,6 +82,26 @@ class Window {
 		 * comp -> Componente a eliminar
 		 */
 		void removeComponent(HWND comp);
+		/**
+		 * Mueve la ventana a una nueva posicion
+		 * x -> Nueva posicion X de la ventana
+		 * y -> Nueva posicion Y de la ventana
+		 */
+		void move(int x, int y);
+		/**
+		 * Cambia el tamaño de la ventana
+		 * width -> Nueva anchura
+		 * height -> Nueva altura
+		 */
+		void resize(int width, int height);
+		/**
+		 * Cambia el tamaño y posición de la ventana
+		 * width -> Nueva anchura
+		 * height -> Nueva altura
+		 * x -> Nueva posicion X de la ventana
+		 * y -> Nueva posicion Y de la ventana
+		 */
+		void resize(int width, int height, int x, int y);
 		/**
 		 * Tiempo desde el anterior frame
 		 */

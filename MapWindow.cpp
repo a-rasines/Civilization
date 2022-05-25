@@ -62,18 +62,6 @@ void MapWindow::update(){
 		mapView.draw(rect);
 	}
 	mapView.display();
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-	   sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
-	   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-	   sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-		TropaInst troop = activeTroops.front();
-		troopMove(&troop,
-	    	troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
-	    	troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
-		);
-		activeTroops.remove(troop);
-		activeTroops.push_back(troop);
-	}
 }
 void MapWindow::reposition(int x, int y){
 	WindowManager::Dimension size = Window::manager->getWindowSize();
@@ -120,11 +108,10 @@ void MapWindow::onKeyDown(int keycode){
 		);
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
-
 	}
 }
 MapWindow::~MapWindow() {}
 
 int main(){
-	Window::manager = new WindowManager("S", 0, 0, 1200, 1000, new MapWindow());
+	Window::manager = new WindowManager("Civilization", 1200, 1000, new MapWindow());
 }

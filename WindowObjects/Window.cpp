@@ -54,6 +54,17 @@ void Window::setResizable(bool resizable){
 	else
 		SetWindowLongPtr(window, GWL_STYLE,  WS_SYSMENU | WS_VISIBLE);
 }
+void Window::move(int x, int y){
+	WindowManager::Dimension d = this->manager->getWindowSize();
+	SetWindowPos(this->window, NULL, x, y, d.x, d.y, SWP_DRAWFRAME);
+}
+void Window::resize(int width, int height){
+	WindowManager::Dimension d = this->manager->getWindowPosition();
+	SetWindowPos(this->window, NULL, d.x, d.y, width, height, SWP_DRAWFRAME);
+}
+void Window::resize(int width, int height, int x, int y){
+	SetWindowPos(this->window, NULL, x, y, width, height, SWP_DRAWFRAME)
+}
 char* Window::getComponentText(HWND component){
 	char* text = new char[GetWindowTextLengthA(component)+1];
 	GetWindowTextA(component, text, GetWindowTextLengthA(component)+1);

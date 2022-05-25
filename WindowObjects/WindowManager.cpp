@@ -19,8 +19,8 @@ WindowManager *windowInstance;
 Window *activeWindow;
 WindowManager::TCPConnectionHandler tcpHandler;
 sf::Thread *commThread;
-int wWidth;
-int wHeight;
+WindowManager::Dimension wm_size;
+WindowManager::Dimension wm_position;
 LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 	switch (message){
 			// Quit when we close the main window
@@ -34,12 +34,15 @@ LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam
 			windowInstance->repaint();
 			break;
 		}case WM_SIZE:{
-			wWidth = LOWORD(lParam);
-			wHeight = HIWORD(lParam);
-			activeWindow->onResize(wWidth, wHeight);
+			wm_size.x = LOWORD(lParam);
+			wm_size.y = HIWORD(lParam);
+			activeWindow->onResize(wm_size.x, wm_size.y);
 			break;
 		}case WM_KEYDOWN:{
 			activeWindow->onKeyDown(wParam);
+			break;
+		}case WM_KEYUP:{
+			activeWindow->onKeyUp(wParam);
 			break;
 		}
 	}
@@ -47,8 +50,10 @@ LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam
 }
 MSG message;
 WindowManager::WindowManager(const char* title, int posX, int posY, int width, int height, Window *window) {
-	wWidth = width;
-	wHeight = height;
+	wm_size.x = width;
+	wm_size.y = height;
+	wm_position.x = posX;
+	wm_position.y = posY;
 	activeWindow = window;
 	instance = GetModuleHandle(NULL);
 	windowInstance = this;
@@ -93,13 +98,20 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 	UnregisterClass(TEXT("SFML App"), instance);
 	// Loop until a WM_QUIT message is received
 }
+WindowManager::WindowManager(const char* title, int width, int height, Window *window){
+	this->window = '\0';//Esta linea es solo para cargarme el warning de que no esta inicializada
+	new (this) WindowManager(title, (sf::VideoMode::getDesktopMode().width-width)/2, (sf::VideoMode::getDesktopMode().height-height)/2, width, height, window);
+}
 void WindowManager::setWindow(Window *w){
 	activeWindow->destroyComponents();
 	activeWindow = w;
 	activeWindow->start();
 }
 WindowManager::Dimension WindowManager::getWindowSize(){
-	return (WindowManager::Dimension){wWidth, wHeight};
+	return wm_size;
+}
+WindowManager::Dimension WindowManager::getWindowPosition(){
+	return wm_position;
 }
 WindowManager::TCPConnectionHandler::TCPConnectionHandler(sf::IpAddress ip, long long port){
 	this->ip = ip;

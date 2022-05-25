@@ -18,8 +18,22 @@ class WindowManager {
 		}
 		/** Genera una ventana de SFML con el título definido
 		 * 	title -> Titulo de la ventana
+		 * 	posX -> Posicion X de la ventana
+		 * 	posY -> Posicion Y de la ventana
+		 * 	width -> anchura de la ventana
+		 * 	height -> altura de la ventana
+		 * 	window -> ventana en la que iniciar
 		 */
 		WindowManager(const char* title, int posX, int posY, int width, int height, Window *window);
+		/** Genera una ventana de SFML con el título definido en el centro de la pantalla
+		 * 	title -> Titulo de la ventana
+		 * 	posX -> Posicion X de la ventana
+		 * 	posY -> Posicion Y de la ventana
+		 * 	width -> anchura de la ventana
+		 * 	height -> altura de la ventana
+		 * 	window -> ventana en la que iniciar
+		 */
+		WindowManager(const char* title, int width, int height, Window *window);
 		~WindowManager(){
 
 		}
@@ -36,6 +50,7 @@ class WindowManager {
 		void startTCPClient(sf::IpAddress ip);
 		void stopConnection();
 		Dimension getWindowSize();
+		Dimension getWindowPosition();
 		void repaint();
 		void sendMessage(const char* message);
 		class TCPConnectionHandler {
