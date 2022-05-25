@@ -26,6 +26,8 @@ class Window {
 		virtual void onMessage(char* message){};//Esta función se llama cuando un mensaje TCP es recibido
 		virtual void onKeyDown(int keycode){};//Esta función se llama cuando una tecla es pulsada
 		virtual void onKeyUp(int keycode){};//Esta función se llama cuando una tecla es soltada
+		virtual void onMouseDown(int mouseButton, int x, int y){};//Esta funcion se llama cuando se pulsa una tecla del raton. El botón se saca mediante or binario
+		virtual void onMouseUp(int mouseButton, int x, int y){};//Esta funcion se llama cuando se suelta una tecla del raton. El botón se saca mediante or binario
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones internas
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////

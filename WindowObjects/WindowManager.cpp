@@ -14,6 +14,7 @@
 #include <SFML/Window.hpp>
 #include <string>
 #include "Window.h"
+#include "windowsx.h"
 #include "Fonts.h"
 WindowManager *windowInstance;
 Window *activeWindow;
@@ -43,6 +44,12 @@ LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam
 			break;
 		}case WM_KEYUP:{
 			activeWindow->onKeyUp(wParam);
+			break;
+		}case WM_MBUTTONDOWN:{
+			activeWindow->onMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+			break;
+		}case WM_MBUTTONUP:{
+			activeWindow->onMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			break;
 		}
 	}
