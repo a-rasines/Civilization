@@ -63,7 +63,7 @@ void Window::resize(int width, int height){
 	SetWindowPos(this->window, NULL, d.x, d.y, width, height, SWP_DRAWFRAME);
 }
 void Window::resize(int width, int height, int x, int y){
-	SetWindowPos(this->window, NULL, x, y, width, height, SWP_DRAWFRAME)
+	SetWindowPos(this->window, NULL, x, y, width, height, SWP_DRAWFRAME);
 }
 char* Window::getComponentText(HWND component){
 	char* text = new char[GetWindowTextLengthA(component)+1];
