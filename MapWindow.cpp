@@ -34,7 +34,9 @@ void MapWindow::start(){
 	std::string file = "resources/" + (std::string)RIVER.file;
 	background.loadFromFile(file, sf::IntRect(RIVER.textureX, RIVER.textureY, RIVER.sizeX, RIVER.sizeY));
 	TropaInst t1 = {0, 0, 0, 1, 5, 5};
+	TropaInst t2 = {0, 0, 1, 16, 18,18};
 	activeTroops.push_back(t1);
+	activeTroops.push_back(t2);
 }
 void MapWindow::update(){
 	mapView.clear();
@@ -64,6 +66,8 @@ void MapWindow::update(){
 	mapView.display();
 }
 void MapWindow::reposition(int x, int y){
+	this->x=x;
+	this->y=y;
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	activeCells.clear();
 	y = -y;
@@ -90,8 +94,7 @@ void MapWindow::reposition(int x, int y){
 					)
 				}
 			);
-		}
-	}
+		}	}
 }
 void MapWindow::onResize(int newWidth, int newHeight){
 	reposition(x, y);
@@ -108,6 +111,8 @@ void MapWindow::onKeyDown(int keycode){
 		);
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
+		troop = activeTroops.front();
+		reposition((troop.posicionX-7)*16*zoom, (troop.posicionY-6)*16*zoom);
 	}
 }
 MapWindow::~MapWindow() {}
