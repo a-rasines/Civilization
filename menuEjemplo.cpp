@@ -12,6 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include "WindowObjects/Fonts.h"
 #include <iostream>
+
 using namespace std;
 sf::Texture menuEjemplo::background;
 
@@ -87,6 +88,7 @@ void menuEjemplo::onButtonPress(HWND button){
 		ShowWindow(textButton, (int) SW_SHOW);
 	}
 	else if (button == textButton){
+		if (getComponentText(usuario) != "" && getComponentText(contrasena) != ""){
 		//mandar datos inicio sesión
 		ShowWindow(inicioS, (int) SW_HIDE);
 		ShowWindow(usuario, (int) SW_HIDE);
@@ -101,7 +103,9 @@ void menuEjemplo::onButtonPress(HWND button){
 		ShowWindow(loadG, (int) SW_SHOW);
 
 
-
+		} else if (getComponentText(usuario) == ""){
+			 MessageBox(NULL, "Ingrese un nombre de usuario valido", NULL, MB_OK);
+		}
 	}
 	else if(button == startG)Window::manager = new WindowManager("Civilization", 1200, 1000, new MapWindow());
 	else if (button == quitG)manager->stopConnection();
