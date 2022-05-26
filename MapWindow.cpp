@@ -112,6 +112,7 @@ void MapWindow::onKeyDown(int keycode){
 }
 MapWindow::~MapWindow() {}
 
-int main(){
+/*int main(){
 	Window::manager = new WindowManager("Civilization", 1200, 1000, new MapWindow());
 }
+*/

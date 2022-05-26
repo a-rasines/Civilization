@@ -18,9 +18,12 @@ public:
 	virtual void update();
 	virtual void onButtonPress(HWND button);//Esta funcion se llama cuando un boton sea pulsado
 private:
-	sf::Text text;
+	sf::Text text, text2;
 	HWND view;
-	HWND startG, loadG, quit;
+	HWND startG, loadG, quitG, inicioS;
+	HWND usuario;
+	HWND contrasena;
+	HWND textButton;
 	sf::RenderWindow SFMLView1;
 	HBITMAP hImage;
 	static sf::Texture background;
