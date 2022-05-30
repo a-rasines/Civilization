@@ -29,6 +29,7 @@ sf::Texture menuEjemplo::background;
 int terminarAutent = 0;
 Usuario user;
 MapWindow mw;
+Usuario menuEjemplo::logeado;
 
 menuEjemplo::menuEjemplo() {
 
