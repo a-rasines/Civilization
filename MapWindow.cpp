@@ -35,19 +35,24 @@ void MapWindow::onClientStart(){
 				string(",")+to_string(tr.estado)+string(",")+to_string(tr.mejorada)+string(",")+to_string(tr.posicionX)+
 				string(",")+to_string(tr.posicionY)+string(",")+to_string(tr.tipo)+string(",")+to_string(tr.vida))).c_str());
 	Window::manager->sendMessage("2Terminado envio de tropas");
+	activeTroops.clear();
 }
 void MapWindow::onMessage(char* message){
 	if(message[0]=='0'){
 		int x,y;
 		sscanf(message,"0tropa a posicion:(%i,%i)",&x,&y);
 		if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
+			TropaInst actual = activeTroops.front();
 			troopMove(&activeTroops.front(), x, y);
+			activeTroops.remove(actual);
+			activeTroops.push_back(actual);
 		}
 	}else if(message[0]=='1'){
 		int a,b,c,d,e,f,g,h,i;
-		sscanf(message,"1Te envio tropa:%i,%i,%i,%i,%i,%i,%i,%i,%i",&a,&b,&c,&e,&f,&g,&h,&i);
+		sscanf(message,"1Te envio tropa:%i,%i,%i,%i,%i,%i,%i,%i,%i",&a,&b,&c,&d,&e,&f,&g,&h,&i);
 		TropaInst t = {a,b,c,d,e,f,g,h,i};
 		activeTroops.push_back(t);
+		Window::manager->sendMessage("ACK");
 	}else if(message[0]=='2'){
 		for(TropaInst tr : activeTroops)
 			Window::manager->sendMessage((string("1Te envio tropa:"+to_string(tr.idServidor)+string(",")+to_string(tr.idJugador)+string(",")+to_string(tr.idTropa)+
@@ -82,7 +87,7 @@ void MapWindow::cargarTropas(const char* fileName){
 		for(char n: line){
 			if(n!=','||n!='\n'){
 				int number = n-'0';
-				numeros[index] = n;
+				numeros[index] = number;
 			}
 			index++;
 		}
@@ -187,7 +192,9 @@ void MapWindow::onKeyDown(int keycode){
 			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 			troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
 		);
-		Window::manager->sendMessage((string("0tropa a posicion:(")+to_string(troop.posicionX)+string(",")+to_string(troop.posicionY)+string(")")).c_str());
+		const char* messagea = (string("0tropa a posicion:(")+to_string(troop.posicionX)+string(",")+to_string(troop.posicionY)+string(")")).c_str();
+		cout << "Movimiento: " << messagea << "\n";
+		Window::manager->sendMessage(messagea);
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
 		ccount = 50;

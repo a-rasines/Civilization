@@ -22,6 +22,7 @@ WindowManager::TCPConnectionHandler tcpHandler;
 sf::Thread *commThread;
 WindowManager::Dimension wm_size;
 WindowManager::Dimension wm_position;
+bool isClient = false;
 LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 	switch (message){
 			// Quit when we close the main window
@@ -115,6 +116,10 @@ void WindowManager::setWindow(Window *w){
 	activeWindow->destroyComponents();
 	activeWindow = w;
 	activeWindow->start();
+	printf("a");
+	if(isClient){
+		activeWindow->onClientStart();
+	}
 }
 WindowManager::Dimension WindowManager::getWindowSize(){
 	return wm_size;
@@ -143,7 +148,7 @@ void WindowManager::TCPConnectionHandler::main(){
 	while(true){
 		if(pendingMessages.size() != 0 && !lastMessage){ //Si no hay mensaje que mandar o no ha recibido respuesta no se ejecuta
 				char* msg = (char*)pendingMessages.front();
-				std::cout << msg << "\n";
+				std::cout << "sending" << msg << "\n";
 				pendingMessages.pop_front();
 			if (socket.send(msg, 128) != sf::Socket::Done)
 				return;
@@ -155,12 +160,14 @@ void WindowManager::TCPConnectionHandler::main(){
 			if (socket.receive(in, sizeof(in), received) != sf::Socket::Done)
 				return;
 			lastMessage = false;
+			std::cout << "received" << in << "\n";
 			receivedMessages.push_back(in);
 		}
 		sf::sleep(sf::milliseconds(1000));
 	}
 }
 void WindowManager::sendMessage(const char* message){
+	std::cout << "frontsize= " << tcpHandler.pendingMessages.size() << "\n";
 	tcpHandler.pendingMessages.push_back((char*)message);
 }
 void WindowManager::startTCPServer(){
@@ -175,7 +182,8 @@ void WindowManager::startTCPClient(sf::IpAddress ip){
 	tcpHandler = TCPConnectionHandler(ip, 50001);
 	commThread = new sf::Thread(&TCPConnectionHandler::main, &tcpHandler);
 	commThread->launch();
-
+	isClient = true;
+	activeWindow->onClientStart();
 }
 void WindowManager::repaint(){
 	PAINTSTRUCT ps;
