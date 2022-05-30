@@ -12,6 +12,7 @@
 #include <SFML/Graphics.hpp>
 #include "WindowObjects/Fonts.h"
 #include <iostream>
+#include <cstdio>
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -104,12 +105,13 @@ void menuEjemplo::onButtonPress(HWND button){
 		if (strcmp(getComponentText(usuario),"") && strcmp(getComponentText(contrasena),"") != 0){
 			user = getUsuario(getComponentText(usuario), getComponentText(contrasena));
 			if(user.nombre == '\0'){
-				int opcion = MessageBox(NULL, "Usuario no encontrado, ¿desea registrarse?", NULL, MB_YESNO);
+				const int opcion = MessageBox(NULL, "Usuario no encontrado, ¿desea registrarse?", NULL, MB_YESNO);
 				switch (opcion) {
 					case IDYES:
 						addUsuario(getComponentText(usuario), getComponentText(contrasena));
 						break;
 				}
+
 			}
 		ShowWindow(inicioS, (int) SW_HIDE);
 		ShowWindow(usuario, (int) SW_HIDE);
@@ -136,5 +138,6 @@ void menuEjemplo::onButtonPress(HWND button){
 
 }
 int main(){
+	setup();
 	Window::manager = new WindowManager("S", 1000, 1000, new menuEjemplo());
 }
