@@ -141,20 +141,19 @@ Usuario getUsuario(char* nombre, char* contrasena){
 }
 int existeUsuario(char* nombre){
 	sqlite3_stmt *stmt;
-	    Usuario end;
-		char seq[100];
-		sprintf(seq, "SELECT EXISTS(SELECT * FROM Usuario WHERE Nombre = '%s')", nombre);
+	char seq[100];
+	sprintf(seq, "SELECT EXISTS(SELECT * FROM Usuario WHERE Nombre = '%s')", nombre);
 
-		if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
-			printf("Error al cargar el usuario\n");
-			printf("%s\n", sqlite3_errmsg(db));
-			return (Usuario){'\0', 0, 0};
-		}
-		int i =sqlite3_step(stmt);
-		if(i != SQLITE_ROW){
-			return (Usuario){'\0', 0, 0};
-		}
-		return sqlite3_column_int(stmt, 0);
+	if (sqlite3_prepare_v2(db, seq, -1, &stmt, NULL) != SQLITE_OK) {
+		printf("Error al cargar el usuario\n");
+		printf("%s\n", sqlite3_errmsg(db));
+		return 0;
+	}
+	int i =sqlite3_step(stmt);
+	if(i != SQLITE_ROW){
+		return 0;
+	}
+	return sqlite3_column_int(stmt, 0);
 }
 void printStats(int id){
 	sqlite3_stmt *stmt;
