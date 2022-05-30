@@ -175,6 +175,7 @@ void WindowManager::startTCPServer(){
 	commThread->launch();
 
 }
+
 void WindowManager::stopConnection(){
 	commThread->terminate();
 }

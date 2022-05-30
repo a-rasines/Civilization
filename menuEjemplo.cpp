@@ -164,7 +164,10 @@ void menuEjemplo::onButtonPress(HWND button){
 		mw.cargarTropas("resources/troopSave.dat");
 		Window::manager->setWindow(&mw);
 	}
-	else if (button == quitG)manager->stopConnection();
+	else if (button == quitG){
+		manager->stopConnection();
+		DestroyWindow(window);
+	}
 	else if (button == server){
 		ShowWindow(server, (int) SW_HIDE);
 		ShowWindow(client, (int) SW_HIDE);
