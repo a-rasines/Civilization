@@ -6,6 +6,7 @@
  */
 
 #include "MapWindow.h"
+#include "menuEjemplo.h"
 #include <cstdio>
 #include <iostream>
 #include <fstream>
@@ -28,8 +29,31 @@ void MapWindow::troopMove(TropaInst *toca, int x, int y){
 		toca->posicionY=y;
 	}
 }
+void MapWindow::onClientStart(){
+	for(TropaInst tr : activeTroops)
+		Window::manager->sendMessage((string("1Te envio tropa:"+to_string(tr.idServidor)+string(",")+to_string(tr.idJugador)+string(",")+to_string(tr.idTropa)+
+				string(",")+to_string(tr.estado)+string(",")+to_string(tr.mejorada)+string(",")+to_string(tr.posicionX)+
+				string(",")+to_string(tr.posicionY)+string(",")+to_string(tr.tipo)+string(",")+to_string(tr.vida))).c_str());
+	Window::manager->sendMessage("2Terminado envio de tropas");
+}
 void MapWindow::onMessage(char* message){
-
+	if(message[0]=='0'){
+		int x,y;
+		sscanf(message,"0tropa a posicion:(%i,%i)",&x,&y);
+		if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
+			troopMove(&activeTroops.front(), x, y);
+		}
+	}else if(message[0]=='1'){
+		int a,b,c,d,e,f,g,h,i;
+		sscanf(message,"1Te envio tropa:%i,%i,%i,%i,%i,%i,%i,%i,%i",&a,&b,&c,&e,&f,&g,&h,&i);
+		TropaInst t = {a,b,c,d,e,f,g,h,i};
+		activeTroops.push_back(t);
+	}else if(message[0]=='2'){
+		for(TropaInst tr : activeTroops)
+			Window::manager->sendMessage((string("1Te envio tropa:"+to_string(tr.idServidor)+string(",")+to_string(tr.idJugador)+string(",")+to_string(tr.idTropa)+
+			string(",")+to_string(tr.estado)+string(",")+to_string(tr.mejorada)+string(",")+to_string(tr.posicionX)+
+			string(",")+to_string(tr.posicionY)+string(",")+to_string(tr.tipo)+string(",")+to_string(tr.vida))).c_str());
+	}
 }
 bool MapWindow::posibleMove(TropaInst t ,int x, int y){
 	return foreground[y][x].allowedTroops->isAllowed(t.data.type);
@@ -73,8 +97,8 @@ void MapWindow::start(){
 	setResizable(true);
 	std::string file = "resources/" + (std::string)RIVER.file;
 	background.loadFromFile(file, sf::IntRect(RIVER.textureX, RIVER.textureY, RIVER.sizeX, RIVER.sizeY));
-	TropaInst t1 = {0, 0, 0, 1, 5, 5};
-	TropaInst t2 = {0, 0, 1, 16, 18,18};
+	TropaInst t1 = {0, menuEjemplo::logeado.id, 0, 1, 5, 5};
+	TropaInst t2 = {0, menuEjemplo::logeado.id, 1, 16, 18,18};
 	activeTroops.push_back(t1);
 	activeTroops.push_back(t2);
 }
@@ -154,7 +178,7 @@ void MapWindow::onResize(int newWidth, int newHeight){
 	reposition(x, y);
 }
 void MapWindow::onKeyDown(int keycode){
-	if(ccount == 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+	if(activeTroops.front().idJugador==menuEjemplo::logeado.id && ccount == 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
 	   sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
 	   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
 	   sf::Keyboard::isKeyPressed(sf::Keyboard::Left))){
@@ -163,7 +187,7 @@ void MapWindow::onKeyDown(int keycode){
 			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 			troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
 		);
-		Window::manager->sendMessage((string("tropa a posicion:(")+to_string(troop.posicionX)+string(",")+to_string(troop.posicionY)+string(")")).c_str());
+		Window::manager->sendMessage((string("0tropa a posicion:(")+to_string(troop.posicionX)+string(",")+to_string(troop.posicionY)+string(")")).c_str());
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
 		ccount = 50;

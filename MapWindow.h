@@ -51,6 +51,7 @@ public:
 	};
 	void cargarTropas(const char* fichero);
 	void guardarTropas(const char* fichero);
+	void onClientStart();
 	MapWindow();
 	void troopMove(TropaInst *t, int x, int y);
 	bool posibleMove(TropaInst t,int x, int y);
