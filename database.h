@@ -16,6 +16,7 @@ int update(char* seq);
 sqlite3* getDB();
 int regenerarBaseDatos();
 Usuario getUsuario(char* nombre, char* contrasena);
+int existeUsuario(char* nombre);
 Usuario getUsuarioAdm(char* nombre);
 Usuario addUsuario(char* nombre, char* contrasena);
 int isBaneado(int id);
