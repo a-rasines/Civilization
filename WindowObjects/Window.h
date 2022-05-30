@@ -49,7 +49,7 @@ class Window {
 		 */
 		HWND generateTextField(int posX, int posY, int width, int height);
 		/**
-		 * Genera un TextBox (AKA TextField en Java) con el texto metiod
+		 * Genera un TextBox (AKA TextField en Java) con el texto metido
 		 *  text -> Texto inicial
 		 *	posX -> Posicion de las esquinas izquierdas.
 		 *	posY -> Posicion de las esquinas superiores.
@@ -57,6 +57,25 @@ class Window {
 		 *	height -> Altura de la vista
 		 */
 		HWND generateTextField(const char* text, int posX, int posY, int width, int height);
+
+		/**
+		 * Genera un TextBox (AKA TextField en Java) de contraseña con el texto metido
+		 *  text -> Texto inicial
+		 *	posX -> Posicion de las esquinas izquierdas.
+		 *	posY -> Posicion de las esquinas superiores.
+		 *	width -> Anchura de la vista
+		 *	height -> Altura de la vista
+		 */
+		HWND generatePasswordField(const char* text, int posX, int posY, int width, int height);
+		/**
+		 * Genera un TextBox (AKA TextField en Java) de contraseña vacio
+		 *  text -> Texto inicial
+		 *	posX -> Posicion de las esquinas izquierdas.
+		 *	posY -> Posicion de las esquinas superiores.
+		 *	width -> Anchura de la vista
+		 *	height -> Altura de la vista
+		 */
+		HWND generatePasswordField(int posX, int posY, int width, int height);
 		/**
 		 * Genera un ComboBox con los valores indicados en el parametro 5
 		 *	posX -> Posicion de las esquinas izquierdas.

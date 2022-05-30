@@ -30,7 +30,7 @@ menuEjemplo::~menuEjemplo() {
 void menuEjemplo::start(){
 	inicioS = generateButton("Inicio Sesion/Registro", 250, 500, 500, 50);
 	usuario = generateTextField(400, 560, 200, 40);
-	contrasena = generateTextField(400, 600, 200, 40);
+	contrasena = generatePasswordField(400, 600, 200, 40);
 	textButton = generateButton("Acceder", 400, 640, 200, 40);
 	startG = generateButton("Start game", 250, 500, 500, 50);
 	loadG = generateButton("Load game", 250, 600, 500, 50);

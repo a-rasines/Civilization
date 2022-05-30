@@ -23,6 +23,12 @@ HWND Window::generateButton(const char* title, int posX, int posY, int width, in
 	components.push_back(comp);
 	return comp;
 }
+HWND Window::generatePasswordField(const char* text, int posX, int posY, int width, int height){
+	return CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), text, WS_CHILD | WS_VISIBLE | ES_PASSWORD, posX, posY, width, height, window, NULL, NULL, NULL);
+}
+HWND Window::generatePasswordField(int posX, int posY, int width, int height){
+	return generatePasswordField("", posX, posY, width, height);
+}
 HWND Window::generateTextField(const char* text, int posX, int posY, int width, int height){
 	HWND comp = CreateWindowEx(WS_EX_CLIENTEDGE, TEXT("Edit"), TEXT(text), WS_CHILD | WS_VISIBLE, posX, posY, width, height, window, NULL, instance, NULL);
 	components.push_back(comp);
