@@ -33,7 +33,7 @@ bool MapWindow::posibleMove(TropaInst t ,int x, int y){
 }
 void MapWindow::guardarTropas(const char* fileName){
 	fstream file_out;
-	file_out.open(fileName);
+	file_out.open(fileName,fstream::out);
 	if(!file_out.is_open()){
 		cout<<"No se ha podido abrir el fichero"<< fileName<<"\n";
 	}else{
@@ -75,6 +75,8 @@ void MapWindow::start(){
 	activeTroops.push_back(t1);
 	activeTroops.push_back(t2);
 }
+int ccount = 0;
+bool countdown = false;
 void MapWindow::update(){
 	mapView.clear();
 	for(Cell cell : activeCells){
@@ -88,7 +90,12 @@ void MapWindow::update(){
 		mapView.draw(rect);
 		rect.setTexture(&tex, false);
 		mapView.draw(rect);
-
+		if(countdown)ccount--;
+		if(countdown && ccount==0){
+			TropaInst troop = activeTroops.front();
+			reposition((troop.posicionX-7)*16*zoom, (troop.posicionY-6)*16*zoom);
+			countdown = false;
+		}
 	}
 
 	for(TropaInst t: activeTroops){
@@ -105,7 +112,6 @@ void MapWindow::update(){
 }
 
 void MapWindow::onClose(){
-	std::cout<<"hola";
 	guardarTropas("resources/troopSave.dat");
 }
 
@@ -138,16 +144,17 @@ void MapWindow::reposition(int x, int y){
 					)
 				}
 			);
-		}	}
+		}
+	}
 }
 void MapWindow::onResize(int newWidth, int newHeight){
 	reposition(x, y);
 }
 void MapWindow::onKeyDown(int keycode){
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+	if(ccount == 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
 	   sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
 	   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-	   sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+	   sf::Keyboard::isKeyPressed(sf::Keyboard::Left))){
 		TropaInst troop = activeTroops.front();
 		troopMove(&troop,
 			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
@@ -156,8 +163,8 @@ void MapWindow::onKeyDown(int keycode){
 		Window::manager->sendMessage((string("tropa a posicion:(")+to_string(troop.posicionX)+string(",")+to_string(troop.posicionY)+string(")")).c_str());
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
-		troop = activeTroops.front();
-		reposition((troop.posicionX-7)*16*zoom, (troop.posicionY-6)*16*zoom);
+		ccount = 50;
+		countdown = true;
 	}
 }
 MapWindow::~MapWindow() {}
