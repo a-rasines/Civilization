@@ -12,6 +12,8 @@
 #include <vector>
 #include <string>
 #include <list>
+#include <iostream>
+#include <fstream>
 #include "Sprite.h"
 #include "tropa.h"
 #include"Ejemplo2.h"
@@ -30,11 +32,25 @@ public:
 			this->tipo = type;
 			this->vida = data.defense;
 		};
+		TropaInst(int serverId, int userId, int troopId,int estado,int mejora, int posX, int posY, int type, int vida){
+					this->idServidor = serverId;
+					this->idJugador = userId;
+					this->idTropa = troopId;
+					this->data = sprite::Troop[type];
+					this->estado = estado;
+					this->mejorada = mejora;
+					this->posicionX = posX;
+					this->posicionY = posY;
+					this->tipo = type;
+					this->vida = vida;
+				};
 		bool operator == (Tropa t){
 			return idTropa==t.idTropa;
 		}
 		sprite::TroopData data;
 	};
+	void cargarTropas(const char* fichero);
+	void guardarTropas(const char* fichero);
 	MapWindow();
 	void troopMove(TropaInst *t, int x, int y);
 	bool posibleMove(TropaInst t,int x, int y);

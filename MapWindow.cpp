@@ -7,10 +7,13 @@
 
 #include "MapWindow.h"
 #include <cstdio>
+#include <iostream>
+#include <fstream>
 #include "MapHolder.h"
 float MapWindow::x;
 float MapWindow::y;
 int MapWindow::zoom;
+using namespace std;
 sf::Texture MapWindow::background;
 MapWindow::MapWindow() {
 	x = 0;
@@ -27,7 +30,40 @@ void MapWindow::troopMove(TropaInst *toca, int x, int y){
 bool MapWindow::posibleMove(TropaInst t ,int x, int y){
 	return foreground[y][x].allowedTroops->isAllowed(t.data.type);
 }
+void MapWindow::guardarTropas(const char* fileName){
+	fstream file_out;
+	file_out.open(fileName);
+	if(!file_out.is_open()){
+		cout<<"No se ha podido abrir el fichero"<< fileName<<"\n";
+	}else{
+		for(TropaInst tr: activeTroops){
+			file_out << tr.idServidor+','+tr.idJugador+','+tr.idTropa+
+					','+tr.estado+','+tr.mejorada+','+tr.posicionX+
+					','+tr.posicionY+','+tr.tipo+','+tr.vida+'\n'<< endl;
+			cout <<"Escritura terminada"<< endl;
+		}
+	}
+
+}
+void MapWindow::cargarTropas(const char* fileName){
+	ifstream file;
+	file.open(fileName);
+	for(std::string line;getline(file,line);){
+		int numeros[10];
+		int index = 0;
+		for(char n: line){
+			if(n!=','||n!='\n'){
+				int number = n-'0';
+				numeros[index] = n;
+			}
+			index++;
+		}
+		TropaInst t = {numeros[0],numeros[1],numeros[2],numeros[3],numeros[4],numeros[5],numeros[6],numeros[7],numeros[8]};
+		activeTroops.push_back(t);
+	}
+}
 void MapWindow::start(){
+	cargarTropas("resources/troopSave.dat");
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	mapView.create(generateView(0, 0, size.x, size.y));
 	setResizable(true);
@@ -109,6 +145,7 @@ void MapWindow::onKeyDown(int keycode){
 			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 			troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
 		);
+		Window::manager->sendMessage("tropa a posicion:("+troop.posicionX+","+troop.posicionY+")");
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
 		troop = activeTroops.front();
