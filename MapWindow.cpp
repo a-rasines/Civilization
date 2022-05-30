@@ -10,6 +10,7 @@
 #include <iostream>
 #include <fstream>
 #include "MapHolder.h"
+#include <string>
 float MapWindow::x;
 float MapWindow::y;
 int MapWindow::zoom;
@@ -145,7 +146,7 @@ void MapWindow::onKeyDown(int keycode){
 			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 			troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
 		);
-		Window::manager->sendMessage("tropa a posicion:("+troop.posicionX+","+troop.posicionY+")");
+		//Window::manager->sendMessage(std::string("tropa a posicion:(")+std::string(troop.posicionX)+std::string(",")+std::string(troop.posicionY)+std::string(")"));
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
 		troop = activeTroops.front();

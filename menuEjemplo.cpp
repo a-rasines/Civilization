@@ -12,12 +12,21 @@
 #include <SFML/Graphics.hpp>
 #include "WindowObjects/Fonts.h"
 #include <iostream>
+#ifdef __cplusplus
+extern "C" {
+#endif
 #include "usuario.h"
 #include "database.h"
 #include "xml.h"
+//Usuario getUsuario(char* nombre, char* contrasena);
+#ifdef __cplusplus
+}
+#endif
 
 using namespace std;
 sf::Texture menuEjemplo::background;
+int terminarAutent = 0;
+Usuario user;
 
 menuEjemplo::menuEjemplo() {
 
@@ -28,6 +37,7 @@ menuEjemplo::~menuEjemplo() {
 }
 
 void menuEjemplo::start(){
+
 	inicioS = generateButton("Inicio Sesion/Registro", 250, 500, 500, 50);
 	usuario = generateTextField(400, 560, 200, 40);
 	contrasena = generatePasswordField(400, 600, 200, 40);
@@ -92,7 +102,15 @@ void menuEjemplo::onButtonPress(HWND button){
 	}
 	else if (button == textButton){
 		if (strcmp(getComponentText(usuario),"") && strcmp(getComponentText(contrasena),"") != 0){
-		//mandar datos inicio sesi√≥n
+			user = getUsuario(getComponentText(usuario), getComponentText(contrasena));
+			if(user.nombre == '\0'){
+				int opcion = MessageBox(NULL, "Usuario no encontrado, ødesea registrarse?", NULL, MB_YESNO);
+				switch (opcion) {
+					case IDYES:
+						addUsuario(getComponentText(usuario), getComponentText(contrasena));
+						break;
+				}
+			}
 		ShowWindow(inicioS, (int) SW_HIDE);
 		ShowWindow(usuario, (int) SW_HIDE);
 		ShowWindow(contrasena, (int) SW_HIDE);
