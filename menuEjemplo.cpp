@@ -114,7 +114,8 @@ void menuEjemplo::onButtonPress(HWND button){
 						break;
 				}
 			} else if (existeUsuario(getComponentText(usuario))){
-				if (getUsuario(getComponentText(usuario), getComponentText(contrasena)).nombre == '\0'){
+				logeado = getUsuario(getComponentText(usuario), getComponentText(contrasena));
+				if (logeado.nombre == '\0'){
 					MessageBox(NULL, "La contraseña es erronea", NULL, MB_OK);
 				}else{
 					ShowWindow(inicioS, (int) SW_HIDE);

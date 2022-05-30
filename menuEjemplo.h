@@ -9,9 +9,10 @@
 #define MENUEJEMPLO_H_
 
 #include "WindowObjects/Window.h"
-
+#include "usuario.h"
 class menuEjemplo: public Window  {
 public:
+	static Usuario logeado;
 	menuEjemplo();
 	virtual ~menuEjemplo();
 	virtual void start();

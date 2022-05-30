@@ -61,6 +61,7 @@ public:
 	void reposition(int x, int y);//Se llama para mover el mapa
 	void onResize(int newWidth, int newHeight);//Esta funcion se llama cuando la ventana cambia de tamaño
 	void onKeyDown(int keycode);//Esta función se llama cuando una tecla es pulsada
+	void onMessage(char * message);
 	struct Cell{
 		int posX;
 		int posY;

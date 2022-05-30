@@ -28,6 +28,9 @@ void MapWindow::troopMove(TropaInst *toca, int x, int y){
 		toca->posicionY=y;
 	}
 }
+void MapWindow::onMessage(char* message){
+
+}
 bool MapWindow::posibleMove(TropaInst t ,int x, int y){
 	return foreground[y][x].allowedTroops->isAllowed(t.data.type);
 }
