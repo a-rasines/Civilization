@@ -103,28 +103,33 @@ void menuEjemplo::onButtonPress(HWND button){
 	}
 	else if (button == textButton){
 		if (strcmp(getComponentText(usuario),"") && strcmp(getComponentText(contrasena),"") != 0){
-			user = getUsuario(getComponentText(usuario), getComponentText(contrasena));
-			if(user.nombre == '\0'){
+			if (not existeUsuario(getComponentText(usuario))){
 				const int opcion = MessageBox(NULL, "Usuario no encontrado, ¿desea registrarse?", NULL, MB_YESNO);
 				switch (opcion) {
 					case IDYES:
 						addUsuario(getComponentText(usuario), getComponentText(contrasena));
 						break;
+					case IDNO:
+						break;
 				}
+			} else if (existeUsuario(getComponentText(usuario))){
+				if (getUsuario(getComponentText(usuario), getComponentText(contrasena)).nombre == '\0'){
+					MessageBox(NULL, "La contraseña es erronea", NULL, MB_OK);
+				}else{
+					ShowWindow(inicioS, (int) SW_HIDE);
+					ShowWindow(usuario, (int) SW_HIDE);
+					ShowWindow(contrasena, (int) SW_HIDE);
+					ShowWindow(textButton, (int) SW_HIDE);
 
+					text.setFillColor(sf::Color::Black);
+					text2.setFillColor(sf::Color::Black);
+
+					ShowWindow(startG, (int) SW_SHOW);
+					ShowWindow(quitG, (int) SW_SHOW);
+					ShowWindow(loadG, (int) SW_SHOW);
+
+				}
 			}
-		ShowWindow(inicioS, (int) SW_HIDE);
-		ShowWindow(usuario, (int) SW_HIDE);
-		ShowWindow(contrasena, (int) SW_HIDE);
-		ShowWindow(textButton, (int) SW_HIDE);
-
-		text.setFillColor(sf::Color::Black);
-		text2.setFillColor(sf::Color::Black);
-
-		ShowWindow(startG, (int) SW_SHOW);
-		ShowWindow(quitG, (int) SW_SHOW);
-		ShowWindow(loadG, (int) SW_SHOW);
-
 
 		} else if (strcmp(getComponentText(usuario),"") == 0){
 			 MessageBox(NULL, "Ingrese un nombre de usuario valido", NULL, MB_OK);
