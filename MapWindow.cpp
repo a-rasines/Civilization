@@ -146,7 +146,7 @@ void MapWindow::onKeyDown(int keycode){
 			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
 			troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
 		);
-		//Window::manager->sendMessage(std::string("tropa a posicion:(")+std::string(troop.posicionX)+std::string(",")+std::string(troop.posicionY)+std::string(")"));
+		Window::manager->sendMessage((string("tropa a posicion:(")+to_string(troop.posicionX)+string(",")+to_string(troop.posicionY)+string(")")).c_str());
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
 		troop = activeTroops.front();
