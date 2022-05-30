@@ -56,6 +56,7 @@ public:
 	bool posibleMove(TropaInst t,int x, int y);
 	void start(); //Esta funcion se llama al cambiar de pantalla
 	void update();//Esta funcion se llama cada vez que de una vuelta al bucle
+	void onClose();
 	void onButtonPress(HWND button){};//Esta funcion se llama cuando un boton sea pulsado
 	void reposition(int x, int y);//Se llama para mover el mapa
 	void onResize(int newWidth, int newHeight);//Esta funcion se llama cuando la ventana cambia de tamaño

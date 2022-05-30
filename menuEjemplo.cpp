@@ -28,6 +28,7 @@ using namespace std;
 sf::Texture menuEjemplo::background;
 int terminarAutent = 0;
 Usuario user;
+MapWindow mw;
 
 menuEjemplo::menuEjemplo() {
 
@@ -127,7 +128,6 @@ void menuEjemplo::onButtonPress(HWND button){
 					ShowWindow(startG, (int) SW_SHOW);
 					ShowWindow(quitG, (int) SW_SHOW);
 					ShowWindow(loadG, (int) SW_SHOW);
-
 				}
 			}
 
@@ -138,7 +138,11 @@ void menuEjemplo::onButtonPress(HWND button){
 			 MessageBox(NULL, "Ingrese una contrasena valido", NULL, MB_OK);
 		}
 	}
-	else if(button == startG)Window::manager = new WindowManager("Civilization", 1200, 1000, new MapWindow());
+	else if(button == startG)Window::manager->setWindow(&mw);
+	else if (button == loadG){
+		mw.cargarTropas("resources/troopSave.dat");
+		Window::manager->setWindow(&mw);
+	}
 	else if (button == quitG)manager->stopConnection();
 
 }

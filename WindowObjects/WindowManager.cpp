@@ -26,6 +26,7 @@ LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam
 	switch (message){
 			// Quit when we close the main window
 		case WM_CLOSE:{
+			activeWindow->onClose();
 			PostQuitMessage(0);
 			break;
 		}case WM_COMMAND:{
@@ -101,6 +102,7 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 			activeWindow->update();
 		}
 	}
+
 	DestroyWindow(this->window);
 	UnregisterClass(TEXT("SFML App"), instance);
 	// Loop until a WM_QUIT message is received

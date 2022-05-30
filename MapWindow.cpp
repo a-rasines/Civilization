@@ -64,7 +64,7 @@ void MapWindow::cargarTropas(const char* fileName){
 	}
 }
 void MapWindow::start(){
-	cargarTropas("resources/troopSave.dat");
+	reposition(x, y);
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	mapView.create(generateView(0, 0, size.x, size.y));
 	setResizable(true);
@@ -90,6 +90,7 @@ void MapWindow::update(){
 		mapView.draw(rect);
 
 	}
+
 	for(TropaInst t: activeTroops){
 		sf::Texture tex;
 		sprite::TroopData coso = sprite::Troop[t.tipo];
@@ -102,6 +103,12 @@ void MapWindow::update(){
 	}
 	mapView.display();
 }
+
+void MapWindow::onClose(){
+	std::cout<<"hola";
+	guardarTropas("resources/troopSave.dat");
+}
+
 void MapWindow::reposition(int x, int y){
 	this->x=x;
 	this->y=y;
