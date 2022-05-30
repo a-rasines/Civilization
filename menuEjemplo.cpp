@@ -45,6 +45,12 @@ void menuEjemplo::start(){
 	usuario = generateTextField(400, 560, 200, 40);
 	contrasena = generatePasswordField(400, 600, 200, 40);
 	textButton = generateButton("Acceder", 400, 640, 200, 40);
+
+	server = generateButton("Iniciar como servidor", 250, 500, 500, 50);
+	client = generateButton("Iniciar como cliente", 250, 600, 500, 50);
+	ip = generateTextField(350, 650, 275, 40);
+	textButton2 = generateButton("Aceptar", 620, 650, 200, 40);
+
 	startG = generateButton("Start game", 250, 500, 500, 50);
 	loadG = generateButton("Load game", 250, 600, 500, 50);
 	quitG = generateButton("Quit game", 250, 700, 500, 50);
@@ -67,12 +73,24 @@ void menuEjemplo::start(){
 	text2.setPosition(290, 608);
 	text2.setFillColor(sf::Color::White);
 
+	text3.setString("Ingrese IP");
+	text3.setFont(Fonts::ARIAL);
+	text3.setCharacterSize(20);
+	text3.setPosition(250, 655);
+	text3.setFillColor(sf::Color::White);
+
 	ShowWindow(usuario, (int) SW_HIDE);
 	ShowWindow(contrasena, (int) SW_HIDE);
 	ShowWindow(textButton, (int) SW_HIDE);
 
 	text.setFillColor(sf::Color::Black);
 	text2.setFillColor(sf::Color::Black);
+	text3.setFillColor(sf::Color::Black);
+
+	ShowWindow(server, (int) SW_HIDE);
+	ShowWindow(client, (int) SW_HIDE);
+	ShowWindow(ip, (int) SW_HIDE);
+	ShowWindow(textButton2, (int) SW_HIDE);
 
 	ShowWindow(startG, (int) SW_HIDE);
 	ShowWindow(loadG, (int) SW_HIDE);
@@ -84,6 +102,7 @@ void menuEjemplo::update(){
 	SFMLView1.clear();
 	SFMLView1.draw(text);
 	SFMLView1.draw(text2);
+	SFMLView1.draw(text3);
 	sf::RectangleShape rect;
 	rect.setTexture(&background, true);
 	rect.setPosition(250,-100);
@@ -127,9 +146,9 @@ void menuEjemplo::onButtonPress(HWND button){
 					text.setFillColor(sf::Color::Black);
 					text2.setFillColor(sf::Color::Black);
 
-					ShowWindow(startG, (int) SW_SHOW);
-					ShowWindow(quitG, (int) SW_SHOW);
-					ShowWindow(loadG, (int) SW_SHOW);
+					ShowWindow(server, (int) SW_SHOW);
+					ShowWindow(client, (int) SW_SHOW);
+
 				}
 			}
 
@@ -146,7 +165,32 @@ void menuEjemplo::onButtonPress(HWND button){
 		Window::manager->setWindow(&mw);
 	}
 	else if (button == quitG)manager->stopConnection();
+	else if (button == server){
+		ShowWindow(server, (int) SW_HIDE);
+		ShowWindow(client, (int) SW_HIDE);
 
+		ShowWindow(startG, (int) SW_SHOW);
+		ShowWindow(quitG, (int) SW_SHOW);
+		ShowWindow(loadG, (int) SW_SHOW);
+		Window::manager->startTCPServer();
+	}
+	else if (button == client){
+		ShowWindow(server, (int) SW_HIDE);
+		ShowWindow(client, (int) SW_HIDE);
+
+		text3.setFillColor(sf::Color::White);
+		ShowWindow(ip, (int) SW_SHOW);
+		ShowWindow(textButton2, (int) SW_SHOW);
+	}
+	else if (button == textButton2){
+		if (strcmp(getComponentText(ip),"") !=0){
+			Window::manager->startTCPClient(getComponentText(ip));
+			Window::manager->setWindow(&mw);
+
+		}else if (strcmp(getComponentText(ip),"") == 0){
+			 MessageBox(NULL, "Ingrese una IP valida", NULL, MB_OK);
+		}
+	}
 }
 int main(){
 	setup();
