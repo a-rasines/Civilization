@@ -45,7 +45,7 @@ public:
 					this->vida = vida;
 				};
 		bool operator == (Tropa t){
-			return idTropa==t.idTropa;
+			return idTropa==t.idTropa && idJugador == t.idJugador;
 		}
 		sprite::TroopData data;
 	};
