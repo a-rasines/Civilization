@@ -16,6 +16,7 @@
 #include "Window.h"
 #include "windowsx.h"
 #include "Fonts.h"
+sf::Mutex GlobalMutex;
 WindowManager *windowInstance;
 Window *activeWindow;
 WindowManager::TCPConnectionHandler tcpHandler;
@@ -100,7 +101,9 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 				activeWindow->onMessage(tcpHandler.receivedMessages.front());
 				tcpHandler.receivedMessages.pop_front();
 			}
+			GlobalMutex.lock();
 			activeWindow->update();
+			GlobalMutex.unlock();
 		}
 	}
 
@@ -116,7 +119,6 @@ void WindowManager::setWindow(Window *w){
 	activeWindow->destroyComponents();
 	activeWindow = w;
 	activeWindow->start();
-	printf("a");
 	if(isClient){
 		activeWindow->onClientStart();
 	}
@@ -147,12 +149,14 @@ void WindowManager::TCPConnectionHandler::main(){
 	}
 	while(true){
 		if(pendingMessages.size() != 0 && !lastMessage){ //Si no hay mensaje que mandar o no ha recibido respuesta no se ejecuta
-				char* msg = (char*)pendingMessages.front();
-				std::cout << "sending" << msg << "\n";
-				pendingMessages.pop_front();
-			if (socket.send(msg, 128) != sf::Socket::Done)
+			GlobalMutex.lock();
+			std::cout << "sending= " << pendingMessages.front();
+			sf::Socket::Status status = socket.send(pendingMessages.front().c_str(), 128);
+			if (status == sf::Socket::Disconnected || status == sf::Socket::Error)
 				return;
+			pendingMessages.pop_front();
 			lastMessage = true;
+			GlobalMutex.unlock();
 		}
 		if(lastMessage){ //Si ha mandado un mensaje espera la respuesta
 			char in[128];
@@ -160,15 +164,17 @@ void WindowManager::TCPConnectionHandler::main(){
 			if (socket.receive(in, sizeof(in), received) != sf::Socket::Done)
 				return;
 			lastMessage = false;
-			std::cout << "received" << in << "\n";
+			std::cout << "received " << in << "\n";
 			receivedMessages.push_back(in);
 		}
 		sf::sleep(sf::milliseconds(1000));
 	}
 }
 void WindowManager::sendMessage(const char* message){
-	std::cout << "frontsize= " << tcpHandler.pendingMessages.size() << "\n";
-	tcpHandler.pendingMessages.push_back((char*)message);
+	GlobalMutex.lock();
+	std::cout << "frontsize= " << tcpHandler.pendingMessages.size() << ", newMessage=" << message << "\n";
+	tcpHandler.pendingMessages.push_back(std::string(message));
+	GlobalMutex.unlock();
 }
 void WindowManager::startTCPServer(){
 	commThread = new sf::Thread(&TCPConnectionHandler::main, &tcpHandler);

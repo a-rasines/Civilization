@@ -46,6 +46,9 @@ void MapWindow::onMessage(char* message){
 			troopMove(&activeTroops.front(), x, y);
 			activeTroops.remove(actual);
 			activeTroops.push_back(actual);
+			if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
+				Window::manager->sendMessage("ACK");
+			}
 		}
 	}else if(message[0]=='1'){
 		int a,b,c,d,e,f,g,h,i;

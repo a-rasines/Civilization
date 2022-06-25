@@ -10,6 +10,7 @@
 #include <SFML/Network.hpp>
 #include <windows.h>
 #include <list>
+#include <string>
 class Window;
 class WindowManager {
 	public:
@@ -62,11 +63,10 @@ class WindowManager {
 				}
 				TCPConnectionHandler(sf::IpAddress ip, long long port);
 				void main();
-				std::list<const char*> pendingMessages;
+				std::list<std::string> pendingMessages;
 				std::list<char*> receivedMessages;
 				sf::IpAddress ip;
 			private:
-
 				int port;
 				bool client;
 		};
