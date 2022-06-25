@@ -186,10 +186,11 @@ void MapWindow::onResize(int newWidth, int newHeight){
 	reposition(x, y);
 }
 void MapWindow::onKeyDown(int keycode){
-	if(activeTroops.front().idJugador==menuEjemplo::logeado.id && ccount == 0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-	   sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
-	   sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-	   sf::Keyboard::isKeyPressed(sf::Keyboard::Left))){
+	if(activeTroops.front().idJugador==menuEjemplo::logeado.id && ccount == 0 && (
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
+			sf::Keyboard::isKeyPressed(sf::Keyboard::Left))){
 		TropaInst troop = activeTroops.front();
 		troopMove(&troop,
 			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
@@ -200,7 +201,7 @@ void MapWindow::onKeyDown(int keycode){
 		Window::manager->sendMessage(messagea);
 		activeTroops.remove(troop);
 		activeTroops.push_back(troop);
-		ccount = 50;
+		ccount = 200;
 		countdown = true;
 	}
 }
