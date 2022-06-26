@@ -15,7 +15,6 @@
 
 #include "menuEjemplo.h"
 #include "MapHolder.h"
-#include "WindowObjects/WindowManager.h"
 
 float MapWindow::x;
 float MapWindow::y;
@@ -48,7 +47,7 @@ void MapWindow::onMessage(char* message){
 		sscanf(message,"0tropa a posicion:(%i,%i)",&x,&y);
 		if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
 			TropaInst actual = activeTroops.front();
-			troopMove(&activeTroops.front(), x, y);
+			troopMove(&actual, x, y);
 			activeTroops.erase(activeTroops.begin());
 			activeTroops.push_back(actual);
 			if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
@@ -148,10 +147,8 @@ void MapWindow::update(){
 		rect.setSize(sf::Vector2f(coso.sizeX*zoom, coso.sizeY*zoom));
 		if(t->renderingPositionX != t->posicionX || t->renderingPositionY != t->posicionY){
 			moving = true;
-			std::cout << "positionStatus: x= " << (t->renderingPositionX != t->posicionX) << ", y= " << (t->renderingPositionY != t->posicionY) << " real( x= " << t->posicionX << ", y= " << t->posicionY << "), rendering( x= " << t->renderingPositionX << ", y= " << t->renderingPositionY << ")\n";
 			t->renderingPositionX = round(t->renderingPositionX + 0.2 * (t->renderingPositionX < t->posicionX) - 0.2 * (t->renderingPositionX > t->posicionX), 1);
 			t->renderingPositionY = round(t->renderingPositionY + 0.2 * (t->renderingPositionY < t->posicionY) - 0.2 * (t->renderingPositionY > t->posicionY), 1);
-			std::cout << "newRendering( x= " << t->renderingPositionX << ", y= " << t->renderingPositionY << ")\n";
 		}
 		rect.setPosition(sf::Vector2f(t->renderingPositionX*16*zoom-x, t->renderingPositionY*16*zoom-y));
 		mapView.draw(rect);
