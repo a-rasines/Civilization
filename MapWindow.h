@@ -29,6 +29,8 @@ public:
 			this->mejorada = 0;
 			this->posicionX = posX;
 			this->posicionY = posY;
+			this->renderingPositionX = posX;
+			this->renderingPositionY = posY;
 			this->tipo = type;
 			this->vida = data.defense;
 		};
@@ -41,6 +43,8 @@ public:
 					this->mejorada = mejora;
 					this->posicionX = posX;
 					this->posicionY = posY;
+					this->renderingPositionX = posX;
+					this->renderingPositionY = posY;
 					this->tipo = type;
 					this->vida = vida;
 				};
@@ -48,6 +52,8 @@ public:
 			return idTropa==t.idTropa && idJugador == t.idJugador;
 		}
 		sprite::TroopData data;
+		float renderingPositionX;
+		float renderingPositionY;
 	};
 	void cargarTropas(const char* fichero);
 	void guardarTropas(const char* fichero);
@@ -75,11 +81,12 @@ public:
 	virtual ~MapWindow();
 	static int zoom;
 private:
+	float round(float number, int decimals);
 	sf::RenderWindow mapView;
 	static float x;
 	static float y;
 	std::vector<Cell> activeCells;
-	std::list<TropaInst> activeTroops;
+	std::vector<TropaInst> activeTroops;
 	static sf::Texture background;
 	int lastMovement;
 };

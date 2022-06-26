@@ -6,12 +6,17 @@
  */
 
 #include "MapWindow.h"
-#include "menuEjemplo.h"
+
+#include <SFML/Graphics.hpp>
+
+#include <windef.h>
+#include <cmath>
 #include <cstdio>
-#include <iostream>
-#include <fstream>
+
+#include "menuEjemplo.h"
 #include "MapHolder.h"
-#include <string>
+#include "WindowObjects/WindowManager.h"
+
 float MapWindow::x;
 float MapWindow::y;
 int MapWindow::zoom;
@@ -44,7 +49,7 @@ void MapWindow::onMessage(char* message){
 		if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
 			TropaInst actual = activeTroops.front();
 			troopMove(&activeTroops.front(), x, y);
-			activeTroops.remove(actual);
+			activeTroops.erase(activeTroops.begin());
 			activeTroops.push_back(actual);
 			if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
 				Window::manager->sendMessage("ACK");
@@ -110,8 +115,14 @@ void MapWindow::start(){
 	activeTroops.push_back(t1);
 	activeTroops.push_back(t2);
 }
-int ccount = 0;
-bool countdown = false;
+float MapWindow::round(float number, int decimals){
+	number *= pow(10, decimals);
+	number -= remainder(number, 1) * (-(number < 0) + (number >= 0));
+	return number / pow(10, decimals);
+
+}
+bool moving = false;
+bool repos = false;
 void MapWindow::update(){
 	mapView.clear();
 	for(Cell cell : activeCells){
@@ -125,23 +136,30 @@ void MapWindow::update(){
 		mapView.draw(rect);
 		rect.setTexture(&tex, false);
 		mapView.draw(rect);
-		if(countdown)ccount--;
-		if(countdown && ccount==0){
-			TropaInst troop = activeTroops.front();
-			reposition((troop.posicionX-7)*16*zoom, (troop.posicionY-6)*16*zoom);
-			countdown = false;
-		}
 	}
-
-	for(TropaInst t: activeTroops){
+	moving = false;
+	for(unsigned int i = 0; i < activeTroops.size(); i++){
 		sf::Texture tex;
-		sprite::TroopData coso = sprite::Troop[t.tipo];
+		TropaInst* t = &(activeTroops[i]);
+		sprite::TroopData coso = sprite::Troop[t->tipo];
 		tex.loadFromFile("resources/SP257.PIC_256.gif",sf::IntRect(coso.textureX,coso.textureY,coso.sizeX,coso.sizeY));
 		sf::RectangleShape rect;
 		rect.setTexture(&tex, false);
 		rect.setSize(sf::Vector2f(coso.sizeX*zoom, coso.sizeY*zoom));
-		rect.setPosition(sf::Vector2f(t.posicionX*16*zoom-x, t.posicionY*16*zoom-y));
+		if(t->renderingPositionX != t->posicionX || t->renderingPositionY != t->posicionY){
+			moving = true;
+			std::cout << "positionStatus: x= " << (t->renderingPositionX != t->posicionX) << ", y= " << (t->renderingPositionY != t->posicionY) << " real( x= " << t->posicionX << ", y= " << t->posicionY << "), rendering( x= " << t->renderingPositionX << ", y= " << t->renderingPositionY << ")\n";
+			t->renderingPositionX = round(t->renderingPositionX + 0.2 * (t->renderingPositionX < t->posicionX) - 0.2 * (t->renderingPositionX > t->posicionX), 1);
+			t->renderingPositionY = round(t->renderingPositionY + 0.2 * (t->renderingPositionY < t->posicionY) - 0.2 * (t->renderingPositionY > t->posicionY), 1);
+			std::cout << "newRendering( x= " << t->renderingPositionX << ", y= " << t->renderingPositionY << ")\n";
+		}
+		rect.setPosition(sf::Vector2f(t->renderingPositionX*16*zoom-x, t->renderingPositionY*16*zoom-y));
 		mapView.draw(rect);
+	}
+	if(!moving && repos){
+		TropaInst troop = activeTroops.front();
+		reposition((troop.posicionX-7)*16*zoom, (troop.posicionY-6)*16*zoom);
+		repos = false;
 	}
 	mapView.display();
 }
@@ -186,7 +204,7 @@ void MapWindow::onResize(int newWidth, int newHeight){
 	reposition(x, y);
 }
 void MapWindow::onKeyDown(int keycode){
-	if(activeTroops.front().idJugador==menuEjemplo::logeado.id && ccount == 0 && (
+	if(activeTroops.front().idJugador==menuEjemplo::logeado.id && !moving && (
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
 			sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
@@ -199,10 +217,9 @@ void MapWindow::onKeyDown(int keycode){
 		const char* messagea = (string("0tropa a posicion:(")+to_string(troop.posicionX)+string(",")+to_string(troop.posicionY)+string(")")).c_str();
 		cout << "Movimiento: " << messagea << "\n";
 		Window::manager->sendMessage(messagea);
-		activeTroops.remove(troop);
+		activeTroops.erase(activeTroops.begin());
 		activeTroops.push_back(troop);
-		ccount = 200;
-		countdown = true;
+		repos = true;
 	}
 }
 MapWindow::~MapWindow() {}
