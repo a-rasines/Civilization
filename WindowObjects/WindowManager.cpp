@@ -167,7 +167,7 @@ void WindowManager::TCPConnectionHandler::main(){
 			std::cout << "received " << in << "\n";
 			receivedMessages.push_back(in);
 		}
-		sf::sleep(sf::milliseconds(1000));
+		sf::sleep(sf::milliseconds(10));
 	}
 }
 void WindowManager::sendMessage(const char* message){
