@@ -44,6 +44,26 @@ HWND Window::generateComboBox(int posX, int posY, int width, int height, std :: 
 	components.push_back(comp);
 	return comp;
 }
+void Window::addMenuItemRec(Window::MenuItem parent, HMENU hMenu, MenuStructure* struc){
+	if(parent.type == ItemType::DropMenu){
+		HMENU nMenu = CreateMenu();
+		parent.id = (UINT_PTR) nMenu;
+		struc->id = (UINT_PTR) nMenu;
+		for(int i = 0; i < parent.childCount; i++){
+			MenuItem mi = parent.children[i];
+			MenuStructure ms = {mi.name, mi.id, mi.type, mi.childCount, new MenuStructure[parent.childCount]};
+			struc->children[i] = ms;
+			addMenuItemRec(parent.children[i], nMenu, &ms);
+		}
+	}
+	AppendMenuW(hMenu, parent.type, parent.id, parent.name);
+}
+Window::MenuStructure Window::addMenuItem(Window::MenuItem item){
+	MenuStructure root ={item.name, item.id, item.type, item.childCount, new MenuStructure[item.childCount]};
+	addMenuItemRec(item, menu, &root);
+	SetMenu(window, menu);
+	return root;
+}
 void Window::removeComponent(HWND comp){
 	DestroyWindow(comp);
 	components.remove(comp);

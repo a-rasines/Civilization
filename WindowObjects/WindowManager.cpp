@@ -27,34 +27,35 @@ bool isClient = false;
 LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 	switch (message){
 			// Quit when we close the main window
-		case WM_CLOSE:{
+		case WM_CLOSE:
 			activeWindow->onClose();
 			PostQuitMessage(0);
 			break;
-		}case WM_COMMAND:{
+		case WM_COMMAND:
+			if(std::find(activeWindow->menuid.begin(), activeWindow->menuid.end(), LOWORD(wParam))!= activeWindow->menuid.end())
+				activeWindow->onMenu(LOWORD(wParam));
 			activeWindow->onButtonPress(reinterpret_cast<HWND>(lParam));
 			break;
-		}case WM_PAINT:{
+		case WM_PAINT:
 			windowInstance->repaint();
 			break;
-		}case WM_SIZE:{
+		case WM_SIZE:
 			wm_size.x = LOWORD(lParam);
 			wm_size.y = HIWORD(lParam);
 			activeWindow->onResize(wm_size.x, wm_size.y);
 			break;
-		}case WM_KEYDOWN:{
+		case WM_KEYDOWN:
 			activeWindow->onKeyDown(wParam);
 			break;
-		}case WM_KEYUP:{
+		case WM_KEYUP:
 			activeWindow->onKeyUp(wParam);
 			break;
-		}case WM_MBUTTONDOWN:{
+		case WM_MBUTTONDOWN:
 			activeWindow->onMouseDown(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			break;
-		}case WM_MBUTTONUP:{
+		case WM_MBUTTONUP:
 			activeWindow->onMouseUp(wParam, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			break;
-		}
 	}
 	return DefWindowProc(handle, message, wParam, lParam);
 }

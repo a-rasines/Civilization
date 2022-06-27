@@ -69,6 +69,7 @@ public:
 	void onResize(int newWidth, int newHeight);//Esta funcion se llama cuando la ventana cambia de tamaño
 	void onKeyDown(int keycode);//Esta función se llama cuando una tecla es pulsada
 	void onMessage(char * message);
+	void onMenu(UINT_PTR menuId);
 	struct Cell{
 		int posX;
 		int posY;

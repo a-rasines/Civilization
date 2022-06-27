@@ -219,6 +219,8 @@ void MapWindow::onKeyDown(int keycode){
 		repos = true;
 	}
 }
+void MapWindow::onMenu(UINT_PTR menuId){
+}
 MapWindow::~MapWindow() {}
 
 /*int main(){

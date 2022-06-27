@@ -13,9 +13,81 @@
 #include "WindowManager.h"
 class Window {
 	public:
+		enum ItemType{
+			DropMenu = MF_POPUP,
+			String = MF_STRING,
+			Separator = MF_SEPARATOR,
+			MenuBreak = MF_MENUBREAK,
+			MenuBarBreak = MF_MENUBARBREAK
+		};
+		struct MenuItem{
+			MenuItem(){
+				type = ItemType::String;
+				name = L"";
+				children = new MenuItem[0];
+				childCount = 0;
+				id = 0;
+			}
+			MenuItem(const wchar_t * name, ItemType type, UINT_PTR id){
+				this-> type = type;
+				this -> name = name;
+				this -> children = new MenuItem[0];
+				this -> childCount = 0;
+				this-> id = id;
+			}
+			MenuItem(const wchar_t * name, MenuItem children[]){
+				this->type = ItemType::DropMenu;
+				this->name = name;
+				this->children = children;
+				this->childCount = sizeof(children) / sizeof(children[0]);
+				this->id = 0;
+			}
+			MenuItem(const wchar_t* name, std::initializer_list<MenuItem> children){
+				this->type = ItemType::DropMenu;
+				this->name = name;
+				this->children = new MenuItem[children.size()];
+				std::copy(children.begin(), children.end(), this->children);
+				this->childCount = children.size();
+				this->id = 0;
+			}
+			MenuItem(const MenuItem& other){
+				this->type = other.type;
+				this->name = other.name;
+				this->childCount = other.childCount;
+				this->children = other.children;
+				this->id = other.id;
+			}
+			ItemType type;
+			const wchar_t* name;
+			UINT_PTR id;
+			int childCount;
+			MenuItem *children;
+		};
+		struct MenuStructure{
+			MenuStructure(const wchar_t* name, UINT_PTR id,	ItemType type, int childCount, MenuStructure *children){
+				this->name = name;
+				this->id = id;
+				this->type = type;
+				this->childCount = childCount;
+				this->children = children;
+			}
+			MenuStructure(){
+				this->name = L"";
+				this->id = 0;
+				this->type = ItemType::Separator;
+				this->childCount = 0;
+				this->children = new MenuStructure[0];
+			}
+			const wchar_t* name;
+			UINT_PTR id;
+			ItemType type;
+			int childCount;
+			MenuStructure *children;
+		};
 		WindowManager static *manager;
 		HINSTANCE static instance;
 		HWND static window;
+		std::vector<UINT_PTR> menuid;
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones a copiar
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,6 +102,7 @@ class Window {
 		virtual void onMouseDown(int mouseButton, int x, int y){};//Esta funcion se llama cuando se pulsa una tecla del raton. El botón se saca mediante or binario
 		virtual void onMouseUp(int mouseButton, int x, int y){};//Esta funcion se llama cuando se suelta una tecla del raton. El botón se saca mediante or binario
 		virtual void onClose(){};//Esta funcion se llama al cerrar la ventana
+		virtual void onMenu(UINT_PTR menuId){};//Esta funcion se llama cuando un menu es clickado
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones internas
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +161,11 @@ class Window {
 		 */
 		HWND generateComboBox(int posX, int posY, int width, int height, std :: initializer_list <const char*> values);
 		/**
+		 * Anade una seccion de menu
+		 * item -> Estructura del nuevo menu
+		 */
+		MenuStructure addMenuItem(Window::MenuItem item);
+		/**
 		 * Devuelve el texto dentro de cualquier componente de la ventana (Botones, textbox, combobox...).
 		 * component -> componente del que sacar el texto
 		 */
@@ -130,8 +208,12 @@ class Window {
 		 */
 		float deltatime = 0;
 		Window(){
+			menu = CreateMenu();
 		};
 		virtual ~Window(){};
+	private:
+		void addMenuItemRec(Window::MenuItem parent, HMENU hMenu, MenuStructure* struc);
+		HMENU menu;
 };
 
 #endif /* WINDOW_H_ */
