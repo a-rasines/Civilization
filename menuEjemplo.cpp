@@ -40,7 +40,6 @@ menuEjemplo::~menuEjemplo() {
 }
 
 void menuEjemplo::start(){
-
 	inicioS = generateButton("Inicio Sesion/Registro", 250, 500, 500, 50);
 	usuario = generateTextField(400, 560, 200, 40);
 	contrasena = generatePasswordField(400, 600, 200, 40);
@@ -125,7 +124,7 @@ void menuEjemplo::onButtonPress(HWND button){
 	else if (button == textButton){
 		if (strcmp(getComponentText(usuario),"") && strcmp(getComponentText(contrasena),"") != 0){
 			if (not existeUsuario(getComponentText(usuario))){
-				const int opcion = MessageBox(NULL, "Usuario no encontrado, ¿desea registrarse?", NULL, MB_YESNO);
+				const int opcion = MessageBox(NULL, "Usuario no encontrado, ï¿½desea registrarse?", NULL, MB_YESNO);
 				switch (opcion) {
 					case IDYES:
 						addUsuario(getComponentText(usuario), getComponentText(contrasena));
@@ -136,7 +135,7 @@ void menuEjemplo::onButtonPress(HWND button){
 			} else if (existeUsuario(getComponentText(usuario))){
 				logeado = getUsuario(getComponentText(usuario), getComponentText(contrasena));
 				if (logeado.nombre == '\0'){
-					MessageBox(NULL, "La contraseña es erronea", NULL, MB_OK);
+					MessageBox(NULL, "La contraseï¿½a es erronea", NULL, MB_OK);
 				}else{
 					ShowWindow(inicioS, (int) SW_HIDE);
 					ShowWindow(usuario, (int) SW_HIDE);

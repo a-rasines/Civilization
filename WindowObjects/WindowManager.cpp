@@ -118,6 +118,7 @@ WindowManager::WindowManager(const char* title, int width, int height, Window *w
 }
 void WindowManager::setWindow(Window *w){
 	activeWindow->destroyComponents();
+	activeWindow->destroyMenu();
 	activeWindow = w;
 	activeWindow->start();
 	if(isClient){

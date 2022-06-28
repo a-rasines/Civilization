@@ -64,6 +64,10 @@ Window::MenuStructure Window::addMenuItem(Window::MenuItem item){
 	SetMenu(window, menu);
 	return root;
 }
+void Window::destroyMenu(){
+	DestroyMenu(menu);
+	menu = CreateMenu();
+}
 void Window::removeComponent(HWND comp){
 	DestroyWindow(comp);
 	components.remove(comp);

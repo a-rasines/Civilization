@@ -102,7 +102,112 @@ void MapWindow::cargarTropas(const char* fileName){
 		activeTroops.push_back(t);
 	}
 }
+enum MenuOption{
+	TAX_RATE,
+	LUXURIES_RATE,
+	FIND_CITY,
+	OPTIONS,
+	SAVE_GAME,
+	REVOLUTION,
+	RETIRE,
+	QUIT,
+
+	NO_ORDERS,
+	FOUND_NEW_CITY,
+	BUILD_ROAD,
+	CHANGE_TO_FOREST,
+	BUILD_FORTRESS,
+	WAIT,
+	SENTRY,
+	GOTO,
+	PILLAGE,
+	DISBAND_UNIT,
+
+	CITY_STATUS,
+	MILITARY_ADVISOR,
+	INTELLIGENCE_ADVISOR,
+	ATTITUDE_ADVISOR,
+	TRADE_ADVISOR,
+	SCIENCE_ADVISOR,
+
+	WONDERS_OF_THE_WORLD,
+	TOP_5_CITIES,
+	CIVILIZATION_SCORE,
+	WORLD_MAP,
+	DEMOGRAPHICS,
+	SPACESHIPS,
+
+	COMPLETE,
+	CIVILIZATION_ADVANCES,
+	CITY_IMPROVEMENTS,
+	MILITARY_UNITS,
+	TERRAIN_TYPES,
+	MISCELLANEOUS
+};
 void MapWindow::start(){
+	addMenuItem(Window::MenuItem{
+		L"&GAME",
+		{
+			Window::MenuItem{L"&Tax Rate", TAX_RATE},
+			Window::MenuItem{L"&Luxuries Rate", LUXURIES_RATE},
+			Window::MenuItem{L"&Find City", FIND_CITY},
+			Window::MenuItem{L"&Options", OPTIONS},
+			Window::MenuItem{L"&Save Game", SAVE_GAME},
+			Window::MenuItem{L"&REVOLUTION!", REVOLUTION},
+			Window::MenuItem{},
+			Window::MenuItem{L"&Retire", RETIRE},
+			Window::MenuItem{L"&QUIT", QUIT}
+		}
+	});
+	addMenuItem(Window::MenuItem{
+		L"&ORDERS",
+		{
+			Window::MenuItem{L"&No Orders (space)", NO_ORDERS},
+			Window::MenuItem{L"&Found New City (b)", FOUND_NEW_CITY},
+			Window::MenuItem{L"&Build Road (r)", BUILD_ROAD},
+			Window::MenuItem{L"&Change To Forest (m)", CHANGE_TO_FOREST},
+			Window::MenuItem{L"&Build Fortress (f)", BUILD_FORTRESS},
+			Window::MenuItem{L"&Wait (w)", WAIT},
+			Window::MenuItem{L"&Sentry (s)", SENTRY},
+			Window::MenuItem{L"&GoTo", GOTO},
+			Window::MenuItem{L"&Pillage (P)", PILLAGE},
+			Window::MenuItem{},
+			Window::MenuItem{L"&Disband Unit (D)", DISBAND_UNIT}
+		}
+	});
+	addMenuItem(Window::MenuItem{
+		L"&ADVISORS",
+		{
+			Window::MenuItem{L"&City Status (F1)", CITY_STATUS},
+			Window::MenuItem{L"&Military Advisor (F2)", MILITARY_ADVISOR},
+			Window::MenuItem{L"&Intelligence Advisor (F3)", INTELLIGENCE_ADVISOR},
+			Window::MenuItem{L"&Attitude Advisor (F4)", ATTITUDE_ADVISOR},
+			Window::MenuItem{L"&Trade Advisor (F5)", TRADE_ADVISOR},
+			Window::MenuItem{L"&Science Advisor (F6)", SCIENCE_ADVISOR},
+		}
+	});
+	addMenuItem(Window::MenuItem{
+		L"&WORLD",
+		{
+			Window::MenuItem{L"&Wonders of the World (F7)", WONDERS_OF_THE_WORLD},
+			Window::MenuItem{L"&Top 5 Cities (F8)", TOP_5_CITIES},
+			Window::MenuItem{L"&Civilization Score (F9)", CIVILIZATION_SCORE},
+			Window::MenuItem{L"&World Map (F10)", WORLD_MAP},
+			Window::MenuItem{L"&Demographics", DEMOGRAPHICS},
+			Window::MenuItem{L"&SpaceShips", SPACESHIPS},
+		}
+	});
+	addMenuItem(Window::MenuItem{
+		L"&CIVILOPEDIA",
+		{
+			Window::MenuItem{L"&Complete", COMPLETE},
+			Window::MenuItem{L"&Civilization Advances", CIVILIZATION_ADVANCES},
+			Window::MenuItem{L"&City Improvements", CITY_IMPROVEMENTS},
+			Window::MenuItem{L"&Military Units", MILITARY_UNITS},
+			Window::MenuItem{L"&Terrain Types", TERRAIN_TYPES},
+			Window::MenuItem{L"&Miscellaneous", MISCELLANEOUS},
+		}
+	});
 	reposition(x, y);
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	mapView.create(generateView(0, 0, size.x, size.y));

@@ -22,14 +22,21 @@ class Window {
 		};
 		struct MenuItem{
 			MenuItem(){
-				type = ItemType::String;
-				name = L"";
+				type = ItemType::Separator;
+				name = NULL;
 				children = new MenuItem[0];
 				childCount = 0;
 				id = 0;
 			}
-			MenuItem(const wchar_t * name, ItemType type, UINT_PTR id){
-				this-> type = type;
+			MenuItem(ItemType t){
+				type = t;
+				name = NULL;
+				children = new MenuItem[0];
+				childCount = 0;
+				id = 0;
+			}
+			MenuItem(const wchar_t * name, UINT_PTR id){
+				this-> type = ItemType::String;
 				this -> name = name;
 				this -> children = new MenuItem[0];
 				this -> childCount = 0;
@@ -165,6 +172,10 @@ class Window {
 		 * item -> Estructura del nuevo menu
 		 */
 		MenuStructure addMenuItem(Window::MenuItem item);
+		/**
+		 * Elimina el menu existente en la ventana
+		 */
+		void destroyMenu();
 		/**
 		 * Devuelve el texto dentro de cualquier componente de la ventana (Botones, textbox, combobox...).
 		 * component -> componente del que sacar el texto
