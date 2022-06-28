@@ -317,21 +317,21 @@ void MapWindow::reposition(int x, int y){
 	y = -y;
 	for(TerrainType row[80] : foreground){
 		y += row[0].sizeY * zoom;
-		if(y >= size.y + row[0].sizeY * zoom){
+		if(y<0)continue;
+		else if(y >= size.y + row[0].sizeY * zoom){
 			y -= 50 * row[0].sizeY * zoom;
 			continue;
 		}
-		else if(y<0)continue;
 		int cx = -x;
 		for(TerrainType cell : row){
 			cx += cell.sizeX * zoom;
 			std::cout << cx << "\n";
-			if(cx >= size.x + cell.sizeX * zoom){
+			if(cx<0)continue;
+			else if(cx >= size.x + cell.sizeX * zoom){
 				cx -= 80 * cell.sizeX * zoom;
 				std::cout << "reset " << cx << "\n";
 				continue;
 			}
-			else if(cx<0)continue;
 			activeCells.push_back((Cell){
 				cx-cell.sizeX*zoom,
 				y-cell.sizeY*zoom,
