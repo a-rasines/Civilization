@@ -226,7 +226,7 @@ float MapWindow::round(float number, int decimals){
 
 }
 bool moving = false;
-bool repos = false;
+bool repos = true;
 void MapWindow::update(){
 	mapView.clear();
 	for(Cell cell : activeCells){
@@ -273,17 +273,64 @@ void MapWindow::onClose(){
 void MapWindow::reposition(int x, int y){
 	this->x=x;
 	this->y=y;
+	std::cout << x << ":" << y << "\n";
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	activeCells.clear();
+
+//	int cell0x = (x - size.x / 2) / (zoom * foreground[0][0].sizeX);
+//	int cell0x0 = cell0x;
+//	int cell0y = (y - size.y / 2) /(zoom * foreground[0][0].sizeY);
+//	int posX = ((x-size.x/2) % (zoom * foreground[0][0].sizeX));
+//	int posX0 = posX;
+//	int posY = ((y - size.y/2) % (zoom * foreground[0][0].sizeY));
+//	std::cout << "position " << x << ":" << y << " first cell " << cell0x << ":" << cell0y << " cellPosition " << posX << ":" << posY << "\n";
+//	while(posY <= size.y + zoom * foreground[0][0].sizeY){
+//		std::cout << "posy = " << posY << " " << size.y + zoom * foreground[0][0].sizeY <<"\n";
+//		while(posX <= size.x + zoom * foreground[0][0].sizeX){
+//			std::cout << ((cell0y+50)%50) << " " << ((cell0x+80)%80) << "\n";
+//			TerrainType cell = foreground[(cell0y+50)%50][(cell0x+80)%80];
+//			activeCells.push_back((Cell){
+//				posX,
+//				posY,
+//				cell.sizeX * zoom,
+//				cell.sizeY * zoom,
+//				cell.file,
+//				sf::IntRect(
+//						cell.textureX,
+//						cell.textureY,
+//						cell.sizeX,
+//						cell.sizeY
+//					)
+//				}
+//			);
+//			cell0x++;
+//			posX += zoom * foreground[0][0].sizeX;
+//
+//		}
+//		cell0x = cell0x0;
+//		posX = posX0;
+//		cell0y++;
+//		posY += zoom * foreground[0][0].sizeY;
+//	}
+//	std::cout << activeCells.size() << "\n";
+
 	y = -y;
-	for(TerrainType row[100] : foreground){
+	for(TerrainType row[80] : foreground){
 		y += row[0].sizeY * zoom;
-		if(y >= size.y + row[0].sizeY * zoom)break;
+		if(y >= size.y + row[0].sizeY * zoom){
+			y -= 50 * row[0].sizeY * zoom;
+			continue;
+		}
 		else if(y<0)continue;
 		int cx = -x;
 		for(TerrainType cell : row){
 			cx += cell.sizeX * zoom;
-			if(cx >= size.x + cell.sizeX * zoom)break;
+			std::cout << cx << "\n";
+			if(cx >= size.x + cell.sizeX * zoom){
+				cx -= 80 * cell.sizeX * zoom;
+				std::cout << "reset " << cx << "\n";
+				continue;
+			}
 			else if(cx<0)continue;
 			activeCells.push_back((Cell){
 				cx-cell.sizeX*zoom,
