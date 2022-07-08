@@ -8,6 +8,7 @@
 #ifndef WINDOW_H_
 #define WINDOW_H_
 #include "windows.h"
+#include <SFML/Graphics.hpp>
 #include <list>
 #include <iostream>
 #include "WindowManager.h"

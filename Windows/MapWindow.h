@@ -19,6 +19,48 @@
 #include"Ejemplo2.h"
 class MapWindow : public Window{
 public:
+	enum MenuOption{
+		TAX_RATE,
+		LUXURIES_RATE,
+		FIND_CITY,
+		OPTIONS,
+		SAVE_GAME,
+		REVOLUTION,
+		RETIRE,
+		QUIT,
+
+		NO_ORDERS,
+		FOUND_NEW_CITY,
+		BUILD_ROAD,
+		CHANGE_TO_FOREST,
+		BUILD_FORTRESS,
+		WAIT,
+		SENTRY,
+		GOTO,
+		PILLAGE,
+		DISBAND_UNIT,
+
+		CITY_STATUS,
+		MILITARY_ADVISOR,
+		INTELLIGENCE_ADVISOR,
+		ATTITUDE_ADVISOR,
+		TRADE_ADVISOR,
+		SCIENCE_ADVISOR,
+
+		WONDERS_OF_THE_WORLD,
+		TOP_5_CITIES,
+		CIVILIZATION_SCORE,
+		WORLD_MAP,
+		DEMOGRAPHICS,
+		SPACESHIPS,
+
+		COMPLETE,
+		CIVILIZATION_ADVANCES,
+		CITY_IMPROVEMENTS,
+		MILITARY_UNITS,
+		TERRAIN_TYPES,
+		MISCELLANEOUS
+	};
 	struct TropaInst : public Tropa{
 		TropaInst(int serverId, int userId, int troopId, int type, int posX, int posY){
 			this->idServidor = serverId;
@@ -51,6 +93,7 @@ public:
 		bool operator == (Tropa t){
 			return idTropa==t.idTropa && idJugador == t.idJugador;
 		}
+		void keyPress(int keycode, MapWindow *mw);
 		sprite::TroopData data;
 		float renderingPositionX;
 		float renderingPositionY;
@@ -90,6 +133,8 @@ private:
 	std::vector<TropaInst> activeTroops;
 	static sf::Texture background;
 	int lastMovement;
+	bool moving = false;
+	bool repos = true;
 };
 
 #endif /* MAPWINDOW_H_ */
