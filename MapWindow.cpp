@@ -65,7 +65,7 @@ void MapWindow::cargarTropas(const char* fileName){
 			}
 			index++;
 		}
-		TropaInst t = {numeros[0],numeros[1],numeros[2],numeros[3],numeros[4],numeros[5],numeros[6],numeros[7],numeros[8]};
+		TropaInst t(numeros[0],numeros[1],numeros[2],numeros[3],numeros[4],numeros[5],numeros[6],numeros[7],numeros[8], false);
 		activeTroops.push_back(t);
 	}
 }
@@ -163,10 +163,10 @@ void MapWindow::TropaInst::keyPress(int keycode, MapWindow *mw){
 		mw->troopMove(this, x, y);
 		mw->manager->sendMessage(message::action(Action::NONE));
 		break;
-	case 'w': //WAIT --Put to the back of the player's troop queue
+	case 'w':{ //WAIT --Put to the back of the player's troop queue
 		MapWindow::TropaInst actual = mw->activeTroops[0];
 		mw->activeTroops.erase(mw->activeTroops.begin());
-		for(int i = 0; i < mw->activeTroops.size(); i++){
+		for(unsigned int i = 0; i < mw->activeTroops.size(); i++){
 			if(mw->activeTroops[i].idJugador != actual.idJugador){
 				mw->activeTroops.insert(mw->activeTroops.begin()+i, actual);
 				break;
@@ -174,7 +174,7 @@ void MapWindow::TropaInst::keyPress(int keycode, MapWindow *mw){
 		}
 		mw->manager->sendMessage(message::action(Action::WAIT));
 		break;
-	case 's': //SENTRY --No orders wanted
+	}case 's': //SENTRY --No orders wanted
 		mw->activeTroops[0].estacionada = true;
 		mw->manager->sendMessage(message::action(Action::SENTRY));
 		break;

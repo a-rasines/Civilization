@@ -78,7 +78,7 @@ public:
 			this->vida = data.defense;
 			this->estacionada = false;
 		};
-		TropaInst(int serverId, int userId, int troopId,int estado,int mejora, int posX, int posY, int type, int vida){
+		TropaInst(int serverId, int userId, int troopId,int estado,int mejora, int posX, int posY, int type, int vida, bool estacionada){
 					this->idServidor = serverId;
 					this->idJugador = userId;
 					this->idTropa = troopId;
@@ -91,7 +91,7 @@ public:
 					this->renderingPositionY = posY;
 					this->tipo = type;
 					this->vida = vida;
-					this->estacionada=false;
+					this->estacionada=estacionada;
 				};
 		bool operator == (Tropa t){
 			return idTropa==t.idTropa && idJugador == t.idJugador;
@@ -103,8 +103,8 @@ public:
 		float renderingPositionY;
 	};
 	struct SettlerInst : public TropaInst {
-		SettlerInst(int serverId, int userId, int troopId, int type, int posX, int posY) : TropaInst(serverId, userId, troopId, type, posX, posY){}
-		SettlerInst(int serverId, int userId, int troopId,int estado,int mejora, int posX, int posY, int type, int vida) : TropaInst(serverId, userId, troopId, estado, mejora, posX, posY, type, vida){}
+		SettlerInst(int serverId, int userId, int troopId, int posX, int posY) : TropaInst(serverId, userId, troopId, (int)sprite::TroopType::SETTLER, posX, posY){}
+		SettlerInst(int serverId, int userId, int troopId,int estado,int mejora, int posX, int posY, int vida, bool estacionada) : TropaInst(serverId, userId, troopId, estado, mejora, posX, posY, (int)sprite::TroopType::SETTLER, vida, estacionada){}
 		void keyPress(int keycode, MapWindow *mw);
 		virtual ~SettlerInst(){}
 
@@ -135,6 +135,7 @@ public:
 	};
 	virtual ~MapWindow();
 	static int zoom;
+	int serverID = 0; //TODO Assing id
 private:
 	float round(float number, int decimals);
 	sf::RenderWindow mapView;

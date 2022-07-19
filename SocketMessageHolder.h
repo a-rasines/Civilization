@@ -8,19 +8,21 @@
 #ifndef SOCKETMESSAGEHOLDER_H_
 #define SOCKETMESSAGEHOLDER_H_
 
-#include <string.h>
-#include <string>
-
 #include "MapWindow.h"
 
-
 enum SocketMessage{
+	INFO_SYNC,
 	INITIAL_TROOP_SYNC,
 	MOVE,
 	ADD_TROOP,
 	ACTION,
 	BUILD_CITY,
-	DESENTRY
+	DESENTRY,
+	SYNC
+};
+enum InfoSync {
+	SERVER_ID,
+	PLAYER_ID
 };
 enum Position{
 	N = 38,
@@ -43,33 +45,12 @@ enum Action {
 	BUILD_FORTRESS = 'f'
 };
 namespace message{
-	char* action(Action acc){
-		std::string str;
-		str += (int)SocketMessage::ACTION;
-		str += ":";
-		str += (int)acc;
-		char end[str.length() + 1]; // 3:115\0
-		strcpy(end, str.c_str());
-		return end;
-	}
-	char* movement(Position newPos){
-		std::string str;
-		str += (int)SocketMessage::MOVE;
-		str += ":";
-		str += (int)newPos;
-		char end[str.length() + 1]; // 1:33\0
-		strcpy(end, str.c_str());
-		return end;
-	}
-	char* desentry(int id){
-		std::string str;
-		str += (int)SocketMessage::DESENTRY;
-		str += ":";
-		str += id;
-		char end[str.length() + 1]; // 1:33\0
-		strcpy(end, str.c_str());
-		return end;
-	}
+	char* action(Action acc);
+	char* movement(Position newPos);
+	char* desentry(int id);
+	char* initialTroopSync(MapWindow::TropaInst* troop);
+	char* infoSync(InfoSync type, int value);
+	char* other(SocketMessage acc);
 }
 
 

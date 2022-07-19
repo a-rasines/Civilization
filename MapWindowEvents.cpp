@@ -1,11 +1,17 @@
+#include <basetsd.h>
 #include <SFML/Graphics.hpp>
-
 #include <windef.h>
-#include <cmath>
 #include <cstdio>
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include "menuEjemplo.h"
 #include "MapWindow.h"
+#include "SocketMessageHolder.h"
+#include "Sprite.h"
+#include "WindowObjects/Window.h"
+#include "WindowObjects/WindowManager.h"
 
 using namespace std;
 using namespace sprite;
@@ -87,39 +93,119 @@ void MapWindow::start(){
 }
 
 void MapWindow::onClientStart(){
-	for(TropaInst tr : activeTroops)
-		Window::manager->sendMessage((string("1Te envio tropa:"+to_string(tr.idServidor)+string(",")+to_string(tr.idJugador)+string(",")+to_string(tr.idTropa)+
-				string(",")+to_string(tr.estado)+string(",")+to_string(tr.mejorada)+string(",")+to_string(tr.posicionX)+
-				string(",")+to_string(tr.posicionY)+string(",")+to_string(tr.tipo)+string(",")+to_string(tr.vida))).c_str());
-	Window::manager->sendMessage("2Terminado envio de tropas");
-	activeTroops.clear();
+	manager->sendMessage(message::other(SocketMessage::SYNC));
 }
 
 void MapWindow::onMessage(char* message){
-	if(message[0]=='0'){
-		int x,y;
-		sscanf(message,"0tropa a posicion:(%i,%i)",&x,&y);
-		if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
-			TropaInst actual = activeTroops.front();
-			troopMove(&actual, x, y);
-			activeTroops.erase(activeTroops.begin());
-			activeTroops.push_back(actual);
-			if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
-				Window::manager->sendMessage("ACK");
-			}
-		}
-	}else if(message[0]=='1'){
-		int a,b,c,d,e,f,g,h,i;
-		sscanf(message,"1Te envio tropa:%i,%i,%i,%i,%i,%i,%i,%i,%i",&a,&b,&c,&d,&e,&f,&g,&h,&i);
-		TropaInst t = {a,b,c,d,e,f,g,h,i};
-		activeTroops.push_back(t);
-		Window::manager->sendMessage("ACK");
-	}else if(message[0]=='2'){
-		for(TropaInst tr : activeTroops)
-			Window::manager->sendMessage((string("1Te envio tropa:"+to_string(tr.idServidor)+string(",")+to_string(tr.idJugador)+string(",")+to_string(tr.idTropa)+
-			string(",")+to_string(tr.estado)+string(",")+to_string(tr.mejorada)+string(",")+to_string(tr.posicionX)+
-			string(",")+to_string(tr.posicionY)+string(",")+to_string(tr.tipo)+string(",")+to_string(tr.vida))).c_str());
+	std::vector<std::string> params;
+	std::string str = message;
+	int spaceNeeded = 0;
+	for(unsigned int i = 0; i < strlen(message); i++){
+		if(message[i] == ':'){
+			params.push_back(str.substr(i - spaceNeeded , spaceNeeded));
+			spaceNeeded = 0;
+		}else spaceNeeded++;
 	}
+	switch(strtol(params[0].c_str(), NULL, 10)){
+		case SocketMessage::SYNC:
+			manager->sendMessage(message::infoSync(InfoSync::SERVER_ID, activeTroops[0].idServidor));
+			break;
+		case SocketMessage::INFO_SYNC:{
+			switch(strtol(params[1].c_str(), NULL, 10)){
+				case InfoSync::SERVER_ID:
+					this->serverID = strtol(params[2].c_str(), NULL, 10);
+					manager->sendMessage(message::infoSync(InfoSync::PLAYER_ID, menuEjemplo::logeado.id));
+					break;
+				case InfoSync::PLAYER_ID:
+					bool exists = false;
+					int id = strtol(params[2].c_str(), NULL, 10);
+					for(TropaInst troop : activeTroops){
+						if(troop.idJugador == id){
+							exists = true;
+							break;
+						}
+					}
+					if(!exists){
+						activeTroops.push_back(SettlerInst(activeTroops[0].idServidor, id, 0, 5, 5));
+					}
+					for(TropaInst tropa: activeTroops){
+						manager->sendMessage(message::initialTroopSync(&tropa));
+					}
+			}
+			break;
+		}case SocketMessage::INITIAL_TROOP_SYNC:
+			if(strtol(params[7].c_str(),NULL,10) == (int)sprite::TroopType::SETTLER){
+				activeTroops.push_back(
+					SettlerInst(
+						serverID,
+						menuEjemplo::logeado.id,
+						strtol(params[2].c_str(),NULL,10),
+						strtol(params[3].c_str(),NULL,10),
+						strtol(params[4].c_str(),NULL,10),
+						strtol(params[5].c_str(),NULL,10),
+						strtol(params[6].c_str(),NULL,10),
+						strtol(params[8].c_str(),NULL,10),
+						strtol(params[9].c_str(),NULL,10) == 0
+					)
+				);
+			}else{
+				activeTroops.push_back(
+					TropaInst(
+						serverID,
+						menuEjemplo::logeado.id,
+						strtol(params[2].c_str(),NULL,10),
+						strtol(params[3].c_str(),NULL,10),
+						strtol(params[4].c_str(),NULL,10),
+						strtol(params[5].c_str(),NULL,10),
+						strtol(params[6].c_str(),NULL,10),
+						strtol(params[7].c_str(),NULL,10),
+						strtol(params[8].c_str(),NULL,10),
+						strtol(params[9].c_str(),NULL,10) == 0
+					)
+				);
+			}
+			manager->sendMessage("CONT");
+			break;
+		case SocketMessage::MOVE:
+			//TODO
+			break;
+		case SocketMessage::ACTION:
+			//TODO
+			break;
+		case SocketMessage::ADD_TROOP:
+			//TODO
+			break;
+		case SocketMessage::BUILD_CITY:
+			//TODO
+			break;
+		case SocketMessage::DESENTRY:
+			//TODO
+			break;
+	}
+//	if(message[0]=='0'){
+//		int x,y;
+//		sscanf(message,"0tropa a posicion:(%i,%i)",&x,&y);
+//		if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
+//			TropaInst actual = activeTroops.front();
+//			troopMove(&actual, x, y);
+//			activeTroops.erase(activeTroops.begin());
+//			activeTroops.push_back(actual);
+//			if(activeTroops.front().idJugador!=menuEjemplo::logeado.id){
+//				Window::manager->sendMessage("ACK");
+//			}
+//		}
+//	}else if(message[0]=='1'){
+//		int a,b,c,d,e,f,g,h,i;
+//		sscanf(message,"1Te envio tropa:%i,%i,%i,%i,%i,%i,%i,%i,%i",&a,&b,&c,&d,&e,&f,&g,&h,&i);
+//		TropaInst t = {a,b,c,d,e,f,g,h,i};
+//		activeTroops.push_back(t);
+//		Window::manager->sendMessage("ACK");
+//	}else if(message[0]=='2'){
+//		for(TropaInst tr : activeTroops)
+//			Window::manager->sendMessage((string("1Te envio tropa:"+to_string(tr.idServidor)+string(",")+to_string(tr.idJugador)+string(",")+to_string(tr.idTropa)+
+//			string(",")+to_string(tr.estado)+string(",")+to_string(tr.mejorada)+string(",")+to_string(tr.posicionX)+
+//			string(",")+to_string(tr.posicionY)+string(",")+to_string(tr.tipo)+string(",")+to_string(tr.vida))).c_str());
+//	}
 }
 void MapWindow::update(){
 	mapView.clear();

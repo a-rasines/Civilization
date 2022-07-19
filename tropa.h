@@ -15,7 +15,7 @@ typedef struct
 	int estado;
 	int posicionX;
 	int posicionY;
-	bool estacionada;
+	int estacionada;
 } Tropa;
 
 
