@@ -161,10 +161,17 @@ void MapWindow::TropaInst::keyPress(int keycode, MapWindow *mw){
 	switch (keycode){
 	case ' ': //NO ORDERS --Skip
 		mw->troopMove(this, x, y);
+		mw->manager->sendMessage(message::action(Action::NONE));
 		break;
 	case 'w': //WAIT --Put to the back of the player's troop queue
 		MapWindow::TropaInst actual = mw->activeTroops[0];
-
+		mw->activeTroops.erase(mw->activeTroops.begin());
+		for(int i = 0; i < mw->activeTroops.size(); i++){
+			if(mw->activeTroops[i].idJugador != actual.idJugador){
+				mw->activeTroops.insert(mw->activeTroops.begin()+i, actual);
+				break;
+			}
+		}
 		mw->manager->sendMessage(message::action(Action::WAIT));
 	case 's': //SENTRY --No orders wanted
 
@@ -172,6 +179,7 @@ void MapWindow::TropaInst::keyPress(int keycode, MapWindow *mw){
 
 	case 'D': //DISBAND --Delete the troop
 		mw->activeTroops.erase(mw->activeTroops.begin());
+		mw->manager->sendMessage(message::action(Action::DISBAND));
 	}
 }
 void MapWindow::SettlerInst::keyPress(int keycode, MapWindow *mw){

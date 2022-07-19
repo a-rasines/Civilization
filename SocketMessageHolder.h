@@ -31,6 +31,7 @@ enum Position{
 	NW = 36
 };
 enum Action {
+	NONE = ' ',
 	SENTRY = 's',
 	DISBAND = 'D',
 	WAIT = 'w',
