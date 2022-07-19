@@ -94,10 +94,17 @@ public:
 		bool operator == (Tropa t){
 			return idTropa==t.idTropa && idJugador == t.idJugador;
 		}
-		void keyPress(int keycode, MapWindow *mw);
+		virtual void keyPress(int keycode, MapWindow *mw);
 		sprite::TroopData data;
 		float renderingPositionX;
 		float renderingPositionY;
+	};
+	struct SettlerInst : public TropaInst {
+		SettlerInst(int serverId, int userId, int troopId, int type, int posX, int posY) : TropaInst(serverId, userId, troopId, type, posX, posY){}
+		SettlerInst(int serverId, int userId, int troopId,int estado,int mejora, int posX, int posY, int type, int vida) : TropaInst(serverId, userId, troopId, estado, mejora, posX, posY, type, vida){}
+		void keyPress(int keycode, MapWindow *mw);
+		virtual ~SettlerInst(){}
+
 	};
 	void cargarTropas(const char* fichero);
 	void guardarTropas(const char* fichero);

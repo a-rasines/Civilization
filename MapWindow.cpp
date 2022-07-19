@@ -15,6 +15,7 @@
 
 #include "menuEjemplo.h"
 #include "MapHolder.h"
+#include "SocketMessageHolder.h"
 
 float MapWindow::x;
 float MapWindow::y;
@@ -158,17 +159,32 @@ MapWindow::~MapWindow() {}
 
 void MapWindow::TropaInst::keyPress(int keycode, MapWindow *mw){
 	switch (keycode){
-	case ' ':
+	case ' ': //NO ORDERS --Skip
 		mw->troopMove(this, x, y);
 		break;
-	case 'w':
+	case 'w': //WAIT --Put to the back of the player's troop queue
+		MapWindow::TropaInst actual = mw->activeTroops[0];
 
-	case 's':
+		mw->manager->sendMessage(message::action(Action::WAIT));
+	case 's': //SENTRY --No orders wanted
 
-	case 'P':
+	case 'P': //PILLAGE --Destroy whatever is in that cell
 
-	case 'D':
+	case 'D': //DISBAND --Delete the troop
 		mw->activeTroops.erase(mw->activeTroops.begin());
+	}
+}
+void MapWindow::SettlerInst::keyPress(int keycode, MapWindow *mw){
+	TropaInst::keyPress(keycode, mw);
+	switch (keycode){
+		case 'b': //BUILD CITY
+
+		case 'r': //BUILD ROAD
+
+		case 'm': //BUILD FOREST
+
+		case 'f': //BUILD FORTRESS
+			break;
 	}
 }
 /*int main(){
