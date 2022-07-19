@@ -1,5 +1,3 @@
-#include "MapWindow.h"
-
 #include <SFML/Graphics.hpp>
 
 #include <windef.h>
@@ -7,9 +5,10 @@
 #include <cstdio>
 
 #include "menuEjemplo.h"
-#include "MapHolder.h"
+#include "MapWindow.h"
 
 using namespace std;
+using namespace sprite;
 
 void MapWindow::start(){
 	addMenuItem(Window::MenuItem{

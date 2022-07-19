@@ -11,8 +11,9 @@
 #include <iostream>
 #include "WindowObjects/WindowManager.h"
 #include "Ejemplo2.h"
-#include "menuEjemplo.h"
 #include <string.h>
+
+#include "menuEjemplo.h"
 extern "C"{
 	#include "xml.h"
 }

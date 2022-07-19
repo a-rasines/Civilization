@@ -17,6 +17,7 @@
 #include "Sprite.h"
 #include "tropa.h"
 #include"Ejemplo2.h"
+
 class MapWindow : public Window{
 public:
 	enum MenuOption{

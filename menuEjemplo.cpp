@@ -6,13 +6,15 @@
  */
 
 #include "menuEjemplo.h"
-#include "MapWindow.h"
+
 #include "Example.h"
 #include "winuser.h"
 #include <SFML/Graphics.hpp>
 #include "WindowObjects/Fonts.h"
 #include <iostream>
 #include <cstdio>
+
+#include "MapWindow.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
