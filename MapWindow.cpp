@@ -173,7 +173,11 @@ void MapWindow::TropaInst::keyPress(int keycode, MapWindow *mw){
 			}
 		}
 		mw->manager->sendMessage(message::action(Action::WAIT));
+		break;
 	case 's': //SENTRY --No orders wanted
+		mw->activeTroops[0].estacionada = true;
+		mw->manager->sendMessage(message::action(Action::SENTRY));
+		break;
 
 	case 'P': //PILLAGE --Destroy whatever is in that cell
 

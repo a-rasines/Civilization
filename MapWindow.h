@@ -76,6 +76,7 @@ public:
 			this->renderingPositionY = posY;
 			this->tipo = type;
 			this->vida = data.defense;
+			this->estacionada = false;
 		};
 		TropaInst(int serverId, int userId, int troopId,int estado,int mejora, int posX, int posY, int type, int vida){
 					this->idServidor = serverId;
@@ -90,11 +91,13 @@ public:
 					this->renderingPositionY = posY;
 					this->tipo = type;
 					this->vida = vida;
+					this->estacionada=false;
 				};
 		bool operator == (Tropa t){
 			return idTropa==t.idTropa && idJugador == t.idJugador;
 		}
 		virtual void keyPress(int keycode, MapWindow *mw);
+		virtual ~TropaInst(){}
 		sprite::TroopData data;
 		float renderingPositionX;
 		float renderingPositionY;

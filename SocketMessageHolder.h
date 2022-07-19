@@ -11,14 +11,16 @@
 #include <string.h>
 #include <string>
 
-#include "database.h"
+#include "MapWindow.h"
+
 
 enum SocketMessage{
 	INITIAL_TROOP_SYNC,
 	MOVE,
 	ADD_TROOP,
 	ACTION,
-	BUILD_CITY
+	BUILD_CITY,
+	DESENTRY
 };
 enum Position{
 	N = 38,
@@ -46,9 +48,8 @@ namespace message{
 		str += (int)SocketMessage::ACTION;
 		str += ":";
 		str += (int)acc;
-		char end[6]; // 3:115\0
-		str += " "; //Make sure no other number gets in
-		strcpy(end, str.substr(0, 5).c_str());
+		char end[str.length() + 1]; // 3:115\0
+		strcpy(end, str.c_str());
 		return end;
 	}
 	char* movement(Position newPos){
@@ -56,7 +57,16 @@ namespace message{
 		str += (int)SocketMessage::MOVE;
 		str += ":";
 		str += (int)newPos;
-		char end[5]; // 1:33\0
+		char end[str.length() + 1]; // 1:33\0
+		strcpy(end, str.c_str());
+		return end;
+	}
+	char* desentry(int id){
+		std::string str;
+		str += (int)SocketMessage::DESENTRY;
+		str += ":";
+		str += id;
+		char end[str.length() + 1]; // 1:33\0
 		strcpy(end, str.c_str());
 		return end;
 	}
