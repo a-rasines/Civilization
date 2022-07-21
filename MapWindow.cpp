@@ -8,14 +8,10 @@
 #include "MapWindow.h"
 
 #include <SFML/Graphics.hpp>
-
-#include <windef.h>
 #include <cmath>
-#include <cstdio>
+#include <fstream>
 
-#include "menuEjemplo.h"
 #include "MapHolder.h"
-#include "SocketMessageHolder.h"
 
 float MapWindow::x;
 float MapWindow::y;
@@ -33,6 +29,30 @@ void MapWindow::troopMove(TropaInst *toca, int x, int y){
 		toca->posicionX=x;
 		toca->posicionY=y;
 	}
+}
+void MapWindow::troopMove(TropaInst *t, Position p){
+	 int x, y = 0;
+	 switch(p){
+	 	 case Position::NE:
+	 		 x += 2;
+	 	 case Position::NW:
+	 		 x--;
+	 	 case Position::N:
+	 		 y--;
+			 break;
+	 	case Position::SE:
+			 x += 2;
+		 case Position::SW:
+			 x--;
+		 case Position::S:
+			 y++;
+			 break;
+	 }
+	 if(posibleMove(*t, t->posicionX + x, t->posicionY + y)){
+		 t->posicionX+=x;
+	 	 t->posicionY+=y;
+	 }
+
 }
 bool MapWindow::posibleMove(TropaInst t ,int x, int y){
 	return foreground[y][x].allowedTroops->isAllowed(t.data.type);
@@ -161,7 +181,7 @@ void MapWindow::TropaInst::keyPress(int keycode, MapWindow *mw){
 	switch (keycode){
 	case ' ': //NO ORDERS --Skip
 		mw->troopMove(this, x, y);
-		mw->manager->sendMessage(message::action(Action::NONE));
+		mw->manager->sendMessage(message::action(Action::NO_ACTION));
 		break;
 	case 'w':{ //WAIT --Put to the back of the player's troop queue
 		MapWindow::TropaInst actual = mw->activeTroops[0];

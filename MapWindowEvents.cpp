@@ -1,17 +1,5 @@
-#include <basetsd.h>
-#include <SFML/Graphics.hpp>
-#include <windef.h>
-#include <cstdio>
-#include <iostream>
-#include <string>
-#include <vector>
-
 #include "menuEjemplo.h"
 #include "MapWindow.h"
-#include "SocketMessageHolder.h"
-#include "Sprite.h"
-#include "WindowObjects/Window.h"
-#include "WindowObjects/WindowManager.h"
 
 using namespace std;
 using namespace sprite;
@@ -138,7 +126,7 @@ void MapWindow::onMessage(char* message){
 				activeTroops.push_back(
 					SettlerInst(
 						serverID,
-						menuEjemplo::logeado.id,
+						strtol(params[1].c_str(),NULL,10),
 						strtol(params[2].c_str(),NULL,10),
 						strtol(params[3].c_str(),NULL,10),
 						strtol(params[4].c_str(),NULL,10),
@@ -152,7 +140,7 @@ void MapWindow::onMessage(char* message){
 				activeTroops.push_back(
 					TropaInst(
 						serverID,
-						menuEjemplo::logeado.id,
+						strtol(params[1].c_str(),NULL,10),
 						strtol(params[2].c_str(),NULL,10),
 						strtol(params[3].c_str(),NULL,10),
 						strtol(params[4].c_str(),NULL,10),
@@ -167,7 +155,7 @@ void MapWindow::onMessage(char* message){
 			manager->sendMessage("CONT");
 			break;
 		case SocketMessage::MOVE:
-			//TODO
+			troopMove(&activeTroops.front(),(Position)strtol(params[1].c_str(),NULL,10));
 			break;
 		case SocketMessage::ACTION:
 			//TODO
@@ -253,19 +241,10 @@ void MapWindow::onResize(int newWidth, int newHeight){
 	reposition(x, y);
 }
 void MapWindow::onKeyDown(int keycode){
-	if(activeTroops.front().idJugador==menuEjemplo::logeado.id && !moving && (
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Right) ||
-			sf::Keyboard::isKeyPressed(sf::Keyboard::Left))){
+	if(activeTroops.front().idJugador==menuEjemplo::logeado.id && !moving && keycode >= 33 && keycode <= 40){
 		TropaInst troop = activeTroops.front();
-		troopMove(&troop,
-			troop.posicionX + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Right) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Left),
-			troop.posicionY + (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Down) - (int)sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
-		);
-		const char* messagea = (string("0tropa a posicion:(")+to_string(troop.posicionX)+string(",")+to_string(troop.posicionY)+string(")")).c_str();
-		cout << "Movimiento: " << messagea << "\n";
-		Window::manager->sendMessage(messagea);
+		troopMove(&troop,(Position)keycode);
+		Window::manager->sendMessage(message::movement((Position)keycode));
 		activeTroops.erase(activeTroops.begin());
 		activeTroops.push_back(troop);
 		repos = true;

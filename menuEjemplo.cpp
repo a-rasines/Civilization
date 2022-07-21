@@ -7,12 +7,7 @@
 
 #include "menuEjemplo.h"
 
-#include "Example.h"
-#include "winuser.h"
-#include <SFML/Graphics.hpp>
 #include "WindowObjects/Fonts.h"
-#include <iostream>
-#include <cstdio>
 
 #include "MapWindow.h"
 #ifdef __cplusplus
@@ -20,7 +15,6 @@ extern "C" {
 #endif
 #include "usuario.h"
 #include "database.h"
-#include "xml.h"
 //Usuario getUsuario(char* nombre, char* contrasena);
 #ifdef __cplusplus
 }

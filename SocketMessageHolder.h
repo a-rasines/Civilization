@@ -8,7 +8,7 @@
 #ifndef SOCKETMESSAGEHOLDER_H_
 #define SOCKETMESSAGEHOLDER_H_
 
-#include "MapWindow.h"
+#include "tropa.h"
 
 enum SocketMessage{
 	INFO_SYNC,
@@ -35,7 +35,7 @@ enum Position{
 	NW = 36
 };
 enum Action {
-	NONE = ' ',
+	NO_ACTION = ' ',
 	SENTRY = 's',
 	DISBAND = 'D',
 	WAIT = 'w',
@@ -48,7 +48,7 @@ namespace message{
 	char* action(Action acc);
 	char* movement(Position newPos);
 	char* desentry(int id);
-	char* initialTroopSync(MapWindow::TropaInst* troop);
+	char* initialTroopSync(Tropa* tropa);
 	char* infoSync(InfoSync type, int value);
 	char* other(SocketMessage acc);
 }

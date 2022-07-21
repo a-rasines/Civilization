@@ -7,17 +7,12 @@
 
 #ifndef MAPWINDOW_H_
 #define MAPWINDOW_H_
-#include "WindowObjects/Window.h"
-#include <SFML/Graphics.hpp>
-#include <vector>
-#include <string>
-#include <list>
-#include <iostream>
-#include <fstream>
-#include "Sprite.h"
-#include "tropa.h"
-#include"Ejemplo2.h"
 
+#include <SFML/Graphics.hpp>
+
+#include "Sprite.h"
+#include "WindowObjects/Window.h"
+#include "SocketMessageHolder.h"
 class MapWindow : public Window{
 public:
 	enum MenuOption{
@@ -114,6 +109,7 @@ public:
 	void onClientStart();
 	MapWindow();
 	void troopMove(TropaInst *t, int x, int y);
+	void troopMove(TropaInst *t, Position p);
 	bool posibleMove(TropaInst t,int x, int y);
 	void start(); //Esta funcion se llama al cambiar de pantalla
 	void update();//Esta funcion se llama cada vez que de una vuelta al bucle

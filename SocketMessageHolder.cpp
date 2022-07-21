@@ -6,6 +6,10 @@
  */
 
 #include "SocketMessageHolder.h"
+
+#include <cstring>
+#include <string>
+
 namespace message{
 	char* action(Action acc){
 		std::string str = "" + std::to_string(SocketMessage::ACTION) + ":"
@@ -28,7 +32,7 @@ namespace message{
 		strcpy(end, str.c_str());
 		return end;
 	}
-	char* initialTroopSync(MapWindow::TropaInst* troop){
+	char* initialTroopSync(Tropa* troop){
 		std::string str = "" + std::to_string(SocketMessage::INITIAL_TROOP_SYNC) + ":"
 							 + std::to_string(troop->idJugador) + ":"
 							 + std::to_string(troop->idTropa) + ":"
