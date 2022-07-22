@@ -74,14 +74,18 @@ void MapWindow::start(){
 	setResizable(true);
 	std::string file = "resources/" + (std::string)RIVER.file;
 	background.loadFromFile(file, sf::IntRect(RIVER.textureX, RIVER.textureY, RIVER.sizeX, RIVER.sizeY));
-	TropaInst t1 = {0, menuEjemplo::logeado.id, 0, 1, 5, 5};
-	TropaInst t2 = {0, menuEjemplo::logeado.id, 1, 16, 18,18};
-	activeTroops.push_back(t1);
-	activeTroops.push_back(t2);
+//	TropaInst t1 = {0, menuEjemplo::logeado.id, 0, 1, 5, 5};
+//	TropaInst t2 = {0, menuEjemplo::logeado.id, 1, 16, 18,18};
+//	activeTroops.push_back(t1);
+//	activeTroops.push_back(t2);
 }
 
 void MapWindow::onClientStart(){
 	manager->sendMessage(message::other(SocketMessage::SYNC));
+}
+void MapWindow::onServerStart(){
+	activeTroops.push_back(SettlerInst(0, menuEjemplo::logeado.id, 0, 5, 5));
+	std::cout << "Added";
 }
 
 void MapWindow::onMessage(char* message){
@@ -94,17 +98,22 @@ void MapWindow::onMessage(char* message){
 			spaceNeeded = 0;
 		}else spaceNeeded++;
 	}
+	std::cout << "param0= " << params[0] << "\n";
 	switch(strtol(params[0].c_str(), NULL, 10)){
-		case SocketMessage::SYNC:
+		case (int)SocketMessage::SYNC:
+			std::cout.flush();
+			std::cout << "Sending";
 			manager->sendMessage(message::infoSync(InfoSync::SERVER_ID, activeTroops[0].idServidor));
 			break;
-		case SocketMessage::INFO_SYNC:{
+		case (int)SocketMessage::CONT:
+			break;
+		case (int)SocketMessage::INFO_SYNC:{
 			switch(strtol(params[1].c_str(), NULL, 10)){
-				case InfoSync::SERVER_ID:
+				case (int)InfoSync::SERVER_ID:
 					this->serverID = strtol(params[2].c_str(), NULL, 10);
 					manager->sendMessage(message::infoSync(InfoSync::PLAYER_ID, menuEjemplo::logeado.id));
 					break;
-				case InfoSync::PLAYER_ID:
+				case (int)InfoSync::PLAYER_ID:
 					bool exists = false;
 					int id = strtol(params[2].c_str(), NULL, 10);
 					for(TropaInst troop : activeTroops){
@@ -152,7 +161,7 @@ void MapWindow::onMessage(char* message){
 					)
 				);
 			}
-			manager->sendMessage("CONT");
+			manager->sendMessage(message::other(SocketMessage::CONT));
 			break;
 		case SocketMessage::MOVE:
 			troopMove(&activeTroops.front(),(Position)strtol(params[1].c_str(),NULL,10));
@@ -196,6 +205,7 @@ void MapWindow::onMessage(char* message){
 //	}
 }
 void MapWindow::update(){
+	//std::cout << activeTroops.size();
 	mapView.clear();
 	for(Cell cell : activeCells){
 		sf::Texture tex;
@@ -226,7 +236,7 @@ void MapWindow::update(){
 		rect.setPosition(sf::Vector2f(t->renderingPositionX*16*zoom-x, t->renderingPositionY*16*zoom-y));
 		mapView.draw(rect);
 	}
-	if(!moving && repos){
+	if(!moving && repos && activeTroops.size() > 0){
 		TropaInst troop = activeTroops.front();
 		reposition((troop.posicionX-7)*16*zoom, (troop.posicionY-6)*16*zoom);
 		repos = false;

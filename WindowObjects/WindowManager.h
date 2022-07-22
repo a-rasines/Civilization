@@ -57,7 +57,7 @@ class WindowManager {
 		class TCPConnectionHandler {
 			public:
 				TCPConnectionHandler(){
-					ip = "127.0.0.0";
+					ip = "127.0.0.1";
 					port = 50001;
 					client = true;
 				}

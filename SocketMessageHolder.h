@@ -11,6 +11,7 @@
 #include "tropa.h"
 
 enum SocketMessage{
+	CONT,
 	INFO_SYNC,
 	INITIAL_TROOP_SYNC,
 	MOVE,

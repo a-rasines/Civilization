@@ -99,8 +99,9 @@ class Window {
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//TODO                                            Funciones a copiar
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		virtual void onClientStart(){};
-		virtual void start(){}; //Esta funcion se llama al cambiar de pantalla
+		virtual void onClientStart(){};//Esta funcion se llama cuando se inicia el cliente
+		virtual void onServerStart(){};//Esta funcion se llama cuando se inicia el servidor
+		virtual void start(){};//Esta funcion se llama al cambiar de pantalla
 		virtual void update(){};//Esta funcion se llama cada vez que de una vuelta al bucle
 		virtual void onButtonPress(HWND button){};//Esta funcion se llama cuando un boton sea pulsado
 		virtual void onResize(int newWidth, int newHeight){};//Esta funcion se llama cuando la ventana cambia de tamaño

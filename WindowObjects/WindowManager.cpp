@@ -24,6 +24,7 @@ sf::Thread *commThread;
 WindowManager::Dimension wm_size;
 WindowManager::Dimension wm_position;
 bool isClient = false;
+bool isServer = false;
 LRESULT CALLBACK onEvent(HWND handle, UINT message, WPARAM wParam, LPARAM lParam){
 	switch (message){
 			// Quit when we close the main window
@@ -98,13 +99,15 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 			float time = clock.getElapsedTime().asMilliseconds();
 			activeWindow->deltatime = (-timeElapsed) + time;
 			timeElapsed = time;
+			GlobalMutex.lock();
 			if(tcpHandler.receivedMessages.size() != 0){
+				std::cout.flush();
+				std::cout << "Processing message: " << tcpHandler.receivedMessages.front();
 				activeWindow->onMessage(tcpHandler.receivedMessages.front());
 				tcpHandler.receivedMessages.pop_front();
 			}
-			GlobalMutex.lock();
-			activeWindow->update();
 			GlobalMutex.unlock();
+			activeWindow->update();
 		}
 	}
 
@@ -123,6 +126,8 @@ void WindowManager::setWindow(Window *w){
 	activeWindow->start();
 	if(isClient){
 		activeWindow->onClientStart();
+	}else if(isServer){
+		activeWindow->onServerStart();
 	}
 }
 WindowManager::Dimension WindowManager::getWindowSize(){
@@ -141,13 +146,21 @@ void WindowManager::TCPConnectionHandler::main(){
 	sf::TcpSocket socket;
 	if(client){
 		sf::TcpListener listener;
-		if (listener.listen(port) != sf::Socket::Done || listener.accept(socket) != sf::Socket::Done)return;
-		pendingMessages.push_back("Connected");
-		lastMessage = false;
+		std::cout << "Starting listener\n";
+		if (listener.listen(port) != sf::Socket::Done || listener.accept(socket) != sf::Socket::Done){
+			std::cout.flush();
+			std::cout << "Error starting server";
+			return;
+		}
+		std::cout.flush();
+		std::cout << "Listening port " << port << "\n";
+		lastMessage = true;
 	}else{
+		std::cout << "Connecting to " << ip << ":" << port << "\n";
 		if (socket.connect(ip, port) != sf::Socket::Done)
 			return;
-		lastMessage = true;
+		std::cout << "Connected\n";
+		lastMessage = false;
 	}
 	while(true){
 		if(pendingMessages.size() != 0 && !lastMessage){ //Si no hay mensaje que mandar o no ha recibido respuesta no se ejecuta
@@ -167,7 +180,9 @@ void WindowManager::TCPConnectionHandler::main(){
 				return;
 			lastMessage = false;
 			std::cout << "received " << in << "\n";
+			GlobalMutex.lock();
 			receivedMessages.push_back(in);
+			GlobalMutex.unlock();
 		}
 		sf::sleep(sf::milliseconds(10));
 	}
@@ -181,7 +196,8 @@ void WindowManager::sendMessage(const char* message){
 void WindowManager::startTCPServer(){
 	commThread = new sf::Thread(&TCPConnectionHandler::main, &tcpHandler);
 	commThread->launch();
-
+	activeWindow->onServerStart();
+	isServer = true;
 }
 
 void WindowManager::stopConnection(){

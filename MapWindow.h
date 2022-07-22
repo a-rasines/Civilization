@@ -107,6 +107,7 @@ public:
 	void cargarTropas(const char* fichero);
 	void guardarTropas(const char* fichero);
 	void onClientStart();
+	void onServerStart();
 	MapWindow();
 	void troopMove(TropaInst *t, int x, int y);
 	void troopMove(TropaInst *t, Position p);

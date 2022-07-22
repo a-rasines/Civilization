@@ -118,7 +118,7 @@ void menuEjemplo::onButtonPress(HWND button){
 		ShowWindow(textButton, (int) SW_SHOW);
 	}
 	else if (button == textButton){
-		if (strcmp(getComponentText(usuario),"") && strcmp(getComponentText(contrasena),"") != 0){
+		if (strcmp(getComponentText(usuario),"") && strcmp(getComponentText(contrasena),"")){
 			if (not existeUsuario(getComponentText(usuario))){
 				const int opcion = MessageBox(NULL, "Usuario no encontrado, �desea registrarse?", NULL, MB_YESNO);
 				switch (opcion) {

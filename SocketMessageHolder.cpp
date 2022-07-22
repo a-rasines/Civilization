@@ -13,21 +13,21 @@
 namespace message{
 	char* action(Action acc){
 		std::string str = "" + std::to_string(SocketMessage::ACTION) + ":"
-							 + std::to_string(acc);
+							 + std::to_string(acc) + ":";
 		char* end =new char[str.length() + 1]; // 3:115\0
 		strcpy(end, str.c_str());
 		return end;
 	}
 	char* movement(Position newPos){
 		std::string str = "" + std::to_string(SocketMessage::MOVE) + ":"
-							 + std::to_string(newPos);
+							 + std::to_string(newPos) + ":";
 		char* end =new char[str.length() + 1]; // 1:33\0
 		strcpy(end, str.c_str());
 		return end;
 	}
 	char* desentry(int id){
 		std::string str = "" + std::to_string(SocketMessage::DESENTRY) + ":"
-							 + std::to_string(id);
+							 + std::to_string(id) + ":";
 		char* end =new char[str.length() + 1]; // 1:33\0
 		strcpy(end, str.c_str());
 		return end;
@@ -42,7 +42,7 @@ namespace message{
 							 + std::to_string(troop->posicionY) + ":"
 							 + std::to_string(troop->tipo) + ":"
 							 + std::to_string(troop->vida) + ":"
-							 + std::to_string(troop->estacionada);
+							 + std::to_string(troop->estacionada) + ":";
 		char* end =new char[str.length() + 1]; // 1:33\0
 		strcpy(end, str.c_str());
 		return end;
@@ -50,13 +50,13 @@ namespace message{
 	char* infoSync(InfoSync type, int value){
 		std::string str = "" + std::to_string(SocketMessage::INFO_SYNC) + ":"
 							 + std::to_string(type) + ":"
-							 + std::to_string(value);
+							 + std::to_string(value) + ":";
 		char* end =new char[str.length() + 1]; // 1:33\0
 		strcpy(end, str.c_str());
 		return end;
 	}
 	char* other(SocketMessage acc){
-		std::string str = "" + std::to_string(acc);
+		std::string str = "" + std::to_string(acc) + ":";
 		char* end =new char[str.length() + 1]; // 1:33\0
 		strcpy(end, str.c_str());
 		return end;
