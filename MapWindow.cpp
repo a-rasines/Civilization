@@ -31,7 +31,7 @@ void MapWindow::troopMove(TropaInst *toca, int x, int y){
 	}
 }
 void MapWindow::troopMove(TropaInst *t, Position p){
-	 int x, y = 0;
+	 int x = 0, y = 0;
 	 switch(p){
 	 	 case Position::NE:
 	 		 x += 2;
@@ -41,11 +41,17 @@ void MapWindow::troopMove(TropaInst *t, Position p){
 	 		 y--;
 			 break;
 	 	case Position::SE:
-			 x += 2;
+			x += 2;
 		 case Position::SW:
 			 x--;
 		 case Position::S:
 			 y++;
+			 break;
+		 case Position::E:
+			 x++;
+			 break;
+		 case Position::W:
+			 x--;
 			 break;
 	 }
 	 if(posibleMove(*t, t->posicionX + x, t->posicionY + y)){
@@ -99,7 +105,7 @@ float MapWindow::round(float number, int decimals){
 void MapWindow::reposition(int x, int y){
 	this->x=x;
 	this->y=y;
-	std::cout << x << ":" << y << "\n";
+	//std::cout << x << ":" << y << "\n";
 	WindowManager::Dimension size = Window::manager->getWindowSize();
 	activeCells.clear();
 
@@ -151,11 +157,11 @@ void MapWindow::reposition(int x, int y){
 		int cx = -x;
 		for(TerrainType cell : row){
 			cx += cell.sizeX * zoom;
-			std::cout << cx << "\n";
+			//std::cout << cx << "\n";
 			if(cx<0)continue;
 			else if(cx >= size.x + cell.sizeX * zoom){
 				cx -= 80 * cell.sizeX * zoom;
-				std::cout << "reset " << cx << "\n";
+				//std::cout << "reset " << cx << "\n";
 				continue;
 			}
 			activeCells.push_back((Cell){
