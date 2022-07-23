@@ -55,6 +55,15 @@ namespace message{
 		strcpy(end, str.c_str());
 		return end;
 	}
+	char* infoSync(InfoSync type, int value1, long int value2){
+		std::string str = "" + std::to_string(SocketMessage::INFO_SYNC) + ":"
+							 + std::to_string(type) + ":"
+							 + std::to_string(value1) + ":"
+							 + std::to_string(value2) + ":";
+		char* end =new char[str.length() + 1]; // 1:33\0
+		strcpy(end, str.c_str());
+		return end;
+	}
 	char* other(SocketMessage acc){
 		std::string str = "" + std::to_string(acc) + ":";
 		char* end =new char[str.length() + 1]; // 1:33\0

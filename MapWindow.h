@@ -13,6 +13,7 @@
 #include "Sprite.h"
 #include "WindowObjects/Window.h"
 #include "SocketMessageHolder.h"
+#include <map>
 class MapWindow : public Window{
 public:
 	enum MenuOption{
@@ -135,6 +136,8 @@ public:
 	int serverID = 0; //TODO Assing id
 private:
 	float round(float number, int decimals);
+	static sf::Color playerColors[];
+	std::map<int, sf::Color> playerColorMap;
 	sf::RenderWindow mapView;
 	static float x;
 	static float y;

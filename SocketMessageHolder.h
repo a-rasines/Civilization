@@ -14,6 +14,7 @@ enum SocketMessage{
 	CONT,
 	INFO_SYNC,
 	INITIAL_TROOP_SYNC,
+	TROOP_SYNC, // TODO Future anti-cheat (obviously not for server)
 	MOVE,
 	ADD_TROOP,
 	ACTION,
@@ -23,7 +24,8 @@ enum SocketMessage{
 };
 enum InfoSync {
 	SERVER_ID,
-	PLAYER_ID
+	PLAYER_ID,
+	PLAYER_COLOR
 };
 enum Position{
 	N = 38,
@@ -51,6 +53,7 @@ namespace message{
 	char* desentry(int id);
 	char* initialTroopSync(Tropa* tropa);
 	char* infoSync(InfoSync type, int value);
+	char* infoSync(InfoSync type, int value1,long int value2);
 	char* other(SocketMessage acc);
 }
 

@@ -3,7 +3,16 @@
 
 using namespace std;
 using namespace sprite;
-
+sf::Color MapWindow::playerColors[] = {
+		// 0xRRGGBBAA
+		sf::Color::Black,
+		sf::Color(0xFFFFFFFF),
+		sf::Color(0xff4d4dff), //In the future this will be for barbarians
+		sf::Color(0x404040ff),
+		sf::Color(0xffd17dff),
+		sf::Color(0x99cc33ff),
+		sf::Color(0x47d4f2ff)
+};
 void MapWindow::start(){
 	addMenuItem(Window::MenuItem{
 		L"&GAME",
@@ -74,18 +83,17 @@ void MapWindow::start(){
 	setResizable(true);
 	std::string file = "resources/" + (std::string)RIVER.file;
 	background.loadFromFile(file, sf::IntRect(RIVER.textureX, RIVER.textureY, RIVER.sizeX, RIVER.sizeY));
-//	TropaInst t1 = {0, menuEjemplo::logeado.id, 0, 1, 5, 5};
-//	TropaInst t2 = {0, menuEjemplo::logeado.id, 1, 16, 18,18};
-//	activeTroops.push_back(t1);
-//	activeTroops.push_back(t2);
 }
 
 void MapWindow::onClientStart(){
 	manager->sendMessage(message::other(SocketMessage::SYNC));
 }
 void MapWindow::onServerStart(){
+	int color = 0;
+	while(playerColors[color] == sf::Color::Black)color = rand() % (sizeof(playerColors) / sizeof(playerColors[0]));
+	playerColorMap.insert(std::pair<int,sf::Color>(menuEjemplo::logeado.id, playerColors[color]));
+	playerColors[color] = sf::Color::Black; //Way to know if color has been already used
 	activeTroops.push_back(SettlerInst(0, menuEjemplo::logeado.id, 0, 5, 5));
-	std::cout << "Added";
 }
 
 void MapWindow::onMessage(char* message){
@@ -113,7 +121,7 @@ void MapWindow::onMessage(char* message){
 					this->serverID = strtol(params[2].c_str(), NULL, 10);
 					manager->sendMessage(message::infoSync(InfoSync::PLAYER_ID, menuEjemplo::logeado.id));
 					break;
-				case (int)InfoSync::PLAYER_ID:
+				case (int)InfoSync::PLAYER_ID:{
 					bool exists = false;
 					int id = strtol(params[2].c_str(), NULL, 10);
 					for(TropaInst troop : activeTroops){
@@ -124,10 +132,22 @@ void MapWindow::onMessage(char* message){
 					}
 					if(!exists){
 						activeTroops.push_back(SettlerInst(activeTroops[0].idServidor, id, 0, 5, 5));
+						int color = 0;
+						while(playerColors[color] == sf::Color::Black)color = rand() % (sizeof(playerColors) / sizeof(playerColors[0]));
+						playerColorMap.insert(std::pair<int,sf::Color>(id, playerColors[color]));
+						playerColors[color] = sf::Color::Black; //Way to know if color has been already used
+					}
+					for(std::map<int,sf::Color>::iterator it = playerColorMap.begin(); it != playerColorMap.end(); ++it){
+						manager->sendMessage(message::infoSync(InfoSync::PLAYER_COLOR, it->first, it->second.toInteger()));
 					}
 					for(TropaInst tropa: activeTroops){
 						manager->sendMessage(message::initialTroopSync(&tropa));
 					}
+					break;
+				}case (int)InfoSync::PLAYER_COLOR:
+						playerColorMap.insert(std::pair<int, sf::Color>(strtol(params[2].c_str(), NULL, 10),sf::Color(strtol(params[3].c_str(), NULL, 10))));
+						manager->sendMessage(message::other(SocketMessage::CONT));
+						break;
 			}
 			break;
 		}case SocketMessage::INITIAL_TROOP_SYNC:
@@ -227,6 +247,7 @@ void MapWindow::update(){
 		tex.loadFromFile("resources/SP257.PIC_256.gif",sf::IntRect(coso.textureX,coso.textureY,coso.sizeX,coso.sizeY));
 		sf::RectangleShape rect;
 		rect.setTexture(&tex, false);
+		rect.setFillColor(playerColorMap[t->idJugador]);
 		rect.setSize(sf::Vector2f(coso.sizeX*zoom, coso.sizeY*zoom));
 		if(t->renderingPositionX != t->posicionX || t->renderingPositionY != t->posicionY){
 			moving = true;
