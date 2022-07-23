@@ -106,11 +106,12 @@ void MapWindow::onMessage(char* message){
 			spaceNeeded = 0;
 		}else spaceNeeded++;
 	}
-	std::cout << "param0= " << params[0] << "\n";
+	std::cout << "Processing message: ";
+	for(unsigned int i = 0; i < params.size(); i++)std::cout << "param" << i << "= " << params[i] << " ";
+	std::cout << "\n";
 	switch(strtol(params[0].c_str(), NULL, 10)){
 		case (int)SocketMessage::SYNC:
 			std::cout.flush();
-			std::cout << "Sending";
 			manager->sendMessage(message::infoSync(InfoSync::SERVER_ID, activeTroops[0].idServidor));
 			break;
 		case (int)SocketMessage::CONT:
@@ -272,12 +273,10 @@ void MapWindow::onResize(int newWidth, int newHeight){
 	reposition(x, y);
 }
 void MapWindow::onKeyDown(int keycode){
+	std::cout << "active player= " << activeTroops.front().idJugador <<", you= " << menuEjemplo::logeado.id << "\n";
 	if(activeTroops.front().idJugador==menuEjemplo::logeado.id && !moving && keycode >= 33 && keycode <= 40){
 		TropaInst troop = activeTroops.front();
 		troopMove(&troop,(Position)keycode);
-		Window::manager->sendMessage(message::movement((Position)keycode));
-		activeTroops.erase(activeTroops.begin());
-		activeTroops.push_back(troop);
 		repos = true;
 	}
 }

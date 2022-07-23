@@ -28,6 +28,7 @@ enum InfoSync {
 	PLAYER_COLOR
 };
 enum Position{
+	SKIP = ' ',
 	N = 38,
 	NE = 33,
 	E = 39,

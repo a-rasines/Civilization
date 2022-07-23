@@ -102,7 +102,6 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 			GlobalMutex.lock();
 			if(tcpHandler.receivedMessages.size() != 0){
 				std::cout.flush();
-				std::cout << "Processing message: " << tcpHandler.receivedMessages.front();
 				activeWindow->onMessage(tcpHandler.receivedMessages.front());
 				tcpHandler.receivedMessages.pop_front();
 			}
@@ -179,7 +178,7 @@ void WindowManager::TCPConnectionHandler::main(){
 			if (socket.receive(in, sizeof(in), received) != sf::Socket::Done)
 				return;
 			lastMessage = false;
-			std::cout << "received " << in << "\n";
+			std::cout << " received " << in << "\n";
 			GlobalMutex.lock();
 			receivedMessages.push_back(in);
 			GlobalMutex.unlock();

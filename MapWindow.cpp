@@ -24,12 +24,6 @@ MapWindow::MapWindow() {
 	zoom = 5;
 	lastMovement = 0;
 }
-void MapWindow::troopMove(TropaInst *toca, int x, int y){
-	if(posibleMove(*toca,x,y)){
-		toca->posicionX=x;
-		toca->posicionY=y;
-	}
-}
 void MapWindow::troopMove(TropaInst *t, Position p){
 	 int x = 0, y = 0;
 	 switch(p){
@@ -53,10 +47,15 @@ void MapWindow::troopMove(TropaInst *t, Position p){
 		 case Position::W:
 			 x--;
 			 break;
+		 case Position::SKIP:
+		 break;
 	 }
 	 if(posibleMove(*t, t->posicionX + x, t->posicionY + y)){
 		 t->posicionX+=x;
 	 	 t->posicionY+=y;
+	 	Window::manager->sendMessage(message::movement(p));
+		activeTroops.erase(activeTroops.begin());
+		activeTroops.push_back(*t);
 	 }
 
 }
@@ -186,8 +185,7 @@ MapWindow::~MapWindow() {}
 void MapWindow::TropaInst::keyPress(int keycode, MapWindow *mw){
 	switch (keycode){
 	case ' ': //NO ORDERS --Skip
-		mw->troopMove(this, x, y);
-		mw->manager->sendMessage(message::action(Action::NO_ACTION));
+		mw->troopMove(this, (Position)keycode);
 		break;
 	case 'w':{ //WAIT --Put to the back of the player's troop queue
 		MapWindow::TropaInst actual = mw->activeTroops[0];

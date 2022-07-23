@@ -110,7 +110,6 @@ public:
 	void onClientStart();
 	void onServerStart();
 	MapWindow();
-	void troopMove(TropaInst *t, int x, int y);
 	void troopMove(TropaInst *t, Position p);
 	bool posibleMove(TropaInst t,int x, int y);
 	void start(); //Esta funcion se llama al cambiar de pantalla
