@@ -7,11 +7,11 @@ sf::Color MapWindow::playerColors[] = {
 		// 0xRRGGBBAA
 		sf::Color::Black,
 		sf::Color(0xFFFFFFFF),
-		sf::Color(0xff4d4dff), //In the future this will be for barbarians
-		sf::Color(0x404040ff),
-		sf::Color(0xffd17dff),
-		sf::Color(0x99cc33ff),
-		sf::Color(0x47d4f2ff)
+		sf::Color(0xf75757FF), //In the future this will be for barbarians
+		sf::Color(0x5ed85cFF),
+		sf::Color(0x7288fcFF),
+		sf::Color(0xf04fe1FF),
+		sf::Color(0xdeff8fFF)
 };
 void MapWindow::start(){
 	addMenuItem(Window::MenuItem{
@@ -90,10 +90,12 @@ void MapWindow::onClientStart(){
 }
 void MapWindow::onServerStart(){
 	int color = 0;
+	activeCities.push_back(Ciudad{0, menuEjemplo::logeado.id, 0, (char*)"Test", 0, 0, 0, 0, 5, 6});
 	while(playerColors[color] == sf::Color::Black)color = rand() % (sizeof(playerColors) / sizeof(playerColors[0]));
 	playerColorMap.insert(std::pair<int,sf::Color>(menuEjemplo::logeado.id, playerColors[color]));
 	playerColors[color] = sf::Color::Black; //Way to know if color has been already used
 	activeTroops.push_back(SettlerInst(0, menuEjemplo::logeado.id, 0, 5, 5));
+	activeTroops.push_back(SettlerInst(0, menuEjemplo::logeado.id, 1, 5, 5));
 }
 
 void MapWindow::onMessage(char* message){
@@ -241,7 +243,7 @@ void MapWindow::update(){
 		mapView.draw(rect);
 	}
 	moving = false;
-	for(unsigned int i = 0; i < activeTroops.size(); i++){
+	for(unsigned int i = 1; i < activeTroops.size(); i++){
 		sf::Texture tex;
 		TropaInst* t = &(activeTroops[i]);
 		sprite::TroopData coso = sprite::Troop[t->tipo];
@@ -258,6 +260,49 @@ void MapWindow::update(){
 		rect.setPosition(sf::Vector2f(t->renderingPositionX*16*zoom-x, t->renderingPositionY*16*zoom-y));
 		mapView.draw(rect);
 	}
+	for(unsigned int i = 0; i < activeCities.size(); i++){
+		bool troop = false;
+
+		for(TropaInst t : activeTroops)
+			if(t.renderingPositionX == activeCities[i].posicionX && t.renderingPositionY == activeCities[i].posicionY){
+				troop = true;
+				break;
+			}
+		sf::RectangleShape rect;
+		if(troop){
+			rect.setSize(sf::Vector2f(16*zoom, 16*zoom));
+			rect.setPosition(sf::Vector2f((activeCities[i].posicionX*16 - 1)*zoom-x, (activeCities[i].posicionY*16 - 1)*zoom-y));
+			rect.setFillColor(sf::Color::Black);
+			mapView.draw(rect);
+		}
+		rect.setPosition(sf::Vector2f(activeCities[i].posicionX*16*zoom-x, activeCities[i].posicionY*16*zoom-y));
+		rect.setSize(sf::Vector2f(14*zoom, 14*zoom));
+		rect.setFillColor(playerColorMap[activeCities[i].idJugador]);
+		mapView.draw(rect);
+
+		sf::Texture tex;
+		tex.loadFromFile("resources/SP257.PIC_256.gif",sf::IntRect(193,113,15,15));
+		rect.setPosition(sf::Vector2f(activeCities[i].posicionX*16*zoom-x, activeCities[i].posicionY*16*zoom-y));
+		rect.setTexture(&tex, false);
+		mapView.draw(rect);
+	}
+	//The active troop it's the only one to overlay cities
+	sf::Texture tex;
+	TropaInst* t = &(activeTroops.front());
+	sprite::TroopData coso = sprite::Troop[t->tipo];
+	tex.loadFromFile("resources/SP257.PIC_256.gif",sf::IntRect(coso.textureX,coso.textureY,coso.sizeX,coso.sizeY));
+	sf::RectangleShape rect;
+	rect.setTexture(&tex, false);
+	rect.setFillColor(playerColorMap[t->idJugador]);
+	rect.setSize(sf::Vector2f(coso.sizeX*zoom, coso.sizeY*zoom));
+	if(t->renderingPositionX != t->posicionX || t->renderingPositionY != t->posicionY){
+		moving = true;
+		t->renderingPositionX = round(t->renderingPositionX + 0.2 * (t->renderingPositionX < t->posicionX) - 0.2 * (t->renderingPositionX > t->posicionX), 1);
+		t->renderingPositionY = round(t->renderingPositionY + 0.2 * (t->renderingPositionY < t->posicionY) - 0.2 * (t->renderingPositionY > t->posicionY), 1);
+	}
+	rect.setPosition(sf::Vector2f(t->renderingPositionX*16*zoom-x, t->renderingPositionY*16*zoom-y));
+	mapView.draw(rect);
+
 	if(!moving && repos && activeTroops.size() > 0){
 		TropaInst troop = activeTroops.front();
 		reposition((troop.posicionX-7)*16*zoom, (troop.posicionY-6)*16*zoom);

@@ -8,12 +8,19 @@
 #ifndef MAPWINDOW_H_
 #define MAPWINDOW_H_
 
+#include <basetsd.h>
 #include <SFML/Graphics.hpp>
-
-#include "Sprite.h"
-#include "WindowObjects/Window.h"
-#include "SocketMessageHolder.h"
+#include <windef.h>
 #include <map>
+#include <string>
+#include <vector>
+
+#include "SocketMessageHolder.h"
+#include "Sprite.h"
+#include "tropa.h"
+#include "ciudad.h"
+#include "WindowObjects/Window.h"
+
 class MapWindow : public Window{
 public:
 	enum MenuOption{
@@ -142,6 +149,7 @@ private:
 	static float y;
 	std::vector<Cell> activeCells;
 	std::vector<TropaInst> activeTroops;
+	std::vector<Ciudad> activeCities;
 	static sf::Texture background;
 	int lastMovement;
 	bool moving = false;
