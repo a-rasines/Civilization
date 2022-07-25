@@ -8,17 +8,17 @@
 #ifndef MAPWINDOW_H_
 #define MAPWINDOW_H_
 
-#include <basetsd.h>
 #include <SFML/Graphics.hpp>
-#include <windef.h>
+#include <cmath>
+#include <cstring>
 #include <map>
 #include <string>
 #include <vector>
 
+#include "ciudad.h"
 #include "SocketMessageHolder.h"
 #include "Sprite.h"
 #include "tropa.h"
-#include "ciudad.h"
 #include "WindowObjects/Window.h"
 
 class MapWindow : public Window{
@@ -112,6 +112,51 @@ public:
 		virtual ~SettlerInst(){}
 
 	};
+	struct CiudadInst : public Ciudad {
+		CiudadInst(int idPartida, int idJugador, int idCiudad, char* nombre, int posicionX, int posicionY){
+			this->idPartida = idPartida;
+			this->idJugador = idJugador;
+			this->idCiudad = idCiudad;
+			this->nombre = nombre;
+			this->posicionX = posicionX;
+			this->posicionY = posicionY;
+			this->edificios = new char[Edificio::_LAST / 8 + 1];
+			strcpy(this->edificios,"\0");
+			this->comida = 0;
+			this->dinero = 0;
+			this->produccion = 0;
+
+		}
+		CiudadInst(int idPartida, int idJugador, int idCiudad, char* nombre, char* edificios, int comida, int dinero, int produccion, int posicionX, int posicionY){
+			this->idPartida = idPartida;
+				this->idJugador = idJugador;
+				this->idCiudad = idCiudad;
+				this->edificios = new char[Edificio::_LAST / 8 + 1];
+				strcpy(this->edificios,edificios);
+				this->nombre = new char[strlen(nombre)];
+				strcpy(this->nombre,nombre);
+				this->comida = comida;
+				this->dinero = dinero;
+				this->produccion = produccion;
+				this->posicionX = posicionX;
+				this->posicionY = posicionY;
+		}
+		bool tieneEdificio(Edificio ed){
+			int pos = (int)(ed/8);
+			int bit = pow(2,ed%8 + 1);
+			return edificios[pos] & bit;
+		}
+		void addEdificio(Edificio ed){
+			int pos = (int)(ed/8);
+			int bit = pow(2,ed%8 + 1);
+			edificios[pos] |= bit;
+		}
+		void removeEdificio(Edificio ed){
+			int pos = (int)(ed/8);
+			int bit = ~((int)pow(2,ed%8 + 1));
+			edificios[pos] &= bit;
+		}
+	};
 	void cargarTropas(const char* fichero);
 	void guardarTropas(const char* fichero);
 	void onClientStart();
@@ -149,7 +194,7 @@ private:
 	static float y;
 	std::vector<Cell> activeCells;
 	std::vector<TropaInst> activeTroops;
-	std::vector<Ciudad> activeCities;
+	std::vector<CiudadInst> activeCities;
 	static sf::Texture background;
 	int lastMovement;
 	bool moving = false;

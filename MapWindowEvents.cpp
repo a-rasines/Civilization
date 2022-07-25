@@ -90,12 +90,11 @@ void MapWindow::onClientStart(){
 }
 void MapWindow::onServerStart(){
 	int color = 0;
-	activeCities.push_back(Ciudad{0, menuEjemplo::logeado.id, 0, (char*)"Test", 0, 0, 0, 0, 5, 6});
+	activeCities.push_back(CiudadInst(0, menuEjemplo::logeado.id, 0, (char*)"Test", 0, 0, 0, 0, 5, 6));
 	while(playerColors[color] == sf::Color::Black)color = rand() % (sizeof(playerColors) / sizeof(playerColors[0]));
 	playerColorMap.insert(std::pair<int,sf::Color>(menuEjemplo::logeado.id, playerColors[color]));
 	playerColors[color] = sf::Color::Black; //Way to know if color has been already used
 	activeTroops.push_back(SettlerInst(0, menuEjemplo::logeado.id, 0, 5, 5));
-	activeTroops.push_back(SettlerInst(0, menuEjemplo::logeado.id, 1, 5, 5));
 }
 
 void MapWindow::onMessage(char* message){
