@@ -88,7 +88,7 @@ WindowManager::WindowManager(const char* title, int posX, int posY, int width, i
 	message.message = static_cast<UINT>(~WM_QUIT);
 	Window::instance = instance;
 	Window::window = this->window;
-	Fonts::load();
+	Font::load();
 	window->start();
 	while (message.message != WM_QUIT){
 		//Aqui busca los eventos no recogidos

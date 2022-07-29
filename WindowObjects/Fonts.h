@@ -8,13 +8,34 @@
 #ifndef WINDOWOBJECTS_FONTS_H_
 #define WINDOWOBJECTS_FONTS_H_
 #include <SFML/Graphics.hpp>
-class Fonts{
+#include <map>
+struct CharacterRender{
+	int posX0;
+	int posY0;
+	int sizeX;
+	int sizeY;
+};
+class Font{
 	public:
 		sf::Font static ARIAL;
-
+		Font static CIV1;
+		Font static CIV2;
+		Font static CIV3;
+		Font static CIV4;
+		Font static CIV5;
+		Font static CIV6;
+		Font static CIV7;
+		Font static CIV8;
 		void static load();
+		Font();
+		Font(std::map<char, CharacterRender> map, char* filename);
+		bool canLoad(char* text);
+		bool leftSided(char* text, int size, sf::RenderWindow rw, int posX, int posY);
+		bool centered(char* text, int size, sf::RenderWindow rw, int posX, int posY);
+	private:
+		std::map<char, CharacterRender> renderMap;
+		char* filename;
+
 };
-
-
 
 #endif /* WINDOWOBJECTS_FONTS_H_ */
