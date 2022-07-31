@@ -13,7 +13,6 @@ struct CharacterRender{
 	int posX0;
 	int posY0;
 	int sizeX;
-	int sizeY;
 };
 class Font{
 	public:
@@ -28,13 +27,14 @@ class Font{
 		Font static CIV8;
 		void static load();
 		Font();
-		Font(std::map<char, CharacterRender> map, char* filename);
+		Font(std::map<char, CharacterRender> map, char* filename, int size);
 		bool canLoad(char* text);
 		bool leftSided(char* text, int size, sf::RenderWindow rw, int posX, int posY);
 		bool centered(char* text, int size, sf::RenderWindow rw, int posX, int posY);
 	private:
 		std::map<char, CharacterRender> renderMap;
 		char* filename;
+		int sizeY;
 
 };
 
