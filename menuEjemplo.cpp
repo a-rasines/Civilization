@@ -57,19 +57,19 @@ void menuEjemplo::start(){
 	std::string file = "resources/LOGO.PIC_256.png";
 	background.loadFromFile(file);
 	text.setString("Usuario");
-	text.setFont(Fonts::ARIAL);
+	text.setFont(Font::ARIAL);
 	text.setCharacterSize(20);
 	text.setPosition(325, 568);
 	text.setFillColor(sf::Color::White);
 
 	text2.setString("Contrasena");
-	text2.setFont(Fonts::ARIAL);
+	text2.setFont(Font::ARIAL);
 	text2.setCharacterSize(20);
 	text2.setPosition(290, 608);
 	text2.setFillColor(sf::Color::White);
 
 	text3.setString("Ingrese IP");
-	text3.setFont(Fonts::ARIAL);
+	text3.setFont(Font::ARIAL);
 	text3.setCharacterSize(20);
 	text3.setPosition(250, 655);
 	text3.setFillColor(sf::Color::White);

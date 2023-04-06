@@ -11,7 +11,7 @@
 #include <cstring>
 
 Font::Font(){
-	filename = "\0";
+	filename = (char*)"\0";
 	sizeY = 0;
 }
 Font::Font(std::map<char, CharacterRender> map, char* filename, int size){
@@ -20,12 +20,12 @@ Font::Font(std::map<char, CharacterRender> map, char* filename, int size){
 	this->sizeY = size;
 }
 bool Font::canLoad(char* text){
-	for(int i = 0, c = text[0]; i < strlen(text); i++, c = text[i])
+	for(int i = 0, c = text[0]; i < (int)strlen(text); i++, c = text[i])
 		if(!renderMap.count((char)c))return false;
 	return true;
 }
 bool Font::leftSided(char* text, int size, sf::RenderWindow rw, int posX, int posY){
-	for(int i = 0, c = text[0]; i < strlen(text); i++, c = text[i]){
+	for(int i = 0, c = text[0]; i < (int)strlen(text); i++, c = text[i]){
 		if(!renderMap.count((char)c))return false;
 		sf::Texture tex;
 		CharacterRender ch = renderMap[(char)c];
@@ -49,14 +49,14 @@ bool Font::centered(char* text, int size, sf::RenderWindow rw, int posX, int pos
 }
 
 sf::Font Font::ARIAL;
-Font static Font::CIV1;
-Font static Font::CIV2;
-Font static Font::CIV3;
-Font static Font::CIV4;
-Font static Font::CIV5;
-Font static Font::CIV6;
-Font static Font::CIV7;
-Font static Font::CIV8;
+Font Font::CIV1;
+Font Font::CIV2;
+Font Font::CIV3;
+Font Font::CIV4;
+Font Font::CIV5;
+Font Font::CIV6;
+Font Font::CIV7;
+Font Font::CIV8;
 
 void Font::load(){
 	Font::ARIAL.loadFromFile("Fonts/ARIAL.TTF");
@@ -254,5 +254,5 @@ void Font::load(){
 			{'↨',  CharacterRender{291, y0      , 7}},
 			{'℗',  CharacterRender{301, y0      , 2}},
 			{' ',  CharacterRender{311, y0      , 2}}
-		}, "resources/FONTS.gif", 6);
+		}, (char*)"resources/FONTS.gif", 6);
 }
